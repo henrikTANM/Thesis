@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI-shipmenu/Ship_Row_Template_StyleSheet.uss?fileID=7433441132597879392&amp;guid=6f8e627f0f66e8e44bc3dfb19e9d4816&amp;type=3#Ship_Row_Template_StyleSheet" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-around; width: 100%; border-left-color: rgb(249, 160, 63); border-right-color: rgb(249, 160, 63); border-top-color: rgb(249, 160, 63); border-bottom-color: rgb(249, 160, 63); border-top-width: 1px; border-right-width: 0; border-bottom-width: 1px; border-left-width: 0;">
+        <ui:Label tabindex="-1" text="ShipName" parse-escape-sequences="true" display-tooltip-when-elided="true" name="type" class="label" />
+        <ui:Label tabindex="-1" text="CargoCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cc" class="label" />
+        <ui:Label tabindex="-1" text="FuelCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="fc" class="label" />
+        <ui:Label tabindex="-1" text="Thrust Power" parse-escape-sequences="false" display-tooltip-when-elided="true" name="tpower" class="label" />
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="RouteButton" class="RouteButton" style="background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/starship.png?fileID=2800000&amp;guid=77681dab40e8484429b6509eb3b5d2dd&amp;type=3#starship&apos;);" />
+    </ui:VisualElement>
+</ui:UXML>

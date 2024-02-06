@@ -1,0 +1,53 @@
+.button {
+    background-color: rgba(0, 0, 0, 0.47);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    flex-grow: 1;
+    flex-shrink: 0;
+    width: auto;
+    color: rgb(249, 160, 63);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    height: auto;
+    align-self: stretch;
+    -unity-background-image-tint-color: rgb(249, 160, 63);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.button:hover {
+    border-left-color: rgb(162, 227, 196);
+    border-right-color: rgb(162, 227, 196);
+    border-top-color: rgb(162, 227, 196);
+    border-bottom-color: rgb(162, 227, 196);
+    color: rgb(255, 255, 255);
+    background-color: rgba(56, 56, 60, 0.47);
+    -unity-background-image-tint-color: rgb(162, 227, 196);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+}
+
+.button:active {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    color: rgb(162, 227, 196);
+    background-color: rgba(90, 128, 141, 0.47);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+}

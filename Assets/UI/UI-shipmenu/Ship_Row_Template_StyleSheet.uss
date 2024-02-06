@@ -1,0 +1,44 @@
+.label {
+    flex-grow: 0;
+    -unity-text-align: middle-center;
+    color: rgb(249, 160, 63);
+    -unity-font-style: bold;
+    align-self: auto;
+    white-space: normal;
+}
+
+#routeButton {
+}
+
+.RouteButton {
+    align-self: center;
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: rgb(249, 160, 63);
+    background-color: rgba(11, 13, 15, 0.59);
+    border-left-color: rgb(249, 160, 63);
+    border-right-color: rgb(249, 160, 63);
+    border-top-color: rgb(249, 160, 63);
+    border-bottom-color: rgb(249, 160, 63);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.RouteButton:hover {
+    background-color: rgba(56, 56, 60, 0.59);
+    border-left-color: rgb(162, 227, 196);
+    border-right-color: rgb(162, 227, 196);
+    border-top-color: rgb(162, 227, 196);
+    border-bottom-color: rgb(162, 227, 196);
+    -unity-background-image-tint-color: rgb(162, 227, 196);
+}
+
+.RouteButton:active {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(90, 128, 141, 0.59);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+}

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b92d02be8eb23e24eafc6462cc507c0a, type: 3}
+  m_Name: Small
+  m_EditorClassIdentifier: 
+  scale: {x: 0.05, y: 0.1}
+  planetTextures:
+  - {fileID: 2800000, guid: e37904be03b0b654b83509c17249cb28, type: 3}
+  - {fileID: 2800000, guid: da5277e4ab310a3439a4d8f0ff4361e3, type: 3}
+  - {fileID: 2800000, guid: ede8cf4a14efe4c47943c84bf30a378b, type: 3}
+  - {fileID: 2800000, guid: 291878045399af6408552b475699ed6b, type: 3}
+  cloudTextures:
+  - {fileID: 2800000, guid: 7cb20123a417f7d409f948e45658216b, type: 3}
