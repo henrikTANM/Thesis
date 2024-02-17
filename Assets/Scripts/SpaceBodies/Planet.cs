@@ -11,6 +11,11 @@ public class Planet : SpaceBody
     [NonSerialized] public Material material;
     [NonSerialized] public Star parentStar;
 
+    private void Start()
+    {
+        GenerateDeposits();
+    }
+
     void Update()
     {
         if (universe.timeRunning) transform.RotateAround(parentStar.transform.position, orbitAxis, orbitSpeed * Time.deltaTime);
@@ -71,5 +76,10 @@ public class Planet : SpaceBody
 
             orbitRenderer.SetPosition(currentStep, currentPosition);
         }
+    }
+
+    public void GenerateDeposits()
+    {
+
     }
 }
