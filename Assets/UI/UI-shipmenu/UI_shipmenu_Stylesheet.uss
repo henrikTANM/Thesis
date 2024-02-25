@@ -1,8 +1,4 @@
 .button {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
     border-left-color: rgb(249, 160, 63);
     border-right-color: rgb(249, 160, 63);
     border-top-color: rgb(249, 160, 63);

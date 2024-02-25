@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5695618}
   - component: {fileID: 5695619}
+  - component: {fileID: 5695620}
   m_Layer: 0
   m_Name: Universe
   m_TagString: Untagged
@@ -167,6 +168,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07bd977160f9015419502f7ed3cec97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5695620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5695617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b092794b793e047b1aa98f839b612b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   starCount: 20
   spaceRadius: 100
   starPrefab: {fileID: 5060649343889052955, guid: a5d17cdfeda37af4598342d1c8bd956f, type: 3}
@@ -174,12 +187,12 @@ MonoBehaviour:
   orbitLinePrefab: {fileID: 427788801519749857, guid: 73846b9078a60624ca09caf0376c2600, type: 3}
   starValues:
   - {fileID: 11400000, guid: a1c81f7ab0b3e8f47af878bb0f5a2b24, type: 2}
-  - {fileID: 11400000, guid: 8fbb801d34fd984448cffd0a6a8606f1, type: 2}
   - {fileID: 11400000, guid: 714b9e7245cfbae4385c5132cf1aeda2, type: 2}
+  - {fileID: 11400000, guid: 8fbb801d34fd984448cffd0a6a8606f1, type: 2}
   planetValues:
-  - {fileID: 11400000, guid: 2450a2c224790a147b8d58df4b9b9bdc, type: 2}
-  - {fileID: 11400000, guid: ebb1e0f9e47687942b659a9350167a16, type: 2}
   - {fileID: 11400000, guid: 0babdca41d6dff44f80037838f51a593, type: 2}
+  - {fileID: 11400000, guid: ebb1e0f9e47687942b659a9350167a16, type: 2}
+  - {fileID: 11400000, guid: 2450a2c224790a147b8d58df4b9b9bdc, type: 2}
 --- !u!1 &107508163
 GameObject:
   m_ObjectHideFlags: 0

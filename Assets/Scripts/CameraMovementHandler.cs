@@ -14,7 +14,6 @@ public class CameraMovementHandler : MonoBehaviour
     private float rotationX;
     private float rotationY;
 
-    private bool isStar;
     private bool universeView = true;
 
     private Vector3 newRotation;
@@ -36,11 +35,13 @@ public class CameraMovementHandler : MonoBehaviour
     private void Awake()
     {
         InputEvents.OnClusterView += MoveToClusterView;
+        InputEvents.OnSystemView += MoveToParentStar;
     }
 
     private void OnDestroy()
     {
         InputEvents.OnClusterView -= MoveToClusterView;
+        InputEvents.OnSystemView -= MoveToParentStar;
     }
 
     void Start()
@@ -69,7 +70,7 @@ public class CameraMovementHandler : MonoBehaviour
         if (scrollWheelAxis != 0 & !universeView & !universe.AreMenusDisplayed()) // & universe.timeRunning)
         {
             float newDistanceFromTarget = distanceFromTarget + scrollWheelAxis * -distanceFromTarget;
-            distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 7.5f, target.localScale.x * 50.0f);
+            distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 7.5f, target.localScale.x * 10.0f);
             ChangePosition();
         }
 
@@ -88,15 +89,14 @@ public class CameraMovementHandler : MonoBehaviour
 
     }
 
-    public void MoveToTarget(Transform target, float distanceFromTarget, bool isStar, bool universeView)
+    public void MoveToTarget(Transform target, float distanceFromTarget, bool universeView)
     {
         this.target = target;
         this.distanceFromTarget = distanceFromTarget;
-        this.isStar = isStar;
         this.universeView = universeView;
         targetPosition = target.position - transform.forward * distanceFromTarget;
         movingToTarget = true;
-        moveSpeed = 5.0f * (Vector3.Distance(transform.position, targetPosition) / 100.0f);
+        moveSpeed = 5.0f * (Vector3.Distance(transform.position, targetPosition)) * Time.deltaTime;
     }
 
     void ChangePosition()
@@ -105,8 +105,19 @@ public class CameraMovementHandler : MonoBehaviour
         transform.position = targetPosition;
     }
 
+    void MoveToParentStar()
+    {
+        Planet currentPlanet = universe.GetActivePlanet();
+        if (currentPlanet != null)
+        {
+            Star parentStar = universe.GetActivePlanet().parentStar;
+            universe.SetLastActivePlanetInactive();
+            MoveToTarget(parentStar.transform, parentStar.nativeScale * 7.5f, false);
+        }
+    }
+
     void MoveToClusterView()
     {
-        MoveToTarget(universe.transform, 250.0f, false, true);
+        MoveToTarget(universe.transform, 250.0f, true);
     }
 }

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Deposit : MonoBehaviour
+[CreateAssetMenu]
+public class Deposit : ScriptableObject
 {
     public string name;
-    public Sprite depositImage;
-    public List<ProductionBuilding> suitableProductionBuilding;
+    public Sprite depositSprite;
+    public List<ProductionBuilding> possibleProductionBuildings;
     public int buildingCap;
 }

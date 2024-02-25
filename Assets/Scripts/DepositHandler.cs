@@ -1,18 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DepositHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private string name;
+    private Sprite depositSprite;
+    private List<ProductionBuilding> possibleproductionBuildings;
+    private int buildingCap;
+
+    private List<ProductionBuildingHandler> productionBuildings;
+
+    public string GetName()
     {
-        
+        return name;
     }
 
-    // Update is called once per frame
-    void Update()
+    public Sprite GetDepositSprite()
     {
-        
+        return depositSprite;
+    }
+
+    public List<ProductionBuilding> GetPossibleProductionBuildings()
+    {
+        return possibleproductionBuildings;
+    }
+
+    public int GetBuildingCap()
+    {
+        return buildingCap;
+    }
+
+    public void SetName(string name)
+    {
+        this.name = name;
+    } 
+
+    public void SetDepositSprite(Sprite depositSprite)
+    {
+        this.depositSprite = depositSprite;
+    } 
+
+    public void SetPossibleProductionBuildings(List<ProductionBuilding> possibleProductionBuildings)
+    {
+        this.possibleproductionBuildings = possibleProductionBuildings;
+    } 
+
+    public void SetBuildingCap(int buildingCap)
+    {
+        this.buildingCap = buildingCap;
     }
 }

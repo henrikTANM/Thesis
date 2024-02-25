@@ -14,6 +14,12 @@ public class InputEvents
     public static event Action OnShipsMenu;
     public static void ShipsMenu() => OnShipsMenu?.Invoke();
 
+    public static event Action OnPlanetMenu;
+    public static void PlanetMenu() => OnPlanetMenu?.Invoke();
+
     public static event Action OnClusterView;
     public static void ClusterView() => OnClusterView?.Invoke();
+
+    public static event Action OnSystemView;
+    public static void SystemView() => OnSystemView?.Invoke();
 }

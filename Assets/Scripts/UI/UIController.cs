@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private UIDocument gameUI;
     [SerializeField] private UIDocument escapeMenuUI;
     [SerializeField] private UIDocument shipsMenuUI;
+    private UIDocument planetMenuUI;
 
     [SerializeField] private Sprite timeRunningImage;
     [SerializeField] private Sprite timeStoppedImage;
@@ -46,10 +47,8 @@ public class UIController : MonoBehaviour
         InitiateShipMenuFunctions();
 
         gameUI.sortingOrder = 1;
-        escapeMenuUI.sortingOrder = 0;
-        shipsMenuUI.sortingOrder = 0;
-        escapeMenuUI.rootVisualElement.style.visibility = Visibility.Hidden;
-        shipsMenuUI.rootVisualElement.style.visibility = Visibility.Hidden;
+        SetUIActive(escapeMenuUI, false);
+        SetUIActive(shipsMenuUI, false);
     }
 
     //main UI buttons
@@ -74,7 +73,7 @@ public class UIController : MonoBehaviour
         timeButton.clicked += InputEvents.TimeStateChange;
 
         Button systemViewButton = buttons.ElementAt(5);
-        // systemViewButton.clicked += ;
+        systemViewButton.clicked += InputEvents.SystemView;
     }
 
     // escape menu buttons
@@ -122,25 +121,36 @@ public class UIController : MonoBehaviour
 
     private void EscapeMenuState()
     {
-        bool enabled = gameUI.rootVisualElement.enabledSelf;
+        UIMenuState(escapeMenuUI);
+        bool enabled = GetGameUIEnabled();
+        escapeMenuUI.rootVisualElement.SetEnabled(enabled);
+    }
 
-        escapeMenuUI.sortingOrder = enabled ? 1 : 0;
-        escapeMenuUI.rootVisualElement.style.visibility = 
-            enabled ? Visibility.Visible : Visibility.Hidden;
+    private void ShipsMenuState()
+    {
+        UIMenuState(shipsMenuUI);
+        bool enabled = GetGameUIEnabled();
+        shipsMenuUI.rootVisualElement.SetEnabled(enabled);
+    }
+
+    public void UIMenuState(UIDocument uiDoc)
+    {
+        bool enabled = GetGameUIEnabled();
+
+        SetUIActive(uiDoc, enabled);
 
         gameUI.sortingOrder = enabled ? 0 : 1;
         gameUI.rootVisualElement.SetEnabled(!enabled);
     }
 
-    private void ShipsMenuState()
+    public void SetUIActive(UIDocument uiDoc, bool active)
     {
-        bool enabled = gameUI.rootVisualElement.enabledSelf;
+        uiDoc.sortingOrder = active ? 1 : 0;
+        uiDoc.rootVisualElement.style.visibility = active ? Visibility.Visible : Visibility.Hidden;
+    }
 
-        shipsMenuUI.sortingOrder = enabled ? 1 : 0;
-        shipsMenuUI.rootVisualElement.style.visibility =
-            enabled ? Visibility.Visible : Visibility.Hidden;
-
-        gameUI.sortingOrder = enabled ? 0 : 1;
-        gameUI.rootVisualElement.SetEnabled(!enabled);
+    public bool GetGameUIEnabled()
+    {
+        return gameUI.rootVisualElement.enabledSelf;
     }
 }

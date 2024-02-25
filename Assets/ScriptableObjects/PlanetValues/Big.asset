@@ -19,3 +19,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3ecde0918ca4f2142a368944d5314a2f, type: 3}
   - {fileID: 2800000, guid: d297fbc0ad0cc8b439a951e8d72addf1, type: 3}
   cloudTextures: []
+  possibleDeposits:
+  - {fileID: 0}
+  - {fileID: 0}
+  depositCap: 0

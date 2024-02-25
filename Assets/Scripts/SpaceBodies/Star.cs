@@ -12,6 +12,9 @@ public class Star : SpaceBody
 
     private void Update()
     {
+        nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
+        nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
+
         material.SetFloat("_TimeValue", universe.timeValue);
     }
 
@@ -21,7 +24,7 @@ public class Star : SpaceBody
         {
             SetSelected(true, false);
             StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
-            cameraMovementHandler.MoveToTarget(transform, nativeScale * 7.5f, true, false);
+            cameraMovementHandler.MoveToTarget(transform, nativeScale * 7.5f, false);
         }
     }
 
