@@ -21,14 +21,12 @@ public class CameraMovementHandler : MonoBehaviour
 
     private UniverseHandler universe;
 
-    [SerializeField]
-    private Transform target;
+    [SerializeField] private Transform target;
     private float distanceFromTarget = 250.0f;
 
     Vector3 targetPosition;
 
-    [SerializeField]
-    private float moveSpeed = 1.5f;
+    [SerializeField] private float moveSpeed = 1.5f;
 
     private bool movingToTarget = false;
 
@@ -52,7 +50,7 @@ public class CameraMovementHandler : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(1) & !movingToTarget & !universe.AreMenusDisplayed())
+        if (Input.GetMouseButton(1) & !movingToTarget & !universe.escapeMenuDisplayed)
         {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -67,8 +65,9 @@ public class CameraMovementHandler : MonoBehaviour
         }
 
         float scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollWheelAxis != 0 & !universeView & !universe.AreMenusDisplayed()) // & universe.timeRunning)
+        if (scrollWheelAxis != 0 & !universeView & !universe.escapeMenuDisplayed) // & universe.timeRunning)
         {
+            print(distanceFromTarget + " : " + target.localScale.x * 7.5f);
             float newDistanceFromTarget = distanceFromTarget + scrollWheelAxis * -distanceFromTarget;
             distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 7.5f, target.localScale.x * 10.0f);
             ChangePosition();
@@ -113,6 +112,8 @@ public class CameraMovementHandler : MonoBehaviour
             Star parentStar = universe.GetActivePlanet().parentStar;
             universe.SetLastActivePlanetInactive();
             MoveToTarget(parentStar.transform, parentStar.nativeScale * 7.5f, false);
+            parentStar.ScalePlanetsToNative();
+            parentStar.SetStarBodyScale(1.0f);
         }
     }
 

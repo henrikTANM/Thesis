@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private UIDocument gameUI;
     [SerializeField] private UIDocument escapeMenuUI;
     [SerializeField] private UIDocument shipsMenuUI;
-    private UIDocument planetMenuUI;
+    private UIDocument currentUI;
 
     [SerializeField] private Sprite timeRunningImage;
     [SerializeField] private Sprite timeStoppedImage;
@@ -26,16 +26,14 @@ public class UIController : MonoBehaviour
     {
         InputEvents.OnTimeStateChange += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += ChangeTimeButtonIcon;
-        InputEvents.OnEscapeMenu += EscapeMenuState;
-        InputEvents.OnShipsMenu += ShipsMenuState;
+        InputEvents.OnEscapeMenu += SetEscapeMenu;
     }
 
     private void OnDestroy()
     {
         InputEvents.OnTimeStateChange -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= ChangeTimeButtonIcon;
-        InputEvents.OnEscapeMenu -= EscapeMenuState;
-        InputEvents.OnShipsMenu -= ShipsMenuState;
+        InputEvents.OnEscapeMenu -= SetEscapeMenu;
     }
 
     private void Start()
@@ -46,9 +44,34 @@ public class UIController : MonoBehaviour
         InitiateEscapeMenuButtons();
         InitiateShipMenuFunctions();
 
-        gameUI.sortingOrder = 1;
         SetUIActive(escapeMenuUI, false);
         SetUIActive(shipsMenuUI, false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentUI == null)
+            {
+                InputEvents.EscapeMenu();
+            }
+            else
+            {
+                UnSetCurrentUI();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (currentUI == null)
+            {
+                SetShipsMenu();
+            }
+            else if (currentUI == shipsMenuUI)
+            {
+                UnSetCurrentUI();
+            }
+        }
     }
 
     //main UI buttons
@@ -61,7 +84,7 @@ public class UIController : MonoBehaviour
         escapeButton.clicked += InputEvents.EscapeMenu;
 
         Button shipsButton = buttons.ElementAt(1);
-        shipsButton.clicked += InputEvents.ShipsMenu;
+        shipsButton.clicked += SetShipsMenu;
 
         Button basesButton = buttons.ElementAt(2);
         // basesButton.clicked += ;
@@ -83,7 +106,7 @@ public class UIController : MonoBehaviour
         List<Button> buttons = escapeMenuUI.rootVisualElement.Query<Button>().ToList();
 
         Button resumeButton = buttons.ElementAt(0);
-        resumeButton.clicked += InputEvents.EscapeMenu;
+        resumeButton.clicked += UnSetCurrentUI;
 
         Button saveButton = buttons.ElementAt(1);
         //saveButton.clicked += ;
@@ -108,49 +131,43 @@ public class UIController : MonoBehaviour
         List<Button> buttons = shipsMenuUI.rootVisualElement.Query<Button>().ToList();
 
         Button exitButton = buttons.ElementAt(0);
-        exitButton.clicked += InputEvents.ShipsMenu;
+        exitButton.clicked += UnSetCurrentUI;
     }
 
-    private void ChangeTimeButtonIcon()
+    public void ChangeTimeButtonIcon()
     {
         timeButton.style.backgroundImage =
             new StyleBackground(universe.timeRunning ? timeRunningImage : timeStoppedImage);
+
         timeButton.style.unityBackgroundImageTintColor =
             universe.timeRunning ? new Color(0f, 180f / 256f, 50f / 256f) : new Color(180f / 256f, 0f, 50f / 256f);
-    }
-
-    private void EscapeMenuState()
-    {
-        UIMenuState(escapeMenuUI);
-        bool enabled = GetGameUIEnabled();
-        escapeMenuUI.rootVisualElement.SetEnabled(enabled);
-    }
-
-    private void ShipsMenuState()
-    {
-        UIMenuState(shipsMenuUI);
-        bool enabled = GetGameUIEnabled();
-        shipsMenuUI.rootVisualElement.SetEnabled(enabled);
-    }
-
-    public void UIMenuState(UIDocument uiDoc)
-    {
-        bool enabled = GetGameUIEnabled();
-
-        SetUIActive(uiDoc, enabled);
-
-        gameUI.sortingOrder = enabled ? 0 : 1;
-        gameUI.rootVisualElement.SetEnabled(!enabled);
     }
 
     public void SetUIActive(UIDocument uiDoc, bool active)
     {
         uiDoc.sortingOrder = active ? 1 : 0;
         uiDoc.rootVisualElement.style.visibility = active ? Visibility.Visible : Visibility.Hidden;
+
+        gameUI.sortingOrder = active ? 0 : 1;
+        gameUI.rootVisualElement.SetEnabled(!active);
     }
 
-    public bool GetGameUIEnabled()
+    public void SetCurrentUI(UIDocument uiDoc)
     {
-        return gameUI.rootVisualElement.enabledSelf;
+        currentUI = uiDoc;
+        SetUIActive(currentUI, true);
     }
+
+    public void UnSetCurrentUI()
+    {
+        if (currentUI == escapeMenuUI) universe.HandleEscapeMenu();
+
+        SetUIActive(currentUI, false);
+        currentUI = null;
+    }
+
+    public UIDocument GetCurrentUI() { return currentUI; }
+
+    private void SetEscapeMenu() { SetCurrentUI(escapeMenuUI); }
+    private void SetShipsMenu() { SetCurrentUI(shipsMenuUI); }
 }

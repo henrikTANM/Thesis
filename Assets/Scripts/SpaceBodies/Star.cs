@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Star : SpaceBody
 {
+    public GameObject starBody;
     [NonSerialized] public List<Planet> planets;
-    [NonSerialized] public float nativeScale;
     [NonSerialized] public Material material;
 
     private void Update()
@@ -20,12 +21,17 @@ public class Star : SpaceBody
 
     private void OnMouseDown()
     {
-        if (!selected & !universe.AreMenusDisplayed())
+        if (!selected & !universe.UIMenuDisplayed())
         {
             SetSelected(true, false);
             StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
             cameraMovementHandler.MoveToTarget(transform, nativeScale * 7.5f, false);
         }
+    }
+
+    public void ScalePlanetsToNative()
+    {
+        foreach (Planet planet in planets) planet.ScaleToNative();
     }
 
     public void SetSelected(bool selected, bool universeView)
@@ -34,16 +40,20 @@ public class Star : SpaceBody
         collider.radius = selected ? 0.5f : 2.0f;
 
         foreach (Planet planet in planets) planet.SetVisible(selected);
-
         foreach (LineRenderer lineRenderer in GetComponentsInChildren<LineRenderer>()) lineRenderer.enabled = selected;
 
         if (selected)
         {
-            universe.SetActiveStar(this);
-            StartCoroutine(ScaleOverTime(transform, new Vector3(nativeScale, nativeScale, nativeScale), 1.5f));
+            ScaleToNative();
+            SetStarBodyScale(1.0f);
             foreach (Star star in universe.stars) if (star != this) star.SetSelected(false, false);
         }
-        else if (!universeView) StartCoroutine(ScaleOverTime(transform, new Vector3(0.25f, 0.25f, 0.25f), 1.5f));
-        else StartCoroutine(ScaleOverTime(transform, new Vector3(nativeScale, nativeScale, nativeScale), 0.5f));
+        else if (!universeView) ScaleToSize(0.25f);
+        else SetStarBodyScale(1.0f);
+    }
+
+    public void SetStarBodyScale(float scale)
+    {
+        starBody.transform.localScale = new(scale, scale, scale);
     }
 }

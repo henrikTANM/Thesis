@@ -110,7 +110,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2412427607015499826
 MonoBehaviour:
@@ -128,7 +128,6 @@ MonoBehaviour:
   depositPrefab: {fileID: 6157725070741230941, guid: f207a3b704c9359448c1e33d491cee90, type: 3}
   depositCap: 0
   planetMenuPrefab: {fileID: 8840291940204054009, guid: c8d81b168b3a4b545937b8cbd28b56a7, type: 3}
-  planetMenuUI: {fileID: 0}
 --- !u!1 &2859709161133015354
 GameObject:
   m_ObjectHideFlags: 0

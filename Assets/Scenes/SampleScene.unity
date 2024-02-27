@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07bd977160f9015419502f7ed3cec97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiController: {fileID: 1195085963}
 --- !u!114 &5695620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,7 +462,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0

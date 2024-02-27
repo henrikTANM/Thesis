@@ -26,10 +26,6 @@ public class Planet : SpaceBody
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) & universe.planetsMenuDisplayed)
-        {
-            HandlePlanetMenu();
-        }
 
         nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
         nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
@@ -44,15 +40,18 @@ public class Planet : SpaceBody
 
     private void OnMouseDown()
     {
-        if (!selected & !universe.AreMenusDisplayed() & !universe.IsPlanetMenuDisplayed())
+        if (!universe.UIMenuDisplayed())
         {
-            SetSelected(true);
-            StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
-            cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 7.5f, false);
-        }
-        if (selected & (universe.GetActivePlanet() != null))
-        {
-            HandlePlanetMenu();
+            if (!selected)
+            {
+                SetSelected(true);
+                StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
+                cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 7.5f * scaleDownMultiplier, false);
+            }
+            if (selected)
+            {
+                uiController.SetCurrentUI(planetMenuUI);
+            }
         }
     }
 
@@ -66,6 +65,8 @@ public class Planet : SpaceBody
         {
             universe.SetLastActivePlanetInactive();
             universe.SetActivePlanet(this);
+            parentStar.SetStarBodyScale(scaleDownMultiplier);
+            foreach (Planet planet in parentStar.planets) planet.ScaleToSize(planet.nativeScale * scaleDownMultiplier);
         }
     }
 
@@ -126,7 +127,6 @@ public class Planet : SpaceBody
             depositHandler.SetPossibleProductionBuildings(randomDeposit.possibleProductionBuildings);
             depositHandler.SetBuildingCap(randomDeposit.buildingCap);
 
-            print(depositHandler);
             deposits.Add(depositHandler);
             GeneratePlanetMenuUI();
         }
@@ -147,12 +147,6 @@ public class Planet : SpaceBody
         List<Button> buttons = planetMenuUI.rootVisualElement.Query<Button>().ToList();
 
         Button exitButton = buttons.ElementAt(0);
-        exitButton.clicked += HandlePlanetMenu;
-    }
-
-    private void HandlePlanetMenu()
-    {
-        uiController.UIMenuState(planetMenuUI);
-        universe.HandlePlanetsMenu();
+        exitButton.clicked += uiController.UnSetCurrentUI;
     }
 }

@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 public class UniverseHandler : MonoBehaviour
 {
     private UniverseGenerator universeGenerator;
+    [SerializeField] private UIController uiController;
 
     [NonSerialized] public List<Star> stars = new();
 
@@ -19,11 +20,8 @@ public class UniverseHandler : MonoBehaviour
     [NonSerialized] public float timeValue = 0.0f;
     [NonSerialized] public bool timeRunning = true;
 
-    private bool escapeMenuDisplayed = false;
-    private bool shipsMenuDisplayed = false;
-    [NonSerialized] public bool planetsMenuDisplayed = false;
+    [NonSerialized] public bool escapeMenuDisplayed = false;
 
-    private Star activeStar;
     private Planet activePlanet;
 
     private void Awake()
@@ -33,7 +31,6 @@ public class UniverseHandler : MonoBehaviour
 
         InputEvents.OnTimeStateChange += HandleTimeChange;
         InputEvents.OnEscapeMenu += HandleEscapeMenu;
-        InputEvents.OnShipsMenu += HandleShipsMenu;
         InputEvents.OnClusterView += SetLastActivePlanetInactive;
         InputEvents.OnClusterView += SetAllStarsInactive;
     }
@@ -42,7 +39,6 @@ public class UniverseHandler : MonoBehaviour
     {
         InputEvents.OnTimeStateChange -= HandleTimeChange;
         InputEvents.OnEscapeMenu -= HandleEscapeMenu;
-        InputEvents.OnShipsMenu -= HandleShipsMenu;
         InputEvents.OnClusterView -= SetLastActivePlanetInactive;
         InputEvents.OnClusterView -= SetAllStarsInactive;
     }
@@ -63,18 +59,6 @@ public class UniverseHandler : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space) & !escapeMenuDisplayed) InputEvents.TimeStateChange();
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (shipsMenuDisplayed)
-            {
-                InputEvents.ShipsMenu();
-            }
-            else
-            {
-                InputEvents.EscapeMenu();
-            }
-        }
     }
 
     public void SetAllStarsInactive()
@@ -88,16 +72,6 @@ public class UniverseHandler : MonoBehaviour
         activePlanet = null;
     }
 
-    public void SetActiveStar(Star star)
-    {
-        activeStar = star;
-    }
-
-    public Star GetActiveStar()
-    {
-        return activeStar;
-    }
-
     public void SetActivePlanet(Planet planet)
     {
         activePlanet = planet;
@@ -108,32 +82,16 @@ public class UniverseHandler : MonoBehaviour
         return activePlanet;
     }
 
-    public bool AreMenusDisplayed()
+    public bool UIMenuDisplayed()
     {
-        return escapeMenuDisplayed | shipsMenuDisplayed;
-    }
-
-    public bool IsPlanetMenuDisplayed()
-    {
-        return planetsMenuDisplayed;
+        return uiController.GetCurrentUI() != null;
     }
 
     public void HandleEscapeMenu()
     {
         escapeMenuDisplayed = !escapeMenuDisplayed;
         timeRunning = !escapeMenuDisplayed;
-    }
-
-    public void HandleShipsMenu()
-    {
-        shipsMenuDisplayed = !shipsMenuDisplayed;
-        timeRunning = !shipsMenuDisplayed;
-    }
-
-    public void HandlePlanetsMenu()
-    {
-        planetsMenuDisplayed = !planetsMenuDisplayed;
-        timeRunning = !planetsMenuDisplayed;
+        uiController.ChangeTimeButtonIcon();
     }
 
     public void HandleTimeChange()

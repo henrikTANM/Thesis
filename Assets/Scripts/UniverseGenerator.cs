@@ -57,9 +57,10 @@ public class UniverseGenerator : MonoBehaviour
             star.SetName(newStarValues.starNames.ElementAt(UnityEngine.Random.Range(0, newStarValues.starNames.Count)));
 
             GeneratePlanets(star);
+            foreach (Planet planet in star.planets) planet.SetVisible(false);
             foreach (LineRenderer lineRenderer in star.GetComponentsInChildren<LineRenderer>()) lineRenderer.enabled = false;
 
-            Material starMaterial = newStar.GetComponent<MeshRenderer>().material;
+            Material starMaterial = star.starBody.GetComponent<MeshRenderer>().material;
             starMaterial.SetColor("_Base_color", newStarValues.color);
             starMaterial.SetColor("_CellColor", newStarValues.cellColor);
             starMaterial.SetFloat("_CellDensity", newStarValues.cellDensity);
@@ -126,6 +127,7 @@ public class UniverseGenerator : MonoBehaviour
             Planet planet = newPlanet.GetComponent<Planet>();
             planet.orbitSpeed = UnityEngine.Random.Range(0.1f, 0.5f);
             planet.orbitAxis = Vector3.up;
+            planet.nativeScale = scale;
             planet.material = material;
 
             planet.SetVisible(false);
