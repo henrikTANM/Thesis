@@ -37,5 +37,12 @@ public class PlanetMenu : MonoBehaviour
                 }
             }
         }
+        VisualElement resourcesPanel = root.Q<VisualElement>("ResourcesList");
+        for (int i = 0; i < 6; i++)
+        {
+            TemplateContainer resourceCounter = resourceTemplate.Instantiate();
+            resourceCounter.style.alignSelf = Align.Center;
+            resourcesPanel.Add(resourceCounter);
+        }
     }
 }
