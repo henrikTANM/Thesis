@@ -44,8 +44,7 @@ public class SpaceBody : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!Input.GetMouseButton(1) & !selected & !universe.UIMenuDisplayed()) 
-            StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
+           StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
     }
 
     private void OnMouseOver()
