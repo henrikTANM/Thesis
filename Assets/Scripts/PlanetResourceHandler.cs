@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class PlanetResourceHandler : MonoBehaviour
 {
-    private List<Deposit> deposits;
+    private List<ProductionBuilding> deposits;
 }

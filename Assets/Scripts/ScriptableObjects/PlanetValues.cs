@@ -11,4 +11,12 @@ public class PlanetValues : ScriptableObject
 
     public List<Deposit> possibleDeposits;
     public int depositCap;
+
+    public PlanetType planetType;
+    public enum PlanetType
+    {
+        Small,
+        Large,
+        Gas
+    }
 }

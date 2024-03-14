@@ -74,6 +74,7 @@ public class SpaceBody : MonoBehaviour
         this.name = name;
         TextMeshProUGUI nameText = nameTagCanvas.GetComponentInChildren<TextMeshProUGUI>();
         nameText.text = name;
+        nameTagCanvas.enabled = false;
     }
 
     public void ScaleToSize(float size)

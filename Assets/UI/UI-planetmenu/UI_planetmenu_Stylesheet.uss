@@ -9,12 +9,11 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
-    background-image: url('project://database/Assets/Textures%20and%20Sprites/building%20-%20Copy.png?fileID=2800000&guid=d62a4c1decd10bd4499656c7e304b1d4&type=3#building - Copy');
     align-self: center;
     flex-grow: 0;
     -unity-background-scale-mode: scale-to-fit;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
 .button:hover {
@@ -24,10 +23,10 @@
     border-bottom-color: rgb(162, 227, 196);
     -unity-background-image-tint-color: rgb(162, 227, 196);
     background-color: rgba(56, 56, 60, 0.47);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
 }
 
 .button:active {
@@ -37,10 +36,10 @@
     border-bottom-color: rgb(255, 255, 255);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(90, 128, 141, 0.47);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
 }
 
 .imageContainer {
@@ -62,7 +61,7 @@
     justify-content: space-between;
 }
 
-#BuildingButton {
+#building_button {
     -unity-background-image-tint-color: rgb(249, 160, 63);
     -unity-background-scale-mode: scale-to-fit;
     align-self: stretch;
@@ -83,11 +82,11 @@
     flex-grow: 1;
 }
 
-#BuildingButton:hover {
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+#building_button:hover {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
     border-left-color: rgb(162, 227, 196);
     border-right-color: rgb(162, 227, 196);
     border-top-color: rgb(162, 227, 196);
@@ -100,16 +99,16 @@
     -unity-background-image-tint-color: rgb(162, 227, 196);
 }
 
-#BuildingButton:active {
+#building_button:active {
     background-color: rgba(90, 128, 141, 0.47);
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -145,21 +144,27 @@
     border-bottom-color: rgb(162, 227, 196);
     background-color: rgba(56, 56, 60, 0.47);
     -unity-background-image-tint-color: rgb(162, 227, 196);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
 }
 
 .spec_button:active {
-    border-left-color: rgba(255, 255, 255, 0);
-    border-right-color: rgba(255, 255, 255, 0);
-    border-top-color: rgba(255, 255, 255, 0);
-    border-bottom-color: rgba(255, 255, 255, 0);
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(90, 128, 141, 0.47);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+.textElement {
+    -unity-text-align: middle-center;
+    color: rgb(249, 160, 63);
+    font-size: 6px;
 }

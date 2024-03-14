@@ -38,6 +38,7 @@ public class Star : SpaceBody
     {   
         this.selected = selected;
         collider.radius = selected ? 0.5f : 2.0f;
+        nameTagCanvas.enabled = selected;
 
         foreach (Planet planet in planets) planet.SetVisible(selected);
         foreach (LineRenderer lineRenderer in GetComponentsInChildren<LineRenderer>()) lineRenderer.enabled = selected;

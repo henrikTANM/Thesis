@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,13 +17,25 @@ public class Planet : SpaceBody
     private GameObject orbitLine;
 
     [SerializeField] private GameObject depositPrefab;
+    [SerializeField] private Deposit factoryDeposit;
     private List<DepositHandler> deposits = new();
-    public int depositCap;
 
     [SerializeField] private GameObject planetMenuPrefab;
     private GameObject planetMenu;
     private UIDocument planetMenuUI;
+    [SerializeField] private GameObject buildingChooserMenuPrefab;
+    private GameObject buildingChooserMenu;
+    private UIDocument buildingChooserMenuUI;
+
     private UIController uiController;
+
+    [NonSerialized] public PlanetValues.PlanetType type;
+
+    public List<ProductionBuilding> possibleProductionBuildings;
+
+    private Button activeButton;
+
+    private BuildingSlot specialBuildingSlot;
 
     void Update()
     {
@@ -46,7 +59,7 @@ public class Planet : SpaceBody
             {
                 SetSelected(true);
                 StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
-                cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 7.5f * scaleDownMultiplier, false);
+                cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 10.0f * scaleDownMultiplier, false);
             }
             if (selected)
             {
@@ -74,6 +87,7 @@ public class Planet : SpaceBody
     {
         GetComponent<SphereCollider>().enabled = visible;
         GetComponent<MeshRenderer>().enabled = visible;
+        nameTagCanvas.enabled = visible;
     }
 
     public void DrawOrbit(int steps, float radius, GameObject orbitLine)
@@ -112,32 +126,39 @@ public class Planet : SpaceBody
         return planetMenuUI;
     }
 
-    public void GenerateDeposits(List<Deposit> possibleDepositList, int depositCap)
+    public BuildingSlot GetSpecialBuildingSlot()
     {
-        this.depositCap = depositCap;
-        for (int i = 0; i < depositCap; i++)
-        {
-            Deposit randomDeposit = possibleDepositList.ElementAt(UnityEngine.Random.Range(0, possibleDepositList.Count));
-
-            GameObject newDeposit = Instantiate(depositPrefab, transform.position, Quaternion.identity);
-            DepositHandler depositHandler = newDeposit.GetComponent<DepositHandler>();
-
-            depositHandler.SetName(randomDeposit.name);
-            depositHandler.SetDepositSprite(randomDeposit.depositSprite);
-            depositHandler.SetPossibleProductionBuildings(randomDeposit.possibleProductionBuildings);
-            depositHandler.SetBuildingCap(randomDeposit.buildingCap);
-
-            deposits.Add(depositHandler);
-            GeneratePlanetMenuUI();
-        }
+        return specialBuildingSlot;
     }
 
-    public void GeneratePlanetMenuUI()
+    public void GenerateDeposits(List<Deposit> possibleDepositList, int depositCap)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (type == PlanetValues.PlanetType.Gas && i >= depositCap)
+            {
+                deposits.Add(null);
+            }
+            else
+            {
+                GameObject newDeposit = Instantiate(depositPrefab);
+                DepositHandler depositHandler = newDeposit.GetComponent<DepositHandler>();
+                Deposit randomDeposit = possibleDepositList.ElementAt(UnityEngine.Random.Range(0, possibleDepositList.Count));
+                depositHandler.Make(i < depositCap ? randomDeposit : factoryDeposit, this);
+                deposits.Add(depositHandler);
+            }
+        }
+        GeneratePlanetUI();
+    }
+
+    public void GeneratePlanetUI()
     {
         planetMenu = Instantiate(planetMenuPrefab, transform.position, Quaternion.identity);
         planetMenuUI = planetMenu.GetComponent<UIDocument>();
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
+
         planetMenu.GetComponent<PlanetMenu>().MakePlanetMenu(this);
+
         InitiatePlanetMenuFunctions();
         uiController.SetUIActive(planetMenuUI, false);
     }

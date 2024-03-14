@@ -1,20 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class DepositHandler : MonoBehaviour
 {
+    [SerializeField] private GameObject buildingSlotPrefab;
+
     private string name;
+    private Planet planet;
     private Sprite depositSprite;
     private List<ProductionBuilding> possibleproductionBuildings;
-    private int buildingCap;
 
-    private List<ProductionBuildingHandler> productionBuildings;
+    private List<BuildingSlot> buildingSlots = new();
 
-    public string GetName()
+    public void Make(Deposit deposit, Planet planet)
     {
-        return name;
+        name = deposit.name;
+        depositSprite = deposit.depositSprite;
+        possibleproductionBuildings = deposit.possibleProductionBuildings;
+        this.planet = planet;
+
+        for (int i = 0; i < deposit.buildingCap; i++)
+        {
+            GameObject buildingSlotObject = Instantiate(buildingSlotPrefab);
+            BuildingSlot buildingSlot = buildingSlotObject.GetComponent<BuildingSlot>();
+            buildingSlot.SetDeposit(this);
+            buildingSlots.Add(buildingSlot);
+        }
+    }
+
+    public Planet GetPlanet()
+    {
+        return planet;
     }
 
     public Sprite GetDepositSprite()
@@ -27,28 +45,8 @@ public class DepositHandler : MonoBehaviour
         return possibleproductionBuildings;
     }
 
-    public int GetBuildingCap()
+    public List<BuildingSlot> GetBuildingSlots()
     {
-        return buildingCap;
-    }
-
-    public void SetName(string name)
-    {
-        this.name = name;
-    } 
-
-    public void SetDepositSprite(Sprite depositSprite)
-    {
-        this.depositSprite = depositSprite;
-    } 
-
-    public void SetPossibleProductionBuildings(List<ProductionBuilding> possibleProductionBuildings)
-    {
-        this.possibleproductionBuildings = possibleProductionBuildings;
-    } 
-
-    public void SetBuildingCap(int buildingCap)
-    {
-        this.buildingCap = buildingCap;
+        return buildingSlots;
     }
 }

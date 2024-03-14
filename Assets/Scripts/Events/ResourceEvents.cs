@@ -7,4 +7,7 @@ public class ResourceEvents
 {
     public static event Action OnCycleChange;
     public static void CycleChange() => OnCycleChange?.Invoke();
+
+    public static event Action OnMoneyUpdate;
+    public static void MoneyUpdate() => OnMoneyUpdate?.Invoke();
 }

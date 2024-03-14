@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: OreMiner
   m_EditorClassIdentifier: 
   name: Ore Miner
-  buildingSprite: {fileID: 0}
-  outputResource: {fileID: 11400000, guid: ef127b089296fbe47b448db3ba41f730, type: 2}
+  buildingSprite: {fileID: 21300000, guid: 42739dc79805c5f4eb17d0ff16dfbf62, type: 3}
+  cost:
+  - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
+    amount: 100
+  - resource: {fileID: 11400000, guid: 88b457fee76ee6a489d13a8798730017, type: 2}
+    amount: 50
+  upkeep: 10
   inputResources: []
+  outputResource:
+    resource: {fileID: 11400000, guid: ef127b089296fbe47b448db3ba41f730, type: 2}
+    amount: 5

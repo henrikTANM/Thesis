@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee08edf12bbfc348bbbf25740fea554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingSlotPrefab: {fileID: 786235161525344064, guid: cc719f23281139145a986b1f49399fde, type: 3}

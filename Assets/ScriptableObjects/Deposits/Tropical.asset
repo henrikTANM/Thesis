@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c34ac8b0f333d847abeb750b1f10daa, type: 3}
+  m_Name: Tropical
+  m_EditorClassIdentifier: 
+  name: Tropical
+  depositSprite: {fileID: 21300000, guid: bd0a3a8bda8bc3646837673fd2ebaf4b, type: 3}
+  possibleProductionBuildings:
+  - {fileID: 11400000, guid: e8e0e7e41c99b984fb1edbb06a4c0081, type: 2}
+  buildingCap: 1

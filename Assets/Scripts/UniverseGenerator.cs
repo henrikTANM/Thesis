@@ -129,13 +129,16 @@ public class UniverseGenerator : MonoBehaviour
             planet.orbitAxis = Vector3.up;
             planet.nativeScale = scale;
             planet.material = material;
+            planet.type = newPlanetValues.planetType;
 
             planet.SetVisible(false);
             planet.parentStar = star;
 
             planet.SetName(star.GetName() + " 0" + (i + 1));
 
-            planet.GenerateDeposits(newPlanetValues.possibleDeposits, newPlanetValues.depositCap);
+            planet.type = newPlanetValues.planetType;
+
+            planet.GenerateDeposits(newPlanetValues.possibleDeposits, UnityEngine.Random.Range(1, newPlanetValues.depositCap));
 
             planets.Add(planet);
 

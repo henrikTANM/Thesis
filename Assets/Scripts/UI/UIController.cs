@@ -21,12 +21,14 @@ public class UIController : MonoBehaviour
     private Button timeButton;
 
     private UniverseHandler universe;
+    private PlayerInventory playerInventory;
 
     private void Awake()
     {
         InputEvents.OnTimeStateChange += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += SetEscapeMenu;
+        ResourceEvents.OnMoneyUpdate += UpdateMoney;
     }
 
     private void OnDestroy()
@@ -34,11 +36,14 @@ public class UIController : MonoBehaviour
         InputEvents.OnTimeStateChange -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= SetEscapeMenu;
+        ResourceEvents.OnMoneyUpdate -= UpdateMoney;
     }
 
     private void Start()
     {
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+        playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
+        UpdateMoney();
 
         InitiateUIButtons();
         InitiateEscapeMenuButtons();
@@ -170,4 +175,9 @@ public class UIController : MonoBehaviour
 
     private void SetEscapeMenu() { SetCurrentUI(escapeMenuUI); }
     private void SetShipsMenu() { SetCurrentUI(shipsMenuUI); }
+
+    private void UpdateMoney()
+    {
+        gameUI.rootVisualElement.Q<Label>("moneyvalue").text = playerInventory.GetMoney().ToString();
+    }
 }

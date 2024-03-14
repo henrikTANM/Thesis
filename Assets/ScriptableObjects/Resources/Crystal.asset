@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Crystal
   m_EditorClassIdentifier: 
   name: Crystal
-  resourceSprite: {fileID: 21300000, guid: bd600215efa697046bb49afd825791d5, type: 3}
+  resourceSprite: {fileID: 21300000, guid: d6d5434d1d2f63249b5d6a42c75b307f, type: 3}
   defaultValue: 5

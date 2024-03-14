@@ -10,12 +10,13 @@ using UnityEngine.UIElements;
 public class UniverseHandler : MonoBehaviour
 {
     private UniverseGenerator universeGenerator;
+    public TextMeshProUGUI CycleText;
     [SerializeField] private UIController uiController;
 
     [NonSerialized] public List<Star> stars = new();
 
     [NonSerialized] public int cycleCount = 0;
-    [NonSerialized] public float cycleLength = 10.0f;
+    [NonSerialized] public float cycleLength = 5.0f;
     [NonSerialized] public float timeCycleValue = 0.0f;
     [NonSerialized] public float timeValue = 0.0f;
     [NonSerialized] public bool timeRunning = true;
@@ -57,7 +58,7 @@ public class UniverseHandler : MonoBehaviour
             cycleCount++;
             ResourceEvents.CycleChange();
         }
-
+        CycleText.text = timeCycleValue.ToString();
         if (Input.GetKeyDown(KeyCode.Space) & !escapeMenuDisplayed) InputEvents.TimeStateChange();
     }
 
