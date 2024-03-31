@@ -16,7 +16,7 @@ public class UniverseHandler : MonoBehaviour
     [NonSerialized] public List<Star> stars = new();
 
     [NonSerialized] public int cycleCount = 0;
-    [NonSerialized] public float cycleLength = 5.0f;
+    [NonSerialized] public float cycleLength = 3.0f;
     [NonSerialized] public float timeCycleValue = 0.0f;
     [NonSerialized] public float timeValue = 0.0f;
     [NonSerialized] public bool timeRunning = true;

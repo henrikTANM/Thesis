@@ -17,7 +17,7 @@ public class SpaceBody : MonoBehaviour
     [NonSerialized] public bool selected = false;
     [NonSerialized] public float scaleDownMultiplier = 0.1f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         hoverOver.transform.localScale = Vector3.zero;
 
@@ -31,7 +31,7 @@ public class SpaceBody : MonoBehaviour
         InputEvents.OnClusterView += ScaleToNative;
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         InputEvents.OnClusterView -= ScaleToNative;
     }

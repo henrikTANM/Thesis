@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Amenity
   resourceSprite: {fileID: 21300000, guid: b4d33680f8f6a9448b5b879841b34bb0, type: 3}
+  spriteColor: {r: 0.65764165, g: 0.7169812, b: 0.15218942, a: 1}
   defaultValue: 25

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] private int money = 100;
+    private int money = 10000;
 
     private List<StarShip> ownedShips = new();
+
+    [SerializeField] private Resource moneyResource;
 
     private void Awake()
     {
@@ -25,6 +27,8 @@ public class PlayerInventory : MonoBehaviour
     }
 
     public int GetMoney() { return money; }
+
+    public Resource GetMoneyResource() { return moneyResource; }
 
     public void AddShip(StarShip starShip) { ownedShips.Add(starShip); }
 

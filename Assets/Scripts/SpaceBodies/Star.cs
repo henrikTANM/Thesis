@@ -11,6 +11,16 @@ public class Star : SpaceBody
     [NonSerialized] public List<Planet> planets;
     [NonSerialized] public Material material;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+    }
+
     private void Update()
     {
         nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);

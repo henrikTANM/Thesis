@@ -195,6 +195,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0babdca41d6dff44f80037838f51a593, type: 2}
   - {fileID: 11400000, guid: ebb1e0f9e47687942b659a9350167a16, type: 2}
   - {fileID: 11400000, guid: 2450a2c224790a147b8d58df4b9b9bdc, type: 2}
+  settlementSprites:
+  - {fileID: 21300000, guid: 5514ab53ae356f44290e0756ef2a54fa, type: 3}
+  - {fileID: 21300000, guid: 43e771796b30c194fac0117302652515, type: 3}
+  - {fileID: 21300000, guid: 417d9f5afd1e56b448e21d10742c3b08, type: 3}
+  - {fileID: 21300000, guid: 0d3f6859ebe64ae4da1577dadd9082e3, type: 3}
 --- !u!1 &28326867
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c809c10cb63d8684888c3c7214d0399c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 100
+  moneyResource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
 --- !u!4 &107508165
 Transform:
   m_ObjectHideFlags: 0

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Water
   resourceSprite: {fileID: 21300000, guid: 29b8888ef96c08743883863a140bdfc5, type: 3}
+  spriteColor: {r: 0.03404235, g: 0.6935489, b: 0.8018868, a: 1}
   defaultValue: 10

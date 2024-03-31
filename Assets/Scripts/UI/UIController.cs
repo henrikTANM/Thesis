@@ -45,7 +45,7 @@ public class UIController : MonoBehaviour
         playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
         UpdateMoney();
 
-        InitiateUIButtons();
+        InitiateUI();
         InitiateEscapeMenuButtons();
         InitiateShipMenuFunctions();
 
@@ -81,7 +81,7 @@ public class UIController : MonoBehaviour
 
     //main UI buttons
 
-    private void InitiateUIButtons()
+    private void InitiateUI()
     {
         List<Button> buttons = gameUI.rootVisualElement.Query<Button>().ToList();
 
@@ -102,6 +102,9 @@ public class UIController : MonoBehaviour
 
         Button systemViewButton = buttons.ElementAt(5);
         systemViewButton.clicked += InputEvents.SystemView;
+
+        gameUI.rootVisualElement.Q<VisualElement>("moneyicon").style.unityBackgroundImageTintColor = 
+            new StyleColor(playerInventory.GetMoneyResource().spriteColor);
     }
 
     // escape menu buttons
@@ -152,9 +155,6 @@ public class UIController : MonoBehaviour
     {
         uiDoc.sortingOrder = active ? 1 : 0;
         uiDoc.rootVisualElement.style.visibility = active ? Visibility.Visible : Visibility.Hidden;
-
-        gameUI.sortingOrder = active ? 0 : 1;
-        gameUI.rootVisualElement.SetEnabled(!active);
     }
 
     public void SetCurrentUI(UIDocument uiDoc)

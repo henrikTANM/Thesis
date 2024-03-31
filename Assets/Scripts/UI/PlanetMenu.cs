@@ -10,7 +10,6 @@ public class PlanetMenu : MonoBehaviour
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset depositBuildingButtonTemplate;
 
-    public List<Sprite> settlementSprites;
     public Sprite blockedConstructionSprite;
 
     public void MakePlanetMenu(Planet planet)
@@ -47,18 +46,41 @@ public class PlanetMenu : MonoBehaviour
             }
         }
 
-        VisualElement resourcesPanel = root.Q<VisualElement>("ResourcesList");
-        for (int i = 0; i < 6; i++)
-        {
-            TemplateContainer resourceCounter = resourceTemplate.Instantiate();
-            resourceCounter.style.alignSelf = Align.Center;
-            resourcesPanel.Add(resourceCounter);
-        }
-
         VisualElement settlementContainer = root.Q<VisualElement>("settlement");
         settlementContainer.style.backgroundImage =
-            new StyleBackground(settlementSprites.ElementAt(Random.Range(0, settlementSprites.Count())));
+            new StyleBackground(planet.GetSettlementSprite());
     }
 
+    public void UpdateResourcePanel(Planet planet)
+    {
+        VisualElement resourcesPanel = planet.GetPlanetMenuUI().rootVisualElement.Q<VisualElement>("ResourcesList");
+        List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
 
+        foreach (ResourceCount resourceCount in resourceCounts)
+        {
+            VisualElement resourceContainer = GetResourceContainer(resourceCount.resource, resourcesPanel);
+            if (resourceContainer == null)
+            {
+                resourceContainer = resourceTemplate.Instantiate();
+                resourceContainer.name = resourceCount.resource.name;
+                VisualElement resourceImage = resourceContainer.Q<VisualElement>("resourceimage");
+                resourceImage.style.backgroundImage = 
+                    new StyleBackground(resourceCount.resource.resourceSprite);
+                resourceImage.style.unityBackgroundImageTintColor = 
+                    new StyleColor(resourceCount.resource.spriteColor);
+                resourceContainer.style.alignSelf = Align.Center;
+                resourcesPanel.Add(resourceContainer);
+            }
+            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.perCycle.ToString();
+        }
+    }
+
+    private VisualElement GetResourceContainer(Resource resource, VisualElement resourcesPanel)
+    {
+        foreach (VisualElement resourceContainer in resourcesPanel.Children())
+        {
+            if (resourceContainer.name == resource.name) return resourceContainer;
+        }
+        return null;
+    }
 }

@@ -9,14 +9,14 @@ public class ProductionBuilding : ScriptableObject
     public string name;
     public Sprite buildingSprite;
 
-    public ResourceCount[] cost;
+    public ResourceAmount[] cost;
     public int upkeep;
 
-    public ResourceCount[] inputResources;
-    public ResourceCount outputResource;
+    public ResourceAmount[] inputResources;
+    public ResourceAmount outputResource;
 
     [Serializable]
-    public class ResourceCount
+    public class ResourceAmount
     {
         public Resource resource;
         public int amount;

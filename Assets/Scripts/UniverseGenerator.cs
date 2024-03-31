@@ -16,6 +16,8 @@ public class UniverseGenerator : MonoBehaviour
     public List<StarValues> starValues;
     public List<PlanetValues> planetValues;
 
+    public List<Sprite> settlementSprites;
+
     private List<Vector3> GenerateStarPositions()
     {
         List<Vector3> starPositions = new() { new Vector3(0.0f, 0.0f, 0.0f) };
@@ -138,6 +140,7 @@ public class UniverseGenerator : MonoBehaviour
 
             planet.type = newPlanetValues.planetType;
 
+            planet.SetSettlementSprite(settlementSprites.ElementAt(UnityEngine.Random.Range(0, settlementSprites.Count())));
             planet.GenerateDeposits(newPlanetValues.possibleDeposits, UnityEngine.Random.Range(1, newPlanetValues.depositCap));
 
             planets.Add(planet);

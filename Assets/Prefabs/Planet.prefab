@@ -128,7 +128,7 @@ MonoBehaviour:
   depositPrefab: {fileID: 6157725070741230941, guid: f207a3b704c9359448c1e33d491cee90, type: 3}
   factoryDeposit: {fileID: 11400000, guid: a72670432da65134e97ed3de8f5cf36c, type: 2}
   planetMenuPrefab: {fileID: 8840291940204054009, guid: c8d81b168b3a4b545937b8cbd28b56a7, type: 3}
-  buildingChooserMenuPrefab: {fileID: 6706594830015370271, guid: 25c58dd5b9442c74b94bcc405cb87d47, type: 3}
+  tradeMenuPrefab: {fileID: 8665136622434377338, guid: f8f5affd3712bbd418e9ed5a1f815629, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 2d57966d2e7ae944e8cc364af7d2b3a9, type: 2}
   - {fileID: 11400000, guid: 8c39e1595a91d03429e74108a69cf9f5, type: 2}

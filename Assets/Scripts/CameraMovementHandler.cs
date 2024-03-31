@@ -67,7 +67,7 @@ public class CameraMovementHandler : MonoBehaviour
         float scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
         if (scrollWheelAxis != 0 & !universeView & !universe.escapeMenuDisplayed) // & universe.timeRunning)
         {
-            print(distanceFromTarget + " : " + target.localScale.x * 7.5f);
+            //print(distanceFromTarget + " : " + target.localScale.x * 7.5f);
             float newDistanceFromTarget = distanceFromTarget + scrollWheelAxis * -distanceFromTarget;
             distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 7.5f, target.localScale.x * 10.0f);
             ChangePosition();

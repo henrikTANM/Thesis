@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Gas
   resourceSprite: {fileID: 21300000, guid: b1d0dd81bed4d6e458f49352363836ed, type: 3}
+  spriteColor: {r: 0.5660378, g: 0.06674973, b: 0.27831015, a: 1}
   defaultValue: 5

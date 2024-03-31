@@ -14,6 +14,15 @@
     -unity-background-scale-mode: scale-to-fit;
     width: 20px;
     height: 20px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    color: rgb(249, 160, 63);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .button:hover {
@@ -30,16 +39,17 @@
 }
 
 .button:active {
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-color: rgba(90, 128, 141, 0.47);
+    border-left-color: rgb(241, 157, 61);
+    border-right-color: rgb(241, 157, 61);
+    border-top-color: rgb(241, 157, 61);
+    border-bottom-color: rgb(241, 157, 61);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-color: rgb(249, 160, 63);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
+    color: rgb(0, 0, 0);
 }
 
 .imageContainer {
@@ -164,7 +174,55 @@
 }
 
 .textElement {
-    -unity-text-align: middle-center;
+    -unity-text-align: middle-left;
     color: rgb(249, 160, 63);
-    font-size: 6px;
+    font-size: 12px;
+}
+
+#unity-text-input {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    color: rgb(249, 160, 63);
+    align-self: flex-start;
+    font-size: 10px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 2px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    white-space: nowrap;
+    -unity-text-align: middle-left;
+    height: 100%;
+}
+
+#unity-checkmark {
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    -unity-background-image-tint-color: rgb(249, 160, 63);
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
 }
