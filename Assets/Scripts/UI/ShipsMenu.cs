@@ -6,24 +6,27 @@ using UnityEngine.UIElements;
 public class ShipsMenu : MonoBehaviour
 {
 
-    private UIDocument UIDocument;
+    private UIDocument shipMenuUI;
     public VisualTreeAsset rowTemplate;
     public PlayerInventory inventory;
 
-    private void OnEnable()
+    public void MakeShipsMenu()
     {
-        UIDocument = GetComponent<UIDocument>();
-
+        shipMenuUI = GetComponent<UIDocument>();
+        print(inventory.GetOwnedShips().Count);
         foreach (StarShip ship in inventory.GetOwnedShips())
         {
-            TemplateContainer ship_Row = rowTemplate.Instantiate();
+            print("tegin");
+            VisualElement ship_Row = rowTemplate.Instantiate();
+            ScrollView shipList = shipMenuUI.rootVisualElement.Q<ScrollView>("ShipList");
+            shipList.mouseWheelScrollSize = 500.0f;
+            
 
-            ship_Row.Q<Label>("type").text = ship.GetName();
-            ship_Row.Q<Label>("cc").text = ship.GetCargoCapacity().ToString();
-            ship_Row.Q<Label>("fc").text = ship.GetFuelCapacity().ToString();
-            ship_Row.Q<Label>("tpower").text = ship.GetThrustPower().ToString();
+            ship_Row.Q<Label>("name").text = ship.GetName();
+            ship_Row.Q<Label>("class").text = ship.GetCargoCapacity().ToString();
+            ship_Row.Q<Label>("route").text = "none";
 
-            UIDocument.rootVisualElement.Q("ShipList").Add(ship_Row);
+            shipList.Add(ship_Row);
         }
     }
 }

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 2
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: b13109bc4674dd24ebc04b7c12437ad6, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -665,69 +665,6 @@ MonoBehaviour:
   mouseSensitivity: 3
   target: {fileID: 5695618}
   moveSpeed: 5
---- !u!1 &976563912
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 976563913}
-  - component: {fileID: 976563914}
-  - component: {fileID: 976563915}
-  m_Layer: 0
-  m_Name: UI-shipmenu
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &976563913
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976563912}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 664.2468, y: 315.0384, z: 52.62213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &976563914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976563912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 1780d92b414d8ac45a908978a66164d4, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 0d56962ccc193384f8dafaa6eba5eb17, type: 3}
-  m_SortingOrder: 0
---- !u!114 &976563915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976563912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3bf81b16375c564eb606e23b3cf6634, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rowTemplate: {fileID: 9197481963319205126, guid: bcb4c01b901d3e7408d0ba3f1d8bf310, type: 3}
-  inventory: {fileID: 107508164}
 --- !u!1 &1195085962
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,7 +697,7 @@ MonoBehaviour:
   styleSheet: {fileID: 7433441132597879392, guid: ab91e5ece42aa26409be17b040776517, type: 3}
   gameUI: {fileID: 1671948230}
   escapeMenuUI: {fileID: 695985009}
-  shipsMenuUI: {fileID: 976563914}
+  shipsMenu: {fileID: 5129316277383882139}
   timeRunningImage: {fileID: 21300000, guid: 9e9a128c9919df846be1e34c7565fa03, type: 3}
   timeStoppedImage: {fileID: 21300000, guid: b8ab1e3cd87caa94ab90e56d7365b630, type: 3}
 --- !u!4 &1195085964
@@ -960,6 +897,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &343810171334350744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129316277383882139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf81b16375c564eb606e23b3cf6634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rowTemplate: {fileID: 9197481963319205126, guid: bcb4c01b901d3e7408d0ba3f1d8bf310, type: 3}
+  inventory: {fileID: 107508164}
+--- !u!4 &3091162375666625982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129316277383882139}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 664.2468, y: 315.0384, z: 52.62213}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5129316277383882139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3091162375666625982}
+  - component: {fileID: 5183123574433598738}
+  - component: {fileID: 343810171334350744}
+  m_Layer: 0
+  m_Name: UI-shipmenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &5183123574433598738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129316277383882139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 1780d92b414d8ac45a908978a66164d4, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 0d56962ccc193384f8dafaa6eba5eb17, type: 3}
+  m_SortingOrder: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -969,8 +969,8 @@ SceneRoots:
   - {fileID: 862173459}
   - {fileID: 1195085964}
   - {fileID: 695985008}
-  - {fileID: 976563913}
   - {fileID: 1671948231}
   - {fileID: 5695618}
+  - {fileID: 3091162375666625982}
   - {fileID: 107508165}
   - {fileID: 28326871}

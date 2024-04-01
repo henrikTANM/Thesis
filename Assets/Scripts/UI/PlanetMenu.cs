@@ -10,11 +10,23 @@ public class PlanetMenu : MonoBehaviour
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset depositBuildingButtonTemplate;
 
+    VisualElement root;
+
     public Sprite blockedConstructionSprite;
+
+    /*
+    private void Update()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        if (root != null) root.transform.position = Camera.main.ScreenToWorldPoint(new(mousePos.x, -mousePos.y, mousePos.z));
+        print(root.transform.position);
+    }
+    */
 
     public void MakePlanetMenu(Planet planet)
     {
-        VisualElement root = planet.GetPlanetMenuUI().rootVisualElement;
+        root = planet.GetPlanetMenuUI().rootVisualElement;
+        root.style.position = new StyleEnum<Position>(Position.Absolute);
         root.Q<Label>("planetname").text = planet.GetName();
 
         List<VisualElement> depositContainers = root.Query("de").ToList();

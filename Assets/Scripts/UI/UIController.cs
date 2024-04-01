@@ -12,7 +12,8 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private UIDocument gameUI;
     [SerializeField] private UIDocument escapeMenuUI;
-    [SerializeField] private UIDocument shipsMenuUI;
+    [SerializeField] private GameObject shipsMenu;
+    private UIDocument shipsMenuUI;
     private UIDocument currentUI;
 
     [SerializeField] private Sprite timeRunningImage;
@@ -43,6 +44,7 @@ public class UIController : MonoBehaviour
     {
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
         playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
+        shipsMenuUI = shipsMenu.GetComponent<UIDocument>();
         UpdateMoney();
 
         InitiateUI();
@@ -136,9 +138,8 @@ public class UIController : MonoBehaviour
 
     private void InitiateShipMenuFunctions()
     {
-        List<Button> buttons = shipsMenuUI.rootVisualElement.Query<Button>().ToList();
-
-        Button exitButton = buttons.ElementAt(0);
+        shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu();
+        Button exitButton = shipsMenuUI.rootVisualElement.Q<Button>("exitbutton");
         exitButton.clicked += UnSetCurrentUI;
     }
 
@@ -148,7 +149,7 @@ public class UIController : MonoBehaviour
             new StyleBackground(universe.timeRunning ? timeRunningImage : timeStoppedImage);
 
         timeButton.style.unityBackgroundImageTintColor =
-            universe.timeRunning ? new Color(0f, 180f / 256f, 50f / 256f) : new Color(180f / 256f, 0f, 50f / 256f);
+            universe.timeRunning ? new Color(255f / 255f, 243f / 255f, 176f / 255f) : new Color(158f / 255f, 42f / 255f, 43f / 255f);
     }
 
     public void SetUIActive(UIDocument uiDoc, bool active)

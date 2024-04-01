@@ -14,6 +14,23 @@ public class PlayerInventory : MonoBehaviour
     {
         AddShip(new("Toyota", 64, 1000, 1000));
         AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
+        AddShip(new("Toyota", 64, 1000, 1000));
+        AddShip(new("Audi", 128, 4000, 2000));
     }
 
     public void AddMoney(int amount) { 

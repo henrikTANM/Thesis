@@ -61,18 +61,21 @@ public class Planet : SpaceBody
         ResourceEvents.OnCycleChange -= () => UpdateResources(true);
     }
 
+    private void FixedUpdate()
+    {
+        if (universe.timeRunning) transform.RotateAround(parentStar.transform.position, orbitAxis, orbitSpeed * Time.fixedDeltaTime);
+        Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
+        material.SetVector("_SunlightDirection", lightDirection);
+        material.SetFloat("_TimeValue", universe.timeValue);
+        nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
+        nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
+    }
+
     void Update()
     {
 
         nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
         nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
-
-        if (universe.timeRunning) transform.RotateAround(parentStar.transform.position, orbitAxis, orbitSpeed * Time.deltaTime);
-
-        Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
-        material.SetVector("_SunlightDirection", lightDirection);
-
-        material.SetFloat("_TimeValue", universe.timeValue);
     }
 
     private void OnMouseDown()

@@ -14,11 +14,11 @@
     border-bottom-width: 0;
     border-left-width: 0;
     font-size: 20px;
-    -unity-font-style: bold;
-    color: rgb(249, 160, 63);
+    -unity-font-style: normal;
+    color: rgb(226, 226, 226);
     -unity-text-align: middle-center;
     -unity-font: url('project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Oswald-Bold.ttf?fileID=12800000&guid=c9f6d0e7bc8541498c9a4799ba184ede&type=3#Oswald-Bold');
-    -unity-font-definition: initial;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
@@ -26,20 +26,6 @@
 }
 
 .button:hover {
-    border-left-color: rgb(162, 227, 196);
-    border-right-color: rgb(162, 227, 196);
-    border-top-color: rgb(162, 227, 196);
-    border-bottom-color: rgb(162, 227, 196);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
-    background-color: rgba(56, 56, 60, 0.59);
-    color: rgb(162, 227, 196);
-}
-
-.button:active {
-    background-color: rgba(90, 128, 141, 0.59);
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
@@ -48,5 +34,19 @@
     border-right-width: 3px;
     border-bottom-width: 3px;
     border-left-width: 3px;
+    background-color: rgba(56, 56, 60, 0.59);
     color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+}
+
+.button:active {
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    color: rgb(171, 220, 255);
 }

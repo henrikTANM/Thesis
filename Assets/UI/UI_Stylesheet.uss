@@ -1,10 +1,10 @@
 .button {
-    -unity-background-image-tint-color: rgb(249, 160, 63);
+    -unity-background-image-tint-color: rgb(226, 226, 226);
     background-color: rgba(11, 13, 15, 0.47);
-    border-left-color: rgb(249, 160, 63);
-    border-right-color: rgb(249, 160, 63);
-    border-top-color: rgb(249, 160, 63);
-    border-bottom-color: rgb(249, 160, 63);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
@@ -12,8 +12,8 @@
     align-self: center;
     flex-grow: 0;
     -unity-background-scale-mode: scale-to-fit;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -26,11 +26,11 @@
 }
 
 .button:hover {
-    border-left-color: rgb(162, 227, 196);
-    border-right-color: rgb(162, 227, 196);
-    border-top-color: rgb(162, 227, 196);
-    border-bottom-color: rgb(162, 227, 196);
-    -unity-background-image-tint-color: rgb(162, 227, 196);
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
     background-color: rgba(56, 56, 60, 0.47);
     border-top-width: 1px;
     border-right-width: 1px;
@@ -39,12 +39,12 @@
 }
 
 .button:active {
-    border-left-color: rgb(241, 157, 61);
-    border-right-color: rgb(241, 157, 61);
-    border-top-color: rgb(241, 157, 61);
-    border-bottom-color: rgb(241, 157, 61);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
     -unity-background-image-tint-color: rgb(0, 0, 0);
-    background-color: rgb(249, 160, 63);
+    background-color: rgb(226, 226, 226);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
@@ -53,10 +53,10 @@
 }
 
 .imageContainer {
-    border-left-color: rgb(249, 160, 63);
-    border-right-color: rgb(249, 160, 63);
-    border-top-color: rgb(249, 160, 63);
-    border-bottom-color: rgb(249, 160, 63);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
@@ -72,7 +72,7 @@
 }
 
 #building_button {
-    -unity-background-image-tint-color: rgb(249, 160, 63);
+    -unity-background-image-tint-color: rgb(226, 226, 226);
     -unity-background-scale-mode: scale-to-fit;
     align-self: stretch;
     margin-top: 0;
@@ -93,28 +93,28 @@
 }
 
 #building_button:hover {
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-    border-left-color: rgb(162, 227, 196);
-    border-right-color: rgb(162, 227, 196);
-    border-top-color: rgb(162, 227, 196);
-    border-bottom-color: rgb(162, 227, 196);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
     background-color: rgba(56, 56, 60, 0.47);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    -unity-background-image-tint-color: rgb(162, 227, 196);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
 }
 
 #building_button:active {
-    background-color: rgba(90, 128, 141, 0.47);
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
+    background-color: rgba(226, 226, 226, 0.47);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
@@ -123,7 +123,7 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
 }
 
 .spec_button {
@@ -131,15 +131,15 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
-    border-left-color: rgb(249, 160, 63);
-    border-right-color: rgb(249, 160, 63);
-    border-top-color: rgb(249, 160, 63);
-    border-bottom-color: rgb(249, 160, 63);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    -unity-background-image-tint-color: rgb(249, 160, 63);
+    -unity-background-image-tint-color: rgb(226, 226, 226);
     -unity-background-scale-mode: scale-to-fit;
     width: 30%;
     height: 100%;
@@ -148,12 +148,12 @@
 }
 
 .spec_button:hover {
-    border-left-color: rgb(162, 227, 196);
-    border-right-color: rgb(162, 227, 196);
-    border-top-color: rgb(162, 227, 196);
-    border-bottom-color: rgb(162, 227, 196);
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
     background-color: rgba(56, 56, 60, 0.47);
-    -unity-background-image-tint-color: rgb(162, 227, 196);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
@@ -161,12 +161,12 @@
 }
 
 .spec_button:active {
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-color: rgba(90, 128, 141, 0.47);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-color: rgba(226, 226, 226, 0.47);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
@@ -175,7 +175,7 @@
 
 .textElement {
     -unity-text-align: middle-left;
-    color: rgb(249, 160, 63);
+    color: rgb(226, 226, 226);
     font-size: 12px;
 }
 
@@ -225,4 +225,72 @@
     -unity-slice-top: 0;
     -unity-slice-right: 0;
     -unity-slice-bottom: 0;
+}
+
+#unity-low-button {
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 10;
+    border-bottom-width: 0;
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+}
+
+#unity-low-button:hover {
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+#unity-high-button {
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 10;
+    border-top-width: 0;
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+}
+
+#unity-high-button:hover {
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+#unity-slider {
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 10;
+}
+
+#unity-tracker {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+}
+
+#unity-dragger {
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#unity-dragger:hover {
+    background-color: rgba(56, 56, 60, 0.47);
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
+}
+
+#unity-dragger:selected {
+    background-color: rgb(226, 226, 226);
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+    border-left-color: rgb(89, 170, 162);
+    border-right-color: rgb(89, 170, 162);
+    border-top-color: rgb(89, 170, 162);
+    border-bottom-color: rgb(89, 170, 162);
+}
+
+#unity-drag-container {
+    background-color: rgba(0, 0, 0, 0);
 }

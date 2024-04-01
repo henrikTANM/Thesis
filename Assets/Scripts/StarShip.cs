@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class StarShip: MonoBehaviour
 {
-    public string name;
-    public int cargoCapacity;
-    public int fuelCapacity;
-    public int thrustPower;
+    private string name;
+    private bool warpCapable;
+    private int cargoCapacity;
+    private int fuelCapacity;
+    private int thrustPower;
+
+
 
     public StarShip(string name, int cargoCapacity, int fuelCapacity, int thrustPower)
     {
