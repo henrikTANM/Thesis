@@ -7,12 +7,15 @@ using UnityEngine.UIElements;
 
 public class PlanetMenu : MonoBehaviour
 {
+    UIController uiController;
+
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset depositBuildingButtonTemplate;
 
-    VisualElement root;
-
     public Sprite blockedConstructionSprite;
+
+    [SerializeField] private GameObject tradeMenuPrefab;
+    private GameObject tradeMenu;
 
     /*
     private void Update()
@@ -25,9 +28,20 @@ public class PlanetMenu : MonoBehaviour
 
     public void MakePlanetMenu(Planet planet)
     {
-        root = planet.GetPlanetMenuUI().rootVisualElement;
-        root.style.position = new StyleEnum<Position>(Position.Absolute);
+        uiController = GameObject.Find("UIController").GetComponent<UIController>();
+
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+
         root.Q<Label>("planetname").text = planet.GetName();
+
+        Button exitButton = root.Q<Button>("exitbutton"); ;
+        exitButton.clicked += uiController.RemoveLastFromUIStack;
+
+        Button tradeButton = root.Q<Button>("tradebutton"); ;
+        tradeButton.clicked += () => { MakeTradeMenu(planet); };
+
+        Button specialButton = root.Q<Button>("specialbutton"); ;
+        specialButton.clicked += uiController.RemoveLastFromUIStack;
 
         List<VisualElement> depositContainers = root.Query("de").ToList();
         List<DepositHandler> deposits = planet.GetDeposits();
@@ -65,7 +79,7 @@ public class PlanetMenu : MonoBehaviour
 
     public void UpdateResourcePanel(Planet planet)
     {
-        VisualElement resourcesPanel = planet.GetPlanetMenuUI().rootVisualElement.Q<VisualElement>("ResourcesList");
+        VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ResourcesList");
         List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
 
         foreach (ResourceCount resourceCount in resourceCounts)
@@ -94,5 +108,14 @@ public class PlanetMenu : MonoBehaviour
             if (resourceContainer.name == resource.name) return resourceContainer;
         }
         return null;
+    }
+
+    private void MakeTradeMenu(Planet planet)
+    {
+        tradeMenu = Instantiate(tradeMenuPrefab);
+        UIDocument tradeMenuUI = tradeMenu.GetComponent<UIDocument>();
+        tradeMenu.GetComponent<TradeMenu>().MakeTradeMenu(planet);
+        planet.SetTradeMenu(tradeMenu);
+        uiController.AddToUIStack(new UIElement(tradeMenu, tradeMenuUI), false);
     }
 }

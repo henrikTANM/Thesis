@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Acceleration : MonoBehaviour
 {
-    [SerializeField] private Orbiter start;
-    [SerializeField] private Orbiter end;
+    [SerializeField] private OrbiterTest start;
+    [SerializeField] private OrbiterTest end;
     private Vector3 startPos;
     private Vector3 endPos;
     // Start is called before the first frame update
@@ -47,7 +47,7 @@ public class Acceleration : MonoBehaviour
 
     private void SwitchStartEnd()
     {
-        Orbiter placeHolder = start;
+        OrbiterTest placeHolder = start;
         start = end;
         end = placeHolder;
     }

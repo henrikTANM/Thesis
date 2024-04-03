@@ -9,8 +9,6 @@ using UnityEngine.UIElements;
 
 public class Planet : SpaceBody
 {
-    [NonSerialized] public float orbitSpeed;
-    [NonSerialized] public Vector3 orbitAxis;
     [NonSerialized] public Material material;
     [NonSerialized] public Star parentStar;
 
@@ -22,11 +20,8 @@ public class Planet : SpaceBody
 
     [SerializeField] private GameObject planetMenuPrefab;
     private GameObject planetMenu;
-    private UIDocument planetMenuUI;
-    [SerializeField] private GameObject tradeMenuPrefab;
-    private GameObject tradeMenu;
-    private UIDocument tradeMenuUI;
 
+    private GameObject tradeMenu;
     private GameObject activeBuildingChooserMenu;
     private GameObject activeBuildingViewerMenu;
 
@@ -63,7 +58,6 @@ public class Planet : SpaceBody
 
     private void FixedUpdate()
     {
-        if (universe.timeRunning) transform.RotateAround(parentStar.transform.position, orbitAxis, orbitSpeed * Time.fixedDeltaTime);
         Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
         material.SetVector("_SunlightDirection", lightDirection);
         material.SetFloat("_TimeValue", universe.timeValue);
@@ -80,17 +74,23 @@ public class Planet : SpaceBody
 
     private void OnMouseDown()
     {
-        if (!universe.UIMenuDisplayed())
+        if (universe.routeMakerDisplayed | !universe.UIDisplayed())
         {
-            if (!selected)
+            if (universe.routeMakerDisplayed) 
+            {
+                hoverOver.color = Color.green;
+                universe.GetActiveRouteMaker().AddStop(this);
+            }
+            else if (!selected)
             {
                 SetSelected(true);
                 StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
                 cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 10.0f * scaleDownMultiplier, false);
             }
+
             if (selected)
             {
-                uiController.SetCurrentUI(planetMenuUI);
+                MakePlanetMenu();
             }
         }
     }
@@ -158,6 +158,11 @@ public class Planet : SpaceBody
         this.settlementSprite = settlementSprite;
     }
 
+    public void SetTradeMenu(GameObject tradeMenu)
+    {
+        this.tradeMenu = tradeMenu;
+    }
+
     public Sprite GetSettlementSprite()
     {
         return settlementSprite;
@@ -168,16 +173,6 @@ public class Planet : SpaceBody
         return deposits;
     }
 
-    public UIDocument GetPlanetMenuUI()
-    {
-        return planetMenuUI;
-    }
-
-    public UIDocument GetTradeMenuUI()
-    {
-        return tradeMenuUI;
-    }
-
     public BuildingSlot GetSpecialBuildingSlot()
     {
         return specialBuildingSlot;
@@ -186,6 +181,11 @@ public class Planet : SpaceBody
     public List<Resource> GetTradeableResources()
     {
         return tradeableResources;
+    }
+
+    public Orbiter GetOrbiter()
+    {
+        return GetComponent<Orbiter>();
     }
 
     public void GenerateDeposits(List<Deposit> possibleDepositList, int depositCap)
@@ -210,56 +210,14 @@ public class Planet : SpaceBody
                 deposits.Add(depositHandler);
             }
         }
-        GeneratePlanetUI();
-        GenerateTradeUI();
     }
 
-    public void GeneratePlanetUI()
+    public void MakePlanetMenu()
     {
         planetMenu = Instantiate(planetMenuPrefab);
-        planetMenuUI = planetMenu.GetComponent<UIDocument>();
-
+        UIDocument planetMenuUI = planetMenu.GetComponent<UIDocument>();
         planetMenu.GetComponent<PlanetMenu>().MakePlanetMenu(this);
-
-        InitiatePlanetMenuFunctions();
-        uiController.SetUIActive(planetMenuUI, false);
-    }
-
-    public void GenerateTradeUI()
-    {
-        tradeMenu = Instantiate(tradeMenuPrefab);
-        tradeMenuUI = tradeMenu.GetComponent<UIDocument>();
-
-        tradeMenuUI.GetComponent<TradeMenu>().MakeTradeMenu(this);
-
-        InitiateTradeMenuFunctions();
-        uiController.SetUIActive(tradeMenuUI, false);
-    }
-
-    private void InitiatePlanetMenuFunctions()
-    {
-        Button exitButton = planetMenuUI.rootVisualElement.Q<Button>("exitbutton"); ;
-        exitButton.clicked += uiController.UnSetCurrentUI;
-
-        Button tradeButton = planetMenuUI.rootVisualElement.Q<Button>("tradebutton"); ;
-        tradeButton.clicked += () =>
-        {
-            uiController.UnSetCurrentUI();
-            uiController.SetCurrentUI(tradeMenuUI);
-        };
-
-        Button specialButton = planetMenuUI.rootVisualElement.Q<Button>("specialbutton"); ;
-        specialButton.clicked += uiController.UnSetCurrentUI;
-    }
-
-    private void InitiateTradeMenuFunctions()
-    {
-        Button exitButton = tradeMenuUI.rootVisualElement.Q<Button>("exitbutton"); ;
-        exitButton.clicked += () =>
-        {
-            uiController.UnSetCurrentUI();
-            uiController.SetCurrentUI(planetMenuUI);
-        };
+        uiController.AddToUIStack(new UIElement(planetMenu, planetMenuUI), false);
     }
 
     public PlanetResourceHandler GetPlanetResourceHandler()
@@ -296,8 +254,8 @@ public class Planet : SpaceBody
 
     public void UpdateResourceDisplays()
     {
-        planetMenu.GetComponent<PlanetMenu>().UpdateResourcePanel(this);
-        tradeMenu.GetComponent<TradeMenu>().UpdateResourcePanel(this);
+        if (planetMenu != null) planetMenu.GetComponent<PlanetMenu>().UpdateResourcePanel(this);
+        if (tradeMenu != null) tradeMenu.GetComponent<TradeMenu>().UpdateResourcePanel(this);
         if (activeBuildingChooserMenu != null) activeBuildingChooserMenu.GetComponent<BuildingChooserMenu>().UpdateResourcePanel(this, activeBuildingChooserMenu.GetComponent<UIDocument>());
         if (activeBuildingViewerMenu != null) activeBuildingViewerMenu.GetComponent<BuildingViewerMenu>().UpdateResourcePanel(this, activeBuildingViewerMenu.GetComponent<UIDocument>());
     }
@@ -323,7 +281,6 @@ public class Planet : SpaceBody
                 !productionBuildingHandler.IsManuallyDeActivated() & 
                 productionBuildingHandler.CanBeActived())
             {
-                print("tegin");
                 productionBuildingHandler.SetActive(true);
             }
         }

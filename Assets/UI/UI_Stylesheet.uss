@@ -1,6 +1,5 @@
 .button {
     -unity-background-image-tint-color: rgb(226, 226, 226);
-    background-color: rgba(11, 13, 15, 0.47);
     border-left-color: rgb(226, 226, 226);
     border-right-color: rgb(226, 226, 226);
     border-top-color: rgb(226, 226, 226);
@@ -10,19 +9,21 @@
     border-bottom-width: 1px;
     border-left-width: 1px;
     align-self: center;
-    flex-grow: 0;
     -unity-background-scale-mode: scale-to-fit;
-    width: 25px;
-    height: 25px;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-    border-bottom-left-radius: 2px;
-    color: rgb(249, 160, 63);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    color: rgb(226, 226, 226);
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
     margin-left: 0;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
+    background-color: rgba(0, 0, 0, 0.39);
+    flex-direction: column;
+    width: 25px;
+    height: 25px;
 }
 
 .button:hover {
@@ -36,6 +37,8 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
+    color: rgb(171, 220, 255);
+    -unity-font-style: bold;
 }
 
 .button:active {
@@ -50,6 +53,7 @@
     border-bottom-width: 1px;
     border-left-width: 1px;
     color: rgb(0, 0, 0);
+    -unity-font-style: bold;
 }
 
 .imageContainer {
@@ -61,10 +65,10 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
     height: 30%;
     align-items: stretch;
     flex-direction: row;
@@ -135,10 +139,10 @@
     border-right-color: rgb(226, 226, 226);
     border-top-color: rgb(226, 226, 226);
     border-bottom-color: rgb(226, 226, 226);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
     -unity-background-image-tint-color: rgb(226, 226, 226);
     -unity-background-scale-mode: scale-to-fit;
     width: 30%;
@@ -174,9 +178,10 @@
 }
 
 .textElement {
-    -unity-text-align: middle-left;
+    -unity-text-align: middle-center;
     color: rgb(226, 226, 226);
     font-size: 12px;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
 }
 
 #unity-text-input {

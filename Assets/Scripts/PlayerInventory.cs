@@ -6,31 +6,22 @@ public class PlayerInventory : MonoBehaviour
 {
     private int money = 10000;
 
-    private List<StarShip> ownedShips = new();
+    private List<SpaceShip> ownedShips = new();
 
     [SerializeField] private Resource moneyResource;
+    [SerializeField] private GameObject spaceShipPrefab;
 
     private void Awake()
     {
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
-        AddShip(new("Toyota", 64, 1000, 1000));
-        AddShip(new("Audi", 128, 4000, 2000));
+        GameObject spaceShip1O = Instantiate(spaceShipPrefab);
+        SpaceShip spaceShip1 = spaceShip1O.GetComponent<SpaceShip>();
+        spaceShip1.CreateShip("Toyota", 64, 20.0f);
+        AddShip(spaceShip1);
+
+        GameObject spaceShip2O = Instantiate(spaceShipPrefab);
+        SpaceShip spaceShip2 = spaceShip2O.GetComponent<SpaceShip>();
+        spaceShip2.CreateShip("Audi", 128, 10.0f);
+        AddShip(spaceShip2);
     }
 
     public void AddMoney(int amount) { 
@@ -47,9 +38,9 @@ public class PlayerInventory : MonoBehaviour
 
     public Resource GetMoneyResource() { return moneyResource; }
 
-    public void AddShip(StarShip starShip) { ownedShips.Add(starShip); }
+    public void AddShip(SpaceShip starShip) { ownedShips.Add(starShip); }
 
-    public void RemoveShip(StarShip starShip) { ownedShips.Remove(starShip); }
+    public void RemoveShip(SpaceShip starShip) { ownedShips.Remove(starShip); }
 
-    public List<StarShip> GetOwnedShips() {  return ownedShips; }
+    public List<SpaceShip> GetOwnedShips() {  return ownedShips; }
 }

@@ -5,10 +5,11 @@ using static UnityEngine.Rendering.DebugUI.MessageBox;
 
 public class TradeMenu : MonoBehaviour
 {
+    private UIController uiController;
+    public PlayerInventory inventory;
+
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset tradeableResourceTemplate;
-
-    public PlayerInventory inventory;
 
     private void Awake()
     {
@@ -17,9 +18,16 @@ public class TradeMenu : MonoBehaviour
 
     public void MakeTradeMenu(Planet planet)
     {
-        VisualElement root = planet.GetTradeMenuUI().rootVisualElement;
+        uiController = GameObject.Find("UIController").GetComponent<UIController>();
+        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
+
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+
         VisualElement buyList = root.Q<VisualElement>("buylist");
         VisualElement sellList = root.Q<VisualElement>("selllist");
+
+        Button exitButton = root.Q<Button>("exitbutton");
+        exitButton.clicked += uiController.RemoveLastFromUIStack;
 
         root.Q<VisualElement>("mainwindow").style.backgroundImage = new StyleBackground(planet.GetSettlementSprite());
 
@@ -81,7 +89,7 @@ public class TradeMenu : MonoBehaviour
 
     public void UpdateResourcePanel(Planet planet)
     {
-        VisualElement resourcesPanel = planet.GetTradeMenuUI().rootVisualElement.Q<VisualElement>("resourcespanel");
+        VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("resourcespanel");
         List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
 
         foreach (ResourceCount resourceCount in resourceCounts)

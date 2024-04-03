@@ -39,13 +39,13 @@
 }
 
 .button:active {
-    border-left-color: rgb(255, 243, 176);
-    border-right-color: rgb(255, 243, 176);
-    border-top-color: rgb(255, 243, 176);
-    border-bottom-color: rgb(255, 243, 176);
-    color: rgb(162, 227, 196);
-    background-color: rgba(255, 243, 176, 0.26);
-    -unity-background-image-tint-color: rgb(255, 243, 176);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    color: rgb(0, 0, 0);
+    background-color: rgb(226, 226, 226);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
     border-top-width: 3px;
     border-right-width: 3px;
     border-bottom-width: 3px;

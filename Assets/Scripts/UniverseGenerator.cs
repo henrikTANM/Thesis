@@ -126,9 +126,11 @@ public class UniverseGenerator : MonoBehaviour
                 material.SetTexture("_CloudsTexture", randomCloudsTexture);
             }
 
+            Orbiter orbiter = newPlanet.GetComponent<Orbiter>();
+            orbiter.SetCentre(star.transform);
+            orbiter.SetOrbitSpeed(UnityEngine.Random.Range(0.1f, 0.5f));
+
             Planet planet = newPlanet.GetComponent<Planet>();
-            planet.orbitSpeed = UnityEngine.Random.Range(0.1f, 0.5f);
-            planet.orbitAxis = Vector3.up;
             planet.nativeScale = scale;
             planet.material = material;
             planet.type = newPlanetValues.planetType;

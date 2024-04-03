@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement style="height: 10%; flex-direction: row; justify-content: space-between;">
+        <ui:Button text="Cancel" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="cancelbutton" class="button" style="height: 100%; width: auto; border-top-width: 0; border-left-width: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-top-left-radius: 0; background-color: rgba(0, 0, 0, 0.47);" />
+        <ui:Button text="Create" parse-escape-sequences="true" display-tooltip-when-elided="true" name="createbutton" class="button" style="height: 100%; width: auto; border-bottom-right-radius: 0; border-top-right-radius: 0; border-top-left-radius: 0; border-top-width: 0; border-right-width: 0; background-color: rgba(0, 0, 0, 0.47);" />
+    </ui:VisualElement>
+    <ui:VisualElement name="VisualElement" style="align-self: flex-end; width: 20%; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-left-radius: 3px; border-top-width: 1px; border-right-width: 0; border-bottom-width: 0; border-left-width: 1px; height: 60%; background-color: rgba(0, 0, 0, 0.47); padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; position: absolute; bottom: 0;">
+        <ui:Label tabindex="-1" text="Route Stops" parse-escape-sequences="true" display-tooltip-when-elided="true" class="textElement" style="-unity-text-align: middle-center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+        <ui:ScrollView name="stoplist" />
+    </ui:VisualElement>
+</ui:UXML>

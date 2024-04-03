@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 377589446837943624}
   - component: {fileID: 5737458742851263893}
   - component: {fileID: 2412427607015499826}
+  - component: {fileID: 8996513943888688311}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -128,12 +129,25 @@ MonoBehaviour:
   depositPrefab: {fileID: 6157725070741230941, guid: f207a3b704c9359448c1e33d491cee90, type: 3}
   factoryDeposit: {fileID: 11400000, guid: a72670432da65134e97ed3de8f5cf36c, type: 2}
   planetMenuPrefab: {fileID: 8840291940204054009, guid: c8d81b168b3a4b545937b8cbd28b56a7, type: 3}
-  tradeMenuPrefab: {fileID: 8665136622434377338, guid: f8f5affd3712bbd418e9ed5a1f815629, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 2d57966d2e7ae944e8cc364af7d2b3a9, type: 2}
   - {fileID: 11400000, guid: 8c39e1595a91d03429e74108a69cf9f5, type: 2}
   - {fileID: 11400000, guid: eca6bcc566acaf544b640cde00af70d4, type: 2}
   - {fileID: 11400000, guid: 5ee8447c3022cf64e9e413ecea3f2a0b, type: 2}
+--- !u!114 &8996513943888688311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796624254701338889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b02aea8bdcf479489f6a2b4c6727527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  centre: {fileID: 0}
+  orbitSpeed: 0
 --- !u!1 &2859709161133015354
 GameObject:
   m_ObjectHideFlags: 0

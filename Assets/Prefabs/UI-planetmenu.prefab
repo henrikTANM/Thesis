@@ -63,9 +63,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceTemplate: {fileID: 9197481963319205126, guid: a4b53f226e54fe74c9a00158dc7dfb25, type: 3}
   depositBuildingButtonTemplate: {fileID: 9197481963319205126, guid: ec9408bd44d140b4588f580300629f58, type: 3}
-  settlementSprites:
-  - {fileID: 21300000, guid: 43e771796b30c194fac0117302652515, type: 3}
-  - {fileID: 21300000, guid: 5514ab53ae356f44290e0756ef2a54fa, type: 3}
-  - {fileID: 21300000, guid: 417d9f5afd1e56b448e21d10742c3b08, type: 3}
-  - {fileID: 21300000, guid: 0d3f6859ebe64ae4da1577dadd9082e3, type: 3}
   blockedConstructionSprite: {fileID: 21300000, guid: d3c2e7827b83bdb4999af730954cd6bc, type: 3}
+  tradeMenuPrefab: {fileID: 8665136622434377338, guid: f8f5affd3712bbd418e9ed5a1f815629, type: 3}

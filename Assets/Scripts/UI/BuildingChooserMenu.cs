@@ -28,10 +28,10 @@ public class BuildingChooserMenu : MonoBehaviour
     {
         this.buildingSlot = buildingSlot;
 
-        VisualElement root = buildingSlot.GetBuildingChooserMenuUI().rootVisualElement;
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
         Button exitButton = root.Q<Button>("exitbutton");
-        exitButton.clicked += buildingSlot.CloseBuildingChooserMenu;
+        exitButton.clicked += buildingSlot.CloseMenu;
 
         buildButton = root.Q<Button>("buildbutton");
         buildButton.clicked += BuildSelected;
@@ -46,7 +46,6 @@ public class BuildingChooserMenu : MonoBehaviour
 
         foreach (ProductionBuilding productionBuilding in possibleProductionBuildings)
         {
-            print(productionBuilding);
             VisualElement buildingOption = buildingOptionButton.Instantiate();
             Button optionButton = buildingOption.Q<Button>("optionbutton");
             optionButton.clicked += () => 

@@ -11,12 +11,11 @@ public class BuildingSlot : MonoBehaviour
     private DepositHandler depositHandler;
 
     private UIController uiController;
+
     [SerializeField] private GameObject buildingChooserMenuPrefab;
     private GameObject buildingChooserMenu;
-    private UIDocument buildingChooserMenuUI;
     [SerializeField] private GameObject buildingViewerMenuPrefab;
     private GameObject buildingViewerMenu;
-    private UIDocument buildingViewerMenuUI;
 
     private ProductionBuildingHandler productionBuildingHandler;
 
@@ -48,7 +47,7 @@ public class BuildingSlot : MonoBehaviour
         productionBuildingHandler = new ProductionBuildingHandler(productionBuilding, depositHandler.GetPlanet());
         button.style.backgroundImage = new StyleBackground(productionBuilding.buildingSprite);
         button.style.unityBackgroundImageTintColor = new StyleColor(productionBuilding.outputResource.resource.spriteColor);
-        CloseBuildingChooserMenu();
+        CloseMenu();
     }
 
     public void RemoveProductionBuilding()
@@ -57,7 +56,7 @@ public class BuildingSlot : MonoBehaviour
         button.style.unityBackgroundImageTintColor = new StyleColor(constrictionSpriteColor);
         if(productionBuildingHandler.IsActive()) productionBuildingHandler.SetActive(false);
         productionBuildingHandler = null;
-        CloseBuildingViewerMenu();
+        CloseMenu();
     }
 
 
@@ -119,28 +118,9 @@ public class BuildingSlot : MonoBehaviour
         planet.UpdateResourceDisplays();
     }
 
-    public UIDocument GetBuildingChooserMenuUI()
+    public void CloseMenu()
     {
-        return buildingChooserMenuUI;
-    }
-
-    public UIDocument GetBuildingViewerMenuUI()
-    {
-        return buildingViewerMenuUI;
-    }
-
-    public void CloseBuildingViewerMenu()
-    {
-        uiController.UnSetCurrentUI();
-        uiController.SetCurrentUI(depositHandler.GetPlanet().GetPlanetMenuUI());
-        Destroy(buildingViewerMenu);
-    }
-
-    public void CloseBuildingChooserMenu()
-    {
-        uiController.UnSetCurrentUI();
-        uiController.SetCurrentUI(depositHandler.GetPlanet().GetPlanetMenuUI());
-        Destroy(buildingChooserMenu);
+        uiController.RemoveLastFromUIStack();
     }
 
     private void ButtonClicked()
@@ -148,22 +128,20 @@ public class BuildingSlot : MonoBehaviour
         if (productionBuildingHandler != null)
         {
             buildingViewerMenu = Instantiate(buildingViewerMenuPrefab);
-            depositHandler.GetPlanet().SetActiveBuildingViewerMenu(buildingViewerMenu);
-            buildingViewerMenuUI = buildingViewerMenu.GetComponent<UIDocument>();
+            UIDocument buildingViewerMenuUI = buildingViewerMenu.GetComponent<UIDocument>();
             buildingViewerMenu.GetComponent<BuildingViewerMenu>().MakeBuildingViewerMenu(this, productionBuildingHandler);
+            depositHandler.GetPlanet().SetActiveBuildingViewerMenu(buildingViewerMenu);
             depositHandler.GetPlanet().UpdateResourceDisplays();
-            uiController.UnSetCurrentUI();
-            uiController.SetCurrentUI(buildingViewerMenuUI);
+            uiController.AddToUIStack(new UIElement(buildingViewerMenu, buildingViewerMenuUI), false);
         }
         else
         {
             buildingChooserMenu = Instantiate(buildingChooserMenuPrefab);
-            depositHandler.GetPlanet().SetActiveBuildingChooserMenu(buildingChooserMenu);
-            buildingChooserMenuUI = buildingChooserMenu.GetComponent<UIDocument>();
+            UIDocument buildingChooserMenuUI = buildingChooserMenu.GetComponent<UIDocument>();
             buildingChooserMenu.GetComponent<BuildingChooserMenu>().MakeBuildingChooserMenu(this, depositHandler.GetPossibleProductionBuildings());
+            depositHandler.GetPlanet().SetActiveBuildingChooserMenu(buildingChooserMenu);
             depositHandler.GetPlanet().UpdateResourceDisplays();
-            uiController.UnSetCurrentUI();
-            uiController.SetCurrentUI(buildingChooserMenuUI);
+            uiController.AddToUIStack(new UIElement(buildingChooserMenu, buildingChooserMenuUI), false);
         }
     }
 

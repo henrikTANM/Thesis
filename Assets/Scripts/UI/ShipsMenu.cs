@@ -5,28 +5,47 @@ using UnityEngine.UIElements;
 
 public class ShipsMenu : MonoBehaviour
 {
+    UIController uiController;
 
-    private UIDocument shipMenuUI;
-    public VisualTreeAsset rowTemplate;
-    public PlayerInventory inventory;
+    public VisualTreeAsset ownedShipRowTemplate;
 
-    public void MakeShipsMenu()
+    [SerializeField] private GameObject shipViewerPrefab;
+    private GameObject shipViewer;
+
+    public void MakeShipsMenu(PlayerInventory inventory)
     {
-        shipMenuUI = GetComponent<UIDocument>();
-        print(inventory.GetOwnedShips().Count);
-        foreach (StarShip ship in inventory.GetOwnedShips())
+        uiController = GameObject.Find("UIController").GetComponent<UIController>();
+
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+
+        Button exitButton = root.Q<Button>("exitbutton");
+        exitButton.clicked += uiController.RemoveLastFromUIStack;
+
+        ScrollView shipsList = root.Q<ScrollView>("ShipList");
+        shipsList.mouseWheelScrollSize = 500.0f;
+
+        //shipsList.Clear();
+
+        foreach (SpaceShip ship in inventory.GetOwnedShips())
         {
-            print("tegin");
-            VisualElement ship_Row = rowTemplate.Instantiate();
-            ScrollView shipList = shipMenuUI.rootVisualElement.Q<ScrollView>("ShipList");
-            shipList.mouseWheelScrollSize = 500.0f;
-            
+            VisualElement ship_Row = ownedShipRowTemplate.Instantiate();
+
+            Button shipViewButton = ship_Row.Q<Button>("shipviewbutton");
+            shipViewButton.clicked += () => { MakeShipViewer(ship); };
 
             ship_Row.Q<Label>("name").text = ship.GetName();
             ship_Row.Q<Label>("class").text = ship.GetCargoCapacity().ToString();
             ship_Row.Q<Label>("route").text = "none";
 
-            shipList.Add(ship_Row);
+            shipsList.Add(ship_Row);
         }
+    }
+
+    public void MakeShipViewer(SpaceShip ship)
+    {
+        shipViewer = Instantiate(shipViewerPrefab);
+        UIDocument shipViewerUI = shipViewer.GetComponent<UIDocument>();
+        shipViewer.GetComponent<ShipViewer>().MakeShipViewer(this, ship);
+        uiController.AddToUIStack(new UIElement(shipViewer, shipViewerUI), false);
     }
 }

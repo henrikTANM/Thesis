@@ -14,4 +14,10 @@ public class ResourceCount
         this.amount = amount;
         this.perCycle = PerCycle;
     }
+
+    public ResourceCount(Resource resource, int amount)
+    {
+        this.resource = resource;
+        this.amount = amount;
+    }
 }

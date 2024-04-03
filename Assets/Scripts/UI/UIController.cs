@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -11,10 +12,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private StyleSheet styleSheet;
 
     [SerializeField] private UIDocument gameUI;
-    [SerializeField] private UIDocument escapeMenuUI;
-    [SerializeField] private GameObject shipsMenu;
-    private UIDocument shipsMenuUI;
-    private UIDocument currentUI;
+
+    [SerializeField] private GameObject escapeMenuPrefab;
+    GameObject escapeMenu;
+    [SerializeField] private GameObject shipsMenuPrefab;
+    GameObject shipsMenu;
+
+    private UIStack uiStack = new();
 
     [SerializeField] private Sprite timeRunningImage;
     [SerializeField] private Sprite timeStoppedImage;
@@ -22,13 +26,13 @@ public class UIController : MonoBehaviour
     private Button timeButton;
 
     private UniverseHandler universe;
-    private PlayerInventory playerInventory;
+    private PlayerInventory inventory;
 
     private void Awake()
     {
         InputEvents.OnTimeStateChange += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += ChangeTimeButtonIcon;
-        InputEvents.OnEscapeMenu += SetEscapeMenu;
+        InputEvents.OnEscapeMenu += MakeEscapeMenu;
         ResourceEvents.OnMoneyUpdate += UpdateMoney;
     }
 
@@ -36,112 +40,71 @@ public class UIController : MonoBehaviour
     {
         InputEvents.OnTimeStateChange -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= ChangeTimeButtonIcon;
-        InputEvents.OnEscapeMenu -= SetEscapeMenu;
+        InputEvents.OnEscapeMenu -= MakeEscapeMenu;
         ResourceEvents.OnMoneyUpdate -= UpdateMoney;
     }
 
     private void Start()
     {
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
-        playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
-        shipsMenuUI = shipsMenu.GetComponent<UIDocument>();
+        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
         UpdateMoney();
-
-        InitiateUI();
-        InitiateEscapeMenuButtons();
-        InitiateShipMenuFunctions();
-
-        SetUIActive(escapeMenuUI, false);
-        SetUIActive(shipsMenuUI, false);
+        InitiateGameUI();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (currentUI == null)
+            if (uiStack.IsEmpty())
             {
                 InputEvents.EscapeMenu();
             }
             else
             {
-                UnSetCurrentUI();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            if (currentUI == null)
-            {
-                SetShipsMenu();
-            }
-            else if (currentUI == shipsMenuUI)
-            {
-                UnSetCurrentUI();
+                //print(universe.escapeMenuDisplayed + " : " + universe.routeMakerDisplayed);
+                if (universe.escapeMenuDisplayed) universe.HandleEscapeMenu();
+                if (universe.routeMakerDisplayed) universe.HandleRouteMaker();
+                RemoveLastFromUIStack();
             }
         }
     }
 
     //main UI buttons
 
-    private void InitiateUI()
+    private void InitiateGameUI()
     {
-        List<Button> buttons = gameUI.rootVisualElement.Query<Button>().ToList();
+        VisualElement root = gameUI.rootVisualElement;
 
-        Button escapeButton = buttons.ElementAt(0);
+        Button escapeButton = root.Q<Button>("escapemenubutton");
         escapeButton.clicked += InputEvents.EscapeMenu;
 
-        Button shipsButton = buttons.ElementAt(1);
-        shipsButton.clicked += SetShipsMenu;
+        Button shipsButton = root.Q<Button>("shipsbutton");
+        shipsButton.clicked += () => { MakeShipsMenu(inventory); };
 
-        Button basesButton = buttons.ElementAt(2);
-        // basesButton.clicked += ;
+        Button planetsButton = root.Q<Button>("planetsbutton");
+        // planetsButton.clicked += ;
 
-        Button clusterViewButton = buttons.ElementAt(3);
+        Button clusterViewButton = root.Q<Button>("clusterviewbutton");
         clusterViewButton.clicked += InputEvents.ClusterView;
 
-        timeButton = buttons.ElementAt(4);
+        timeButton = root.Q<Button>("timebutton");
         timeButton.clicked += InputEvents.TimeStateChange;
 
-        Button systemViewButton = buttons.ElementAt(5);
+        Button systemViewButton = root.Q<Button>("systemviewbutton");
         systemViewButton.clicked += InputEvents.SystemView;
-
-        gameUI.rootVisualElement.Q<VisualElement>("moneyicon").style.unityBackgroundImageTintColor = 
-            new StyleColor(playerInventory.GetMoneyResource().spriteColor);
     }
 
-    // escape menu buttons
-
-    private void InitiateEscapeMenuButtons()
+    public void SetGameUIActive(bool active)
     {
-        List<Button> buttons = escapeMenuUI.rootVisualElement.Query<Button>().ToList();
-
-        Button resumeButton = buttons.ElementAt(0);
-        resumeButton.clicked += UnSetCurrentUI;
-
-        Button saveButton = buttons.ElementAt(1);
-        //saveButton.clicked += ;
-
-        Button loadButton = buttons.ElementAt(2);
-        //loadButton.clicked += ;
-
-        Button optionsButton = buttons.ElementAt(3);
-        // optionsButton.clicked += ;
-
-        Button exitButton = buttons.ElementAt(4);
-        // exitButton.clicked += ;
-
-        Button quitButton = buttons.ElementAt(5);
-        quitButton.clicked += Application.Quit;
+        VisualElement root = gameUI.rootVisualElement;
+        root.Q<VisualElement>("topcontainer").SetEnabled(active);
+        root.Q<VisualElement>("topcontainer").style.visibility = active ? Visibility.Visible : Visibility.Hidden;
+        root.Q<VisualElement>("rightcontainer").SetEnabled(active);
+        root.Q<VisualElement>("rightcontainer").style.visibility = active ? Visibility.Visible : Visibility.Hidden;
     }
 
     // ships menu functions
-
-    private void InitiateShipMenuFunctions()
-    {
-        shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu();
-        Button exitButton = shipsMenuUI.rootVisualElement.Q<Button>("exitbutton");
-        exitButton.clicked += UnSetCurrentUI;
-    }
 
     public void ChangeTimeButtonIcon()
     {
@@ -152,33 +115,37 @@ public class UIController : MonoBehaviour
             universe.timeRunning ? new Color(255f / 255f, 243f / 255f, 176f / 255f) : new Color(158f / 255f, 42f / 255f, 43f / 255f);
     }
 
-    public void SetUIActive(UIDocument uiDoc, bool active)
-    {
-        uiDoc.sortingOrder = active ? 1 : 0;
-        uiDoc.rootVisualElement.style.visibility = active ? Visibility.Visible : Visibility.Hidden;
+    public void AddToUIStack(UIElement uiElement, bool disPlayPrevious)
+    {   
+        uiStack.Add(uiElement, disPlayPrevious);
     }
 
-    public void SetCurrentUI(UIDocument uiDoc)
+    public void RemoveLastFromUIStack()
     {
-        currentUI = uiDoc;
-        SetUIActive(currentUI, true);
+        uiStack.RemoveLast();
     }
 
-    public void UnSetCurrentUI()
+    public bool UIDisplayed() { return !uiStack.IsEmpty(); }
+
+    private void MakeEscapeMenu() 
     {
-        if (currentUI == escapeMenuUI) universe.HandleEscapeMenu();
-
-        SetUIActive(currentUI, false);
-        currentUI = null;
+        if (escapeMenu != null) return;
+        escapeMenu = Instantiate(escapeMenuPrefab);
+        UIDocument escapeMenuUI = escapeMenu.GetComponent<UIDocument>();
+        escapeMenu.GetComponent<EscapeMenu>().MakeEscapeMenu();
+        AddToUIStack(new UIElement(escapeMenu, escapeMenuUI), false); 
     }
-
-    public UIDocument GetCurrentUI() { return currentUI; }
-
-    private void SetEscapeMenu() { SetCurrentUI(escapeMenuUI); }
-    private void SetShipsMenu() { SetCurrentUI(shipsMenuUI); }
+    private void MakeShipsMenu(PlayerInventory inventory) 
+    {
+        if (shipsMenu != null) return;
+        shipsMenu = Instantiate(shipsMenuPrefab);
+        UIDocument shipsMenuUI = shipsMenu.GetComponent<UIDocument>();
+        shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu(inventory);
+        AddToUIStack(new UIElement(shipsMenu, shipsMenuUI), false);
+    }
 
     private void UpdateMoney()
     {
-        gameUI.rootVisualElement.Q<Label>("moneyvalue").text = playerInventory.GetMoney().ToString();
+        gameUI.rootVisualElement.Q<Label>("moneyvalue").text = inventory.GetMoney().ToString();
     }
 }

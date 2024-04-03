@@ -18,10 +18,10 @@ public class BuildingViewerMenu : MonoBehaviour
 
     public void MakeBuildingViewerMenu(BuildingSlot buildingSlot, ProductionBuildingHandler productionBuildingHandler)
     {
-        VisualElement root = buildingSlot.GetBuildingViewerMenuUI().rootVisualElement;
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
         Button exitButton = root.Q<Button>("exitbutton");
-        exitButton.clicked += buildingSlot.CloseBuildingViewerMenu;
+        exitButton.clicked += buildingSlot.CloseMenu;
 
         Button activateButton = root.Q<Button>("activatebutton");
         bool active = productionBuildingHandler.IsActive();

@@ -22,8 +22,13 @@ public class UniverseHandler : MonoBehaviour
     [NonSerialized] public bool timeRunning = true;
 
     [NonSerialized] public bool escapeMenuDisplayed = false;
+    [NonSerialized] public bool routeMakerDisplayed = false;
 
     private Planet activePlanet;
+
+    private RouteMaker activeRouteMaker;
+
+    public List<Resource> allResources;
 
     private void Awake()
     {
@@ -32,6 +37,7 @@ public class UniverseHandler : MonoBehaviour
 
         InputEvents.OnTimeStateChange += HandleTimeChange;
         InputEvents.OnEscapeMenu += HandleEscapeMenu;
+        InputEvents.OnRouteMaker += HandleRouteMaker;
         InputEvents.OnClusterView += SetLastActivePlanetInactive;
         InputEvents.OnClusterView += SetAllStarsInactive;
     }
@@ -40,6 +46,7 @@ public class UniverseHandler : MonoBehaviour
     {
         InputEvents.OnTimeStateChange -= HandleTimeChange;
         InputEvents.OnEscapeMenu -= HandleEscapeMenu;
+        InputEvents.OnRouteMaker += HandleRouteMaker;
         InputEvents.OnClusterView -= SetLastActivePlanetInactive;
         InputEvents.OnClusterView -= SetAllStarsInactive;
     }
@@ -59,7 +66,7 @@ public class UniverseHandler : MonoBehaviour
             ResourceEvents.CycleChange();
         }
         CycleText.text = timeCycleValue.ToString();
-        if (Input.GetKeyDown(KeyCode.Space) & !escapeMenuDisplayed) InputEvents.TimeStateChange();
+        if (Input.GetKeyDown(KeyCode.Space) & !escapeMenuDisplayed & !routeMakerDisplayed) InputEvents.TimeStateChange();
     }
 
     public void SetAllStarsInactive()
@@ -78,14 +85,24 @@ public class UniverseHandler : MonoBehaviour
         activePlanet = planet;
     }
 
+    public void SetActiveRouteMaker(RouteMaker routeMaker)
+    {
+        activeRouteMaker = routeMaker;
+    }
+
     public Planet GetActivePlanet()
     {
         return activePlanet;
     }
 
-    public bool UIMenuDisplayed()
+    public RouteMaker GetActiveRouteMaker()
     {
-        return uiController.GetCurrentUI() != null;
+        return activeRouteMaker;
+    }
+
+    public bool UIDisplayed()
+    {
+        return uiController.UIDisplayed();
     }
 
     public void HandleEscapeMenu()
@@ -93,6 +110,16 @@ public class UniverseHandler : MonoBehaviour
         escapeMenuDisplayed = !escapeMenuDisplayed;
         timeRunning = !escapeMenuDisplayed;
         uiController.ChangeTimeButtonIcon();
+        print(escapeMenuDisplayed);
+        uiController.SetGameUIActive(!escapeMenuDisplayed);
+    }
+
+    public void HandleRouteMaker()
+    {
+        routeMakerDisplayed = !routeMakerDisplayed;
+        timeRunning = !routeMakerDisplayed;
+        uiController.ChangeTimeButtonIcon();
+        uiController.SetGameUIActive(!routeMakerDisplayed);
     }
 
     public void HandleTimeChange()

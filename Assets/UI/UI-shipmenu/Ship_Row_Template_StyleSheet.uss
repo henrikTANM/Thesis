@@ -5,6 +5,7 @@
     -unity-font-style: bold;
     align-self: auto;
     white-space: normal;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
 }
 
 .RouteButton {
@@ -34,10 +35,15 @@
 }
 
 .RouteButton:active {
-    -unity-background-image-tint-color: rgb(255, 243, 176);
-    background-color: rgba(255, 243, 176, 0.26);
-    border-left-color: rgb(255, 243, 176);
-    border-right-color: rgb(255, 243, 176);
-    border-top-color: rgb(255, 243, 176);
-    border-bottom-color: rgb(255, 243, 176);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-color: rgb(226, 226, 226);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    color: rgb(0, 0, 0);
+}
+
+.RouteButton:active .label {
+    color: rgb(0, 0, 0);
 }

@@ -31,7 +31,7 @@ public class Star : SpaceBody
 
     private void OnMouseDown()
     {
-        if (!selected & !universe.UIMenuDisplayed())
+        if (!selected & (universe.routeMakerDisplayed | !universe.UIDisplayed()))
         {
             SetSelected(true, false);
             StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));

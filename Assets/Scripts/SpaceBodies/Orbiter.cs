@@ -7,13 +7,20 @@ using UnityEngine.UIElements;
 
 public class Orbiter : MonoBehaviour
 {
-    [SerializeField] private Transform centre;
-    [SerializeField] private float orbitSpeed;
+    private UniverseHandler universe;
+
+    public Transform centre;
+    private float orbitSpeed;
+
+    private void Awake()
+    {
+        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.fixedDeltaTime);
+        if (universe.timeRunning) transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.fixedDeltaTime);
     }
 
     public Vector3 GetPosIn(float t)
@@ -39,4 +46,15 @@ public class Orbiter : MonoBehaviour
     {
         return centre.position;
     }
+
+    public void SetCentre(Transform transform)
+    {
+        centre = transform;
+    }
+
+    public void SetOrbitSpeed(float orbitSpeed)
+    {
+        this.orbitSpeed = orbitSpeed;
+    }
+
 }

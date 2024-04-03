@@ -47,4 +47,4 @@ MonoBehaviour:
   buildingChooserMenuPrefab: {fileID: 6706594830015370271, guid: 25c58dd5b9442c74b94bcc405cb87d47, type: 3}
   buildingViewerMenuPrefab: {fileID: 1020256141700325908, guid: 7cf8bf98f5ab413478d83f397246d516, type: 3}
   constrictionSprite: {fileID: 21300000, guid: 6399ffa8e802254418a193db7d984179, type: 3}
-  constrictionSpriteColor: {r: 0.9725491, g: 0.627451, b: 0.24705884, a: 1}
+  constrictionSpriteColor: {r: 0.8862746, g: 0.8862746, b: 0.8862746, a: 1}

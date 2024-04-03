@@ -38,13 +38,14 @@ public class SpaceBody : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!Input.GetMouseButton(1) & !selected & !universe.UIMenuDisplayed()) 
+        if (!Input.GetMouseButton(1) & !selected & (universe.routeMakerDisplayed | !universe.UIDisplayed())) 
             StartCoroutine(ScaleOverTime(hoverOver.transform, new Vector3(0.1f, 0.1f, 0.1f), 0.3f));
     }
 
     private void OnMouseExit()
     {
-           StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
+        StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
+        hoverOver.color = Color.white;
     }
 
     private void OnMouseOver()

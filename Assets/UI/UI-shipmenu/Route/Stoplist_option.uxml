@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; margin-top: 5px;">
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="deletebutton" class="button" style="background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Game%20sprites/cross.png?fileID=2800000&amp;guid=fdd33b51b234ac545bc4e18bcb0f5e42&amp;type=3#cross&apos;);" />
+        <ui:Button text="planet" parse-escape-sequences="false" display-tooltip-when-elided="true" name="stopbutton" class="button" style="width: auto; -unity-text-align: middle-left; flex-grow: 1; margin-left: 10px;" />
+    </ui:VisualElement>
+</ui:UXML>

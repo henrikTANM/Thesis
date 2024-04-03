@@ -22,10 +22,9 @@ public class PlanetResourceHandler
         if (resourceCount != null)
         {
             resourceCount.perCycle += perCycle;
-            Debug.Log(resourceCount.perCycle + " : " + perCycle + " add");
+            //Debug.Log(resourceCount.perCycle + " : " + perCycle + " add");
         }
         else resourceCounts.Add(new ResourceCount(resource, 0, perCycle));
-        Debug.Log(perCycle + "add new");
     }
 
     public void RemoveperCycle(Resource resource, int perCycle)

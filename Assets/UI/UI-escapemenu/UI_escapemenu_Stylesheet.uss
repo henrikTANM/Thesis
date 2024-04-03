@@ -17,7 +17,6 @@
     -unity-font-style: normal;
     color: rgb(226, 226, 226);
     -unity-text-align: middle-center;
-    -unity-font: url('project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Oswald-Bold.ttf?fileID=12800000&guid=c9f6d0e7bc8541498c9a4799ba184ede&type=3#Oswald-Bold');
     -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
