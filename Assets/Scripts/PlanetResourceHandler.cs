@@ -31,7 +31,6 @@ public class PlanetResourceHandler
     {
         ResourceCount resourceCount = GetResourceCount(resource);
         resourceCount.perCycle += perCycle;
-        Debug.Log(resourceCount.perCycle + " : " + perCycle + " remove");
     }
 
     public void RemoveResouce(Resource resource, int amount)

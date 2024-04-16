@@ -81,16 +81,16 @@ public class Planet : SpaceBody
                 hoverOver.color = Color.green;
                 universe.GetActiveRouteMaker().AddStop(this);
             }
-            else if (!selected)
+            else if (selected)
+            {
+                StartCoroutine(ShowPlanetMenu(false));
+            }
+            else
             {
                 SetSelected(true);
                 StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
                 cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 10.0f * scaleDownMultiplier, false);
-            }
-
-            if (selected)
-            {
-                MakePlanetMenu();
+                StartCoroutine(ShowPlanetMenu(true));
             }
         }
     }
@@ -284,5 +284,11 @@ public class Planet : SpaceBody
                 productionBuildingHandler.SetActive(true);
             }
         }
+    }
+
+    IEnumerator ShowPlanetMenu(bool fromSystemView)
+    {
+        if (fromSystemView) yield return new WaitForSeconds(0.5f);
+        MakePlanetMenu();
     }
 }

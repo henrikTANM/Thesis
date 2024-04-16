@@ -12,6 +12,16 @@ public class StopManager : MonoBehaviour
 
     private List<ResourceCount> cargoState = new();
 
+    private float previousOnShipValue;
+    private float onShipValue;
+    private int transferCountValue;
+    private float onPlanetValue;
+
+    private Label previousOnShip;
+    private Label onShip;
+    private Label transferCount;
+    private Label onPlanet;
+
     public void MakeStopManager(RouteMaker routemaker, RouteStop routeStop, ScrollView stopList, SpaceShip ship)
     {
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
@@ -47,56 +57,72 @@ public class StopManager : MonoBehaviour
 
     private void MakeDropOffPickUpList(RouteStop routeStop, ScrollView dropOffPickUpList)
     {
-        List<ResourceCount> cargo = routeStop.Route().GetPreviousRouteStop(routeStop).GetCargoAfter();
-        List<ResourceCount> planetResources = routeStop.GetPlanet().GetPlanetResourceHandler().GetResourceCounts();
+        VisualElement dropOffPickUpRow = dropOffPickUpRowPrefab.Instantiate();
 
         foreach (Resource resource in universe.allResources)
         {
 
-            VisualElement dropOffPickUpRow = dropOffPickUpRowPrefab.Instantiate();
+            ResourceCount previousOnShipResourceCount = FindIn(routeStop.Route().GetPreviousRouteStop(routeStop).GetShipState(), resource);
+            ResourceCount onShipResourceCount = FindIn(routeStop.GetShipState(), resource);
+            ResourceCount onPlanetResourceCount = FindIn(routeStop.GetPlanet().GetPlanetResourceHandler().GetResourceCounts(), resource);
+
+            previousOnShipValue = previousOnShipResourceCount == null ? 0.0f : previousOnShipResourceCount.amount;
+
+            if (onShipResourceCount == null)
+            {
+                if (previousOnShipResourceCount.amount == 0.0f)
+                {
+                    routeStop.AddToShipState(new ResourceCount(resource, 0.0f));
+                    onShipValue = 0.0f;
+                }
+                else
+                {
+                    ResourceCount newResoureCount = new ResourceCount(resource, previousOnShipResourceCount.amount);
+                    routeStop.AddToShipState(newResoureCount);
+                    onShipValue = newResoureCount.amount;
+                }
+            }
+            else
+            {
+                onShipValue = onShipResourceCount.amount;
+            }
+
+            transferCountValue = (int)(previousOnShipValue - onShipValue);
+
+            onPlanetValue = onPlanetResourceCount == null ? 0.0f : onPlanetResourceCount.perCycle;
+
+            
 
             VisualElement resourceImage = dropOffPickUpRow.Q<VisualElement>("resourceimage");
             resourceImage.style.backgroundImage = new StyleBackground(resource.resourceSprite);
             resourceImage.style.unityBackgroundImageTintColor = new StyleColor(resource.spriteColor);
 
-            Label onShip = dropOffPickUpRow.Q<Label>("onship");
-            ResourceCount shipResource = FindIn(cargo, resource);
-            int resCount = shipResource == null ? 0 : shipResource.amount;
-            onShip.text = "On Ship: " + resCount.ToString();
+            previousOnShip = dropOffPickUpRow.Q<Label>("ponship");
+            previousOnShip.text = previousOnShipValue.ToString();
 
-            Label resourcecount = dropOffPickUpRow.Q<Label>("resourcecount");
-            resourcecount.text = "0";
+            onShip = dropOffPickUpRow.Q<Label>("onship");
+            onShip.text = "On Ship: " + onShipValue.ToString();
 
-            Label onPlanet = dropOffPickUpRow.Q<Label>("onplanet");
-            ResourceCount planetResource = FindIn(planetResources, resource);
-            print(planetResource);
-            int perCycle = planetResource == null ? 0 : planetResource.perCycle;
-            onPlanet.text = "Planet: +" + perCycle + "/cycle";
+            transferCount = dropOffPickUpRow.Q<Label>("transfercount");
+            transferCount.text = transferCountValue.ToString();
+
+            onPlanet = dropOffPickUpRow.Q<Label>("onplanet");
+            onPlanet.text = "Planet: " + onPlanetValue + "/cycle";
 
             int totalTravelTime = routeStop.Route().GetTotalTravelTime();
 
             Button toShip = dropOffPickUpRow.Q<Button>("toship");
-            toShip.clicked += () => { ModifyDropOffAmount(onShip, resourcecount, onPlanet, totalTravelTime, -1); };
+            toShip.clicked += () => { Transfer(totalTravelTime, 1); };
             Button toPlanet = dropOffPickUpRow.Q<Button>("toplanet");
-            toPlanet.clicked += () => { ModifyDropOffAmount(onShip, resourcecount, onPlanet, totalTravelTime, 1); };
-            Button minusButton = dropOffPickUpRow.Q<Button>("minusbutton");
-            minusButton.clicked += () => { ChangeModifier(resourcecount, -1); };
-            Button plusButton = dropOffPickUpRow.Q<Button>("plusbutton");
-            plusButton.clicked += () => { ChangeModifier(resourcecount, 1); };
+            toPlanet.clicked += () => { Transfer(totalTravelTime, -1); };
 
             dropOffPickUpList.Add(dropOffPickUpRow);
         }
     }
 
-    private void ChangeModifier(Label resourcecount, int multiplier)
+    private void Transfer(int totalTravelTime, float factor)
     {
-        int newModifier = int.Parse(resourcecount.text) + multiplier;
-        if (newModifier >= 0) { resourcecount.text = newModifier.ToString(); }
-    }
-
-    private void ModifyDropOffAmount(Label value, Label change, Label target, int traveltime, int multiplier)
-    {
-
+        int 
     }
 
     private void MakeSlider(SliderInt slider, RouteStop routeStop, SpaceShip ship)
@@ -110,6 +136,7 @@ public class StopManager : MonoBehaviour
 
         slider.highValue = minTravelTIme + 10;
         slider.lowValue = minTravelTIme;
+        slider.value = routeStop.GetTravelTime();
         slider.label = "Cycles to travel to:" + slider.value.ToString();
         routeStop.SetTravelTime(slider.value);
 

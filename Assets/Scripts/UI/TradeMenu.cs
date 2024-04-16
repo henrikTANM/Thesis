@@ -85,6 +85,8 @@ public class TradeMenu : MonoBehaviour
 
             sellList.Add(sellableResource);
         }
+
+        UpdateResourcePanel(planet);
     }
 
     public void UpdateResourcePanel(Planet planet)
@@ -134,12 +136,12 @@ public class TradeMenu : MonoBehaviour
 
     private void ModifyBuyAmount(Resource resource, Label countlabel, Label priceLabel, int multiplier)
     {
-        int countlabelValue = int.Parse(countlabel.text);
-        int newCountlabelValue = countlabelValue + multiplier * (Input.GetKey(KeyCode.LeftShift) ? 10 : 1);
+        float countlabelValue = float.Parse(countlabel.text);
+        float newCountlabelValue = countlabelValue + multiplier * (Input.GetKey(KeyCode.LeftShift) ? 10 : 1);
         if (newCountlabelValue >= 0)
         {
             countlabelValue = newCountlabelValue;
-            int priceLabelValue = countlabelValue * resource.defaultValue * 2;
+            float priceLabelValue = countlabelValue * resource.defaultValue * 2;
             if (priceLabelValue <= inventory.GetMoney())
             {
                 countlabel.text = countlabelValue.ToString();
@@ -164,11 +166,11 @@ public class TradeMenu : MonoBehaviour
 
         if (resourceCount != null)
         {
-            int countlabelValue = int.Parse(countlabel.text);
+            float countlabelValue = float.Parse(countlabel.text);
             countlabelValue += multiplier * (Input.GetKey(KeyCode.LeftShift) ? 10 : 1);
             if (countlabelValue >= 0 & countlabelValue <= resourceCount.amount)
             {
-                int priceLabelValue = countlabelValue * resource.defaultValue;
+                float priceLabelValue = countlabelValue * resource.defaultValue;
                 countlabel.text = countlabelValue.ToString();
                 priceLabel.text = priceLabelValue.ToString();
             }

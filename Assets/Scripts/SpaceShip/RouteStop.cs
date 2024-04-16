@@ -12,23 +12,27 @@ public class RouteStop
 
     private int travelTime;
 
-    private List<ResourceCount> cargoBefore = new();
-    private List<ResourceCount> cargoAfter = new();
+    private List<ResourceCount> shipState;
+    private List<ResourceCount> planetState;
 
     public RouteStop(Planet stop, int stopIndex)
     {
         this.stop = stop;
         this.stopIndex = stopIndex;
+        shipState = new();
+        planetState = new(stop.GetPlanetResourceHandler().GetResourceCounts());
     }
 
-    public void SetCargoBefore(List<ResourceCount> cargoBefore) { this.cargoBefore = cargoBefore; }
-    public void SetCargoAfter(List<ResourceCount> cargoAfter) { this.cargoAfter = cargoAfter; }
+    public void SetShipState(List<ResourceCount> shipState) { this.shipState = shipState; }
+    public void SetPlanetState(List<ResourceCount> planetState) { this.planetState = planetState; }
     public void SetRoute(Route route) { this.route = route; }
 
     public void SetTravelTime(int travelTime) { this.travelTime = travelTime; }
 
-    public List<ResourceCount> GetCargoBefore() { return cargoBefore; }
-    public List<ResourceCount> GetCargoAfter() { return cargoAfter; }
+    public List<ResourceCount> GetShipState() { return shipState; }
+    public List<ResourceCount> GetPlanetState() { return planetState; }
+
+    public void AddToShipState(ResourceCount resourceCount) { shipState.Add(resourceCount); }
     public Route Route() { return route; }
     public int GetTravelTime() { return travelTime; }
     public Planet GetPlanet() { return stop; }

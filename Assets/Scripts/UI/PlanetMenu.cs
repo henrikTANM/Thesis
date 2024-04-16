@@ -67,6 +67,12 @@ public class PlanetMenu : MonoBehaviour
                     buildingButton.style.flexGrow = 1;
                     depositContainer.Add(buildingButton);
                     Button button = buildingButton.Q<Button>("building_button");
+                    Button buildingSlotButton = buildingSlot.GetButton();
+                    if (buildingSlotButton != null)
+                    {
+                        button.style.backgroundImage = buildingSlotButton.style.backgroundImage;
+                        button.style.unityBackgroundImageTintColor = buildingSlotButton.style.unityBackgroundImageTintColor;
+                    }
                     buildingSlot.SetButton(button);
                 }
             }
@@ -75,6 +81,8 @@ public class PlanetMenu : MonoBehaviour
         VisualElement settlementContainer = root.Q<VisualElement>("settlement");
         settlementContainer.style.backgroundImage =
             new StyleBackground(planet.GetSettlementSprite());
+
+        UpdateResourcePanel(planet);
     }
 
     public void UpdateResourcePanel(Planet planet)

@@ -5,19 +5,24 @@ using UnityEngine;
 public class ResourceCount
 {
     public Resource resource;
-    public int amount;
-    public int perCycle;
+    public float amount;
+    public float perCycle;
 
-    public ResourceCount(Resource resource, int amount, int PerCycle)
+    public ResourceCount(Resource resource, float amount, float perCycle)
     {
         this.resource = resource;
         this.amount = amount;
-        this.perCycle = PerCycle;
+        this.perCycle = perCycle;
     }
 
-    public ResourceCount(Resource resource, int amount)
+    public ResourceCount(Resource resource, float amount)
     {
         this.resource = resource;
         this.amount = amount;
+    }
+
+    public bool Equals(ResourceCount count)
+    {
+        return resource == count.resource;
     }
 }

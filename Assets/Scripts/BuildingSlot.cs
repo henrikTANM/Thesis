@@ -31,6 +31,8 @@ public class BuildingSlot : MonoBehaviour
         playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
     }
 
+    public Button GetButton () { return button; }
+
     public void SetDeposit(DepositHandler depositHandler)
     {
         this.depositHandler = depositHandler;
