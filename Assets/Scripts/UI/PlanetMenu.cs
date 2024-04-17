@@ -41,7 +41,7 @@ public class PlanetMenu : MonoBehaviour
         tradeButton.clicked += () => { MakeTradeMenu(planet); };
 
         Button specialButton = root.Q<Button>("specialbutton"); ;
-        specialButton.clicked += uiController.RemoveLastFromUIStack;
+        specialButton.clicked += planet.AddShip;
 
         List<VisualElement> depositContainers = root.Query("de").ToList();
         List<DepositHandler> deposits = planet.GetDeposits();
@@ -105,7 +105,7 @@ public class PlanetMenu : MonoBehaviour
                 resourceContainer.style.alignSelf = Align.Center;
                 resourcesPanel.Add(resourceContainer);
             }
-            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.perCycle.ToString();
+            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.secondAmount.ToString();
         }
     }
 

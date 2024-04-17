@@ -107,6 +107,7 @@ public class Planet : SpaceBody
             universe.SetActivePlanet(this);
             parentStar.SetStarBodyScale(scaleDownMultiplier);
             foreach (Planet planet in parentStar.planets) planet.ScaleToSize(planet.nativeScale * scaleDownMultiplier);
+            //foreach (SpaceShip ship in inventory.GetOwnedShips()) ship.GetComponent<MotionSimulator>().body.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
         }
     }
 
@@ -290,5 +291,11 @@ public class Planet : SpaceBody
     {
         if (fromSystemView) yield return new WaitForSeconds(0.5f);
         MakePlanetMenu();
+    }
+
+    public void AddShip()
+    {
+
+        inventory.AddShip(this);
     }
 }

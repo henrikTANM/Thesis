@@ -108,7 +108,7 @@ public class BuildingViewerMenu : MonoBehaviour
                 resourceContainer.style.alignSelf = Align.Center;
                 resourcesPanel.Add(resourceContainer);
             }
-            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.perCycle.ToString();
+            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.secondAmount.ToString();
         }
     }
 

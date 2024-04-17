@@ -6,13 +6,13 @@ public class ResourceCount
 {
     public Resource resource;
     public float amount;
-    public float perCycle;
+    public float secondAmount;
 
-    public ResourceCount(Resource resource, float amount, float perCycle)
+    public ResourceCount(Resource resource, float amount, float secondAmount)
     {
         this.resource = resource;
         this.amount = amount;
-        this.perCycle = perCycle;
+        this.secondAmount = secondAmount;
     }
 
     public ResourceCount(Resource resource, float amount)

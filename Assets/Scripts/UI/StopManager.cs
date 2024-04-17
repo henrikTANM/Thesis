@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,17 +11,9 @@ public class StopManager : MonoBehaviour
 
     public VisualTreeAsset dropOffPickUpRowPrefab;
 
-    private List<ResourceCount> cargoState = new();
+    private SliderInt slider;
 
-    private float previousOnShipValue;
-    private float onShipValue;
-    private int transferCountValue;
-    private float onPlanetValue;
-
-    private Label previousOnShip;
-    private Label onShip;
-    private Label transferCount;
-    private Label onPlanet;
+    private int totalTravelTime;
 
     public void MakeStopManager(RouteMaker routemaker, RouteStop routeStop, ScrollView stopList, SpaceShip ship)
     {
@@ -34,13 +27,13 @@ public class StopManager : MonoBehaviour
         Button exitButton = root.Q<Button>("exitbutton");
         exitButton.clicked += () => { Close(routemaker); };
 
-        SliderInt slider = root.Q<SliderInt>();
+        slider = root.Q<SliderInt>();
         ScrollView dropOffPickUpList = root.Q<ScrollView>("dropoffpickup");
 
         if (stopList.childCount > 1) 
         {
             MakeSlider(slider, routeStop, ship);
-            MakeDropOffPickUpList(routeStop, dropOffPickUpList);
+            MakeDropOffPickUpList(slider, routeStop, dropOffPickUpList);
         }
         else
         {
@@ -49,102 +42,117 @@ public class StopManager : MonoBehaviour
         }
     }
 
-    private void Close(RouteMaker routeMaker)
+    public void Close(RouteMaker routeMaker)
     {
         routeMaker.previousStopManager = null;
         uiController.RemoveLastFromUIStack();
     }
 
-    private void MakeDropOffPickUpList(RouteStop routeStop, ScrollView dropOffPickUpList)
+    private void MakeDropOffPickUpList(SliderInt slider, RouteStop routeStop, ScrollView dropOffPickUpList)
     {
-        VisualElement dropOffPickUpRow = dropOffPickUpRowPrefab.Instantiate();
+        totalTravelTime = routeStop.Route().GetTotalTravelTime();
 
         foreach (Resource resource in universe.allResources)
         {
+            VisualElement dropOffPickUpRow = dropOffPickUpRowPrefab.Instantiate();
+
+            totalTravelTime = routeStop.Route().GetTotalTravelTime();
 
             ResourceCount previousOnShipResourceCount = FindIn(routeStop.Route().GetPreviousRouteStop(routeStop).GetShipState(), resource);
             ResourceCount onShipResourceCount = FindIn(routeStop.GetShipState(), resource);
-            ResourceCount onPlanetResourceCount = FindIn(routeStop.GetPlanet().GetPlanetResourceHandler().GetResourceCounts(), resource);
+            ResourceCount onPlanetResourceCount = routeStop.GetPlanet().GetPlanetResourceHandler().GetResourceCount(resource);
+
+            float previousOnShipValue = 0.0f;
+            float onShipValue = 0.0f;
+            float transferCountValue = 0;
+            float onPlanetValue = 0.0f;
 
             previousOnShipValue = previousOnShipResourceCount == null ? 0.0f : previousOnShipResourceCount.amount;
 
             if (onShipResourceCount == null)
             {
-                if (previousOnShipResourceCount.amount == 0.0f)
-                {
-                    routeStop.AddToShipState(new ResourceCount(resource, 0.0f));
-                    onShipValue = 0.0f;
-                }
-                else
-                {
-                    ResourceCount newResoureCount = new ResourceCount(resource, previousOnShipResourceCount.amount);
-                    routeStop.AddToShipState(newResoureCount);
-                    onShipValue = newResoureCount.amount;
-                }
+                if (previousOnShipValue == 0.0f) { onShipValue = 0.0f; }
+                else { onShipValue = previousOnShipValue; }
             }
             else
             {
                 onShipValue = onShipResourceCount.amount;
             }
 
-            transferCountValue = (int)(previousOnShipValue - onShipValue);
+            transferCountValue = onShipValue - previousOnShipValue;
 
-            onPlanetValue = onPlanetResourceCount == null ? 0.0f : onPlanetResourceCount.perCycle;
+            onPlanetValue = (onPlanetResourceCount == null ? 0.0f : onPlanetResourceCount.secondAmount) + (-transferCountValue / (float)totalTravelTime);
 
-            
 
             VisualElement resourceImage = dropOffPickUpRow.Q<VisualElement>("resourceimage");
             resourceImage.style.backgroundImage = new StyleBackground(resource.resourceSprite);
             resourceImage.style.unityBackgroundImageTintColor = new StyleColor(resource.spriteColor);
 
-            previousOnShip = dropOffPickUpRow.Q<Label>("ponship");
-            previousOnShip.text = previousOnShipValue.ToString();
+            Label previousOnShip = dropOffPickUpRow.Q<Label>("ponship");
+            previousOnShip.text = "On Ship: " + previousOnShipValue.ToString();
 
-            onShip = dropOffPickUpRow.Q<Label>("onship");
-            onShip.text = "On Ship: " + onShipValue.ToString();
+            Label onShip = dropOffPickUpRow.Q<Label>("onship");
+            onShip.text = onShipValue.ToString();
 
-            transferCount = dropOffPickUpRow.Q<Label>("transfercount");
+            Label transferCount = dropOffPickUpRow.Q<Label>("transfercount");
             transferCount.text = transferCountValue.ToString();
 
-            onPlanet = dropOffPickUpRow.Q<Label>("onplanet");
-            onPlanet.text = "Planet: " + onPlanetValue + "/cycle";
+            Label onPlanet = dropOffPickUpRow.Q<Label>("onplanet");
+            onPlanet.text = "Planet: " + onPlanetValue.ToString() + "/cycle";
 
-            int totalTravelTime = routeStop.Route().GetTotalTravelTime();
+            void Transfer(float factor)
+            {
+                float newTransferCountValue = float.Parse(transferCount.text) + factor;
+                float newOnShipValue = float.Parse(onShip.text) + factor;
+                float newOnPlanetValue = float.Parse(onPlanet.text.Substring(
+                    onPlanet.text.IndexOf(":") + 2,
+                    onPlanet.text.IndexOf("/") - (onPlanet.text.IndexOf(":") + 2)
+                    )) - (factor / (float)totalTravelTime);
+
+                if ((newOnShipValue >= 0.0f) & (newOnPlanetValue >= 0.0f))
+                {
+                    transferCount.text = newTransferCountValue.ToString();
+                    onShip.text = newOnShipValue.ToString();
+                    onPlanet.text = "Planet: " + newOnPlanetValue.ToString() + "/cycle";
+
+                    routeStop.ModifyShipState(resource, newOnShipValue);
+                    routeStop.ModifyPlanetState(resource, -newTransferCountValue / (float)totalTravelTime);
+                }
+            }
 
             Button toShip = dropOffPickUpRow.Q<Button>("toship");
-            toShip.clicked += () => { Transfer(totalTravelTime, 1); };
+            toShip.clicked += () => { Transfer(1.0f); };
             Button toPlanet = dropOffPickUpRow.Q<Button>("toplanet");
-            toPlanet.clicked += () => { Transfer(totalTravelTime, -1); };
+            toPlanet.clicked += () => { Transfer(-1.0f); };
 
             dropOffPickUpList.Add(dropOffPickUpRow);
-        }
-    }
 
-    private void Transfer(int totalTravelTime, float factor)
-    {
-        int 
+            slider.RegisterValueChangedCallback(value =>
+            {
+                routeStop.SetTravelTime(value.newValue);
+                slider.label = value.newValue.ToString();
+                totalTravelTime = routeStop.Route().GetTotalTravelTime();
+
+                float change = -(float.Parse(transferCount.text)) / (float)totalTravelTime;
+                onPlanetValue = (onPlanetResourceCount == null ? 0.0f : onPlanetResourceCount.secondAmount) + change;
+                onPlanet.text = "Planet: " + onPlanetValue.ToString() + "/cycle";
+                routeStop.ModifyPlanetState(resource, change);
+
+            });
+        }
     }
 
     private void MakeSlider(SliderInt slider, RouteStop routeStop, SpaceShip ship)
     {
-        Orbiter previous = routeStop.Route().GetPreviousRouteStop(routeStop).GetPlanet().GetOrbiter();
-        Orbiter orbiter = routeStop.GetPlanet().GetOrbiter();
-        int minTravelTIme = routeStop.GetMinTravelTimeInCycles(previous, orbiter, ship.GetMaxAcceleration());
 
         slider.SetEnabled(true);
         slider.style.visibility = Visibility.Visible;
 
-        slider.highValue = minTravelTIme + 10;
-        slider.lowValue = minTravelTIme;
-        slider.value = routeStop.GetTravelTime();
-        slider.label = "Cycles to travel to:" + slider.value.ToString();
-        routeStop.SetTravelTime(slider.value);
+        int minTravelTime = routeStop.GetMinTravelTimeForRoutes();
 
-        slider.RegisterValueChangedCallback(value =>
-        {
-            routeStop.SetTravelTime(value.newValue);
-            slider.label = value.newValue.ToString();
-        });
+        slider.highValue = minTravelTime + 10;
+        slider.lowValue = minTravelTime;
+        slider.value = routeStop.GetTravelTime();
     }
 
     private ResourceCount FindIn(List<ResourceCount> resourceCounts, Resource by)

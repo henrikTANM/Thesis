@@ -11,19 +11,6 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private Resource moneyResource;
     [SerializeField] private GameObject spaceShipPrefab;
 
-    private void Awake()
-    {
-        GameObject spaceShip1O = Instantiate(spaceShipPrefab);
-        SpaceShip spaceShip1 = spaceShip1O.GetComponent<SpaceShip>();
-        spaceShip1.CreateShip("Toyota", 64, 20.0f);
-        AddShip(spaceShip1);
-
-        GameObject spaceShip2O = Instantiate(spaceShipPrefab);
-        SpaceShip spaceShip2 = spaceShip2O.GetComponent<SpaceShip>();
-        spaceShip2.CreateShip("Audi", 128, 10.0f);
-        AddShip(spaceShip2);
-    }
-
     public void AddMoney(int amount) { 
         money += amount;
         ResourceEvents.MoneyUpdate();
@@ -38,7 +25,13 @@ public class PlayerInventory : MonoBehaviour
 
     public Resource GetMoneyResource() { return moneyResource; }
 
-    public void AddShip(SpaceShip starShip) { ownedShips.Add(starShip); }
+    public void AddShip(Planet planet) 
+    {
+        GameObject spaceShipObject = Instantiate(spaceShipPrefab);
+        SpaceShip spaceShip = spaceShipObject.GetComponent<SpaceShip>();
+        spaceShip.CreateShip("Toyota", 64, 20.0f, planet);
+        ownedShips.Add(spaceShip);
+    }
 
     public void RemoveShip(SpaceShip starShip) { ownedShips.Remove(starShip); }
 

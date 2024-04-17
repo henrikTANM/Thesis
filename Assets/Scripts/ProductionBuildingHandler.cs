@@ -93,7 +93,7 @@ public class ProductionBuildingHandler
             ResourceCount resourcecount = planetResourceHandler.GetResourceCount(inputResource.resource);
             if (resourcecount != null)
             {
-                if (resourcecount.perCycle < inputResource.amount) return false;
+                if (resourcecount.secondAmount < inputResource.amount) return false;
             }
             else return false;
         }

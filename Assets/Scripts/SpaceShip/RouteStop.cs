@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class RouteStop
 {
     private Planet stop;
-    private int stopIndex;
+    [NonSerialized] public int stopIndex;
 
     private Route route;
 
@@ -20,25 +22,65 @@ public class RouteStop
         this.stop = stop;
         this.stopIndex = stopIndex;
         shipState = new();
-        planetState = new(stop.GetPlanetResourceHandler().GetResourceCounts());
+        planetState = new();
+        //CopyPlanetResourceCounts(stop);
     }
 
-    public void SetShipState(List<ResourceCount> shipState) { this.shipState = shipState; }
-    public void SetPlanetState(List<ResourceCount> planetState) { this.planetState = planetState; }
+    //public void SetShipState(List<ResourceCount> shipState) { this.shipState = shipState; }
+    //public void SetPlanetState(List<ResourceCount> planetState) { this.planetState = planetState; }
     public void SetRoute(Route route) { this.route = route; }
-
     public void SetTravelTime(int travelTime) { this.travelTime = travelTime; }
 
     public List<ResourceCount> GetShipState() { return shipState; }
-    public List<ResourceCount> GetPlanetState() { return planetState; }
+    //public List<ResourceCount> GetPlanetState() { return planetState; }
 
-    public void AddToShipState(ResourceCount resourceCount) { shipState.Add(resourceCount); }
     public Route Route() { return route; }
     public int GetTravelTime() { return travelTime; }
     public Planet GetPlanet() { return stop; }
     public int GetIndex() { return stopIndex; }
 
-    public int GetMinTravelTimeInCycles(Orbiter start, Orbiter end, float maxAcceleration)
+    /*
+    public void CopyPlanetResourceCounts(Planet planet)
+    {
+        foreach (ResourceCount resourceCount in planet.GetPlanetResourceHandler().GetResourceCounts())
+        {
+            planetState.Add(new ResourceCount(resourceCount.resource, resourceCount.secondAmount));
+        }
+    }
+    */
+
+    public void ModifyShipState(Resource resource, float amount)
+    {
+        foreach (ResourceCount resourceCount in shipState)
+        {
+            if (resourceCount.resource == resource)
+            {
+                resourceCount.amount = amount;
+                return;
+            }
+        }
+        shipState.Add(new ResourceCount(resource, amount));
+    }
+
+    public void ModifyPlanetState(Resource resource, float amount)
+    {
+        foreach (ResourceCount resourceCount in planetState)
+        {
+            if (resourceCount.resource == resource)
+            {
+                resourceCount.amount = amount;
+                return;
+            }
+        }
+        planetState.Add(new ResourceCount(resource, amount));
+    }
+
+    public int GetMinTravelTimeForRoutes()
+    {
+        return GetMinTravelTime(GetPlanet().GetOrbiter(), route.GetPreviousRouteStop(this).GetPlanet().GetOrbiter());
+    }
+
+    public int GetMinTravelTime(Orbiter start, Orbiter end)
     {
         Vector3 startCentrePos = start.GetCentrePos();
         Vector3 endCentrePos = end.GetCentrePos();
@@ -47,6 +89,7 @@ public class RouteStop
         float xzDistance = start.DistanceFromCentre() + end.DistanceFromCentre() + Vector2.Distance(new(startCentrePos.x, startCentrePos.z), new(endCentrePos.x, endCentrePos.z));
         float yDistance = Mathf.Abs(startCentrePos.y - endCentrePos.y);
         float maxDistance = Mathf.Sqrt(Mathf.Pow(xzDistance, 2) + Mathf.Pow(yDistance, 2));
+        float maxAcceleration = route.GetShip().GetMaxAcceleration();
 
         for (int i = 1; i < 100; i++)
         {

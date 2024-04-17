@@ -29,7 +29,7 @@ public class RouteMaker : MonoBehaviour
         universe.SetActiveRouteMaker(this);
         universe.HandleRouteMaker();
 
-        route = new();
+        route = new(ship);
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -37,7 +37,11 @@ public class RouteMaker : MonoBehaviour
         exitButton.clicked += Close;
 
         Button createButton = root.Q<Button>("createbutton");
-        createButton.clicked += () => { route.Create(); };
+        createButton.clicked += () => 
+        { 
+            route.Create();
+            Close();
+        };
 
         stopList = root.Q<ScrollView>("stoplist");
         stopList.mouseWheelScrollSize = 100.0f;
@@ -67,7 +71,7 @@ public class RouteMaker : MonoBehaviour
 
     private void MakeStopManager(RouteStop routeStop)
     {
-        if (previousStopManager != null) { uiController.RemoveLastFromUIStack(); }
+        if (previousStopManager != null) { previousStopManager.GetComponent<StopManager>().Close(this); }
         stopManager = Instantiate(stopManagerPrefab);
         UIDocument stopManagerUI = stopManager.GetComponent<UIDocument>();
         stopManager.GetComponent<StopManager>().MakeStopManager(this, routeStop, stopList, ship);

@@ -12,7 +12,7 @@ public class PlanetResourceHandler
     {
         foreach (ResourceCount resourceCount in resourceCounts)
         {
-            resourceCount.amount += resourceCount.perCycle;
+            resourceCount.amount += resourceCount.secondAmount;
         }
     }
 
@@ -21,7 +21,7 @@ public class PlanetResourceHandler
         ResourceCount resourceCount = GetResourceCount(resource);
         if (resourceCount != null)
         {
-            resourceCount.perCycle += perCycle;
+            resourceCount.secondAmount += perCycle;
             //Debug.Log(resourceCount.perCycle + " : " + perCycle + " add");
         }
         else resourceCounts.Add(new ResourceCount(resource, 0, perCycle));
@@ -30,7 +30,7 @@ public class PlanetResourceHandler
     public void RemoveperCycle(Resource resource, int perCycle)
     {
         ResourceCount resourceCount = GetResourceCount(resource);
-        resourceCount.perCycle += perCycle;
+        resourceCount.secondAmount += perCycle;
     }
 
     public void RemoveResouce(Resource resource, int amount)

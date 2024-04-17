@@ -61,6 +61,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50071ac35d02184b8092555dbe7cfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
   resourceTemplate: {fileID: 9197481963319205126, guid: a4b53f226e54fe74c9a00158dc7dfb25, type: 3}
   tradeableResourceTemplate: {fileID: 9197481963319205126, guid: ef5d8834cd334e14c8dc98aaac48fb57, type: 3}
-  inventory: {fileID: 0}

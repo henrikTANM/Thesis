@@ -59,9 +59,9 @@ public class Acceleration : MonoBehaviour
         Vector3 startCentrePos = start.GetCentrePos();
         Vector3 endCentrePos = end.GetCentrePos();
 
-        float xzDistance = start.DistanceFromCentre() + end.DistanceFromCentre() + Vector2.Distance(new(startCentrePos.x, startCentrePos.z), new(endCentrePos.x, endCentrePos.z));
-        float yDistance = Mathf.Abs(startCentrePos.y - endCentrePos.y);
-        float maxDistance = Mathf.Sqrt(Mathf.Pow(xzDistance, 2) + Mathf.Pow(yDistance, 2));
+        //float xzDistance = start.DistanceFromCentre() + end.DistanceFromCentre() + Vector2.Distance(new(startCentrePos.x, startCentrePos.z), new(endCentrePos.x, endCentrePos.z));
+        //float yDistance = Mathf.Abs(startCentrePos.y - endCentrePos.y);
+        //float maxDistance = Mathf.Sqrt(Mathf.Pow(xzDistance, 2) + Mathf.Pow(yDistance, 2));
 
         transform.position = startPos;
         //print(startPos + " : " + endPos);
