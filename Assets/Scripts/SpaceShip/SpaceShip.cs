@@ -27,40 +27,16 @@ public class SpaceShip: MonoBehaviour
         NON_WARP
     }
 
-    private void Awake()
-    {
-        
-    }
-
-    private void OnDestroy()
-    {
-        
-    }
-
     private void Update()
     {
-        StartMoving();
+        Moving();
     }
 
-    void StartMoving()
+    void Moving()
     {
         if (HasRoute() & !travelling & !routePaused)
         {
-            if (route.ContainsPlanet(currentPlanet))
-            {
-                Planet startPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
-                route.ProgressRoute();
-                Planet endPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
-                currentPlanet = endPlanet;
-
-                motionSimulator.StartMoving(
-                    startPlanet.GetOrbiter(), 
-                    endPlanet.GetOrbiter(), 
-                    route.GetRouteStop(route.GetCurrentRouteIndex()).GetTravelTime()
-                    );
-                travelling = true;
-            }
-            else
+            if (currentPlanet != route.GetRouteStop(0).GetPlanet())
             {
                 RouteStop firstRouteStop = route.GetRouteStop(0);
 
@@ -70,6 +46,20 @@ public class SpaceShip: MonoBehaviour
                     firstRouteStop.GetMinTravelTime(currentPlanet.GetOrbiter(), firstRouteStop.GetPlanet().GetOrbiter())
                     );
                 currentPlanet = firstRouteStop.GetPlanet();
+                travelling = true;
+            }
+            else
+            {
+                Planet startPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
+                route.ProgressRoute();
+                Planet endPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
+                currentPlanet = endPlanet;
+
+                motionSimulator.StartMoving(
+                    startPlanet.GetOrbiter(),
+                    endPlanet.GetOrbiter(),
+                    route.GetRouteStop(route.GetCurrentRouteIndex()).GetTravelTime()
+                    );
                 travelling = true;
             }
         } 
@@ -87,7 +77,6 @@ public class SpaceShip: MonoBehaviour
         this.maxAcceleration = maxAcceleration;
         this.currentPlanet = currentPlanet;
         transform.position = currentPlanet.transform.position;
-        //transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
     }
 
     public string GetName() { return name; }
@@ -95,25 +84,27 @@ public class SpaceShip: MonoBehaviour
     public float GetMaxAcceleration() {  return maxAcceleration; }
 
     public void SetTravelling(bool travelling) { this.travelling = travelling; }
-    public void setRoute(Route route) { this.route = route; }
-    public void setRoutePaused(bool paused) { routePaused = paused; }
+    public void SetRoute(Route route) { this.route = route; }
 
     public bool IsRoutePaused() { return routePaused; }
     public bool HasRoute() { return route != null; }
-    public void RemoveRoute() { route = null; }
 
     public void Sell()
     {
-
+        if (HasRoute()) RemoveRoute();
+        //TODO add money back
     }
 
-    private void PauseRoute()
+    public void RemoveRoute()
     {
-
+        if (!routePaused) route.RemoveRoutePersCycles();
+        route = null;
     }
 
-    private void Travel(Planet startPlanet, Planet endPlanet)
+    public void ChangeRoutePaused()
     {
-        
+        routePaused = !routePaused;
+        if (routePaused) route.RemoveRoutePersCycles();
+        else route.AddRoutePersCycles();
     }
 }

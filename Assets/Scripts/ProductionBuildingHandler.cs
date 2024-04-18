@@ -44,7 +44,7 @@ public class ProductionBuildingHandler
             planetResourceHandler.AddPerCycle(outputResource.resource, outputResource.amount);
             foreach (ResourceAmount inputResourcePerCycle in inputResources)
             {
-                planetResourceHandler.AddPerCycle(inputResourcePerCycle.resource, -inputResourcePerCycle.amount);
+                planetResourceHandler.RemoveperCycle(inputResourcePerCycle.resource, inputResourcePerCycle.amount);
             }
         }
         else
@@ -52,7 +52,7 @@ public class ProductionBuildingHandler
             planetResourceHandler.RemoveperCycle(outputResource.resource, -outputResource.amount);
             foreach (ResourceAmount inputResourcePerCycle in inputResources)
             {
-                planetResourceHandler.RemoveperCycle(inputResourcePerCycle.resource, inputResourcePerCycle.amount);
+                planetResourceHandler.AddPerCycle(inputResourcePerCycle.resource, inputResourcePerCycle.amount);
             }
         }
     }

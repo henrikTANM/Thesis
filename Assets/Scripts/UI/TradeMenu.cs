@@ -70,9 +70,9 @@ public class TradeMenu : MonoBehaviour
             Label sellPrice = sellableResource.Q<Label>("price");
 
             Button sellMinusButton = sellableResource.Q<Button>("minusbutton");
-            sellMinusButton.clicked += () => { ModifySellAmount(planet, resource, buyCount, buyPrice, -1); };
+            sellMinusButton.clicked += () => { ModifySellAmount(planet, resource, sellCount, sellPrice, -1); };
             Button sellPlusButton = sellableResource.Q<Button>("plusbutton");
-            sellPlusButton.clicked += () => { ModifySellAmount(planet, resource, buyCount, buyPrice, 1); };
+            sellPlusButton.clicked += () => { ModifySellAmount(planet, resource, sellCount, sellPrice, 1); };
 
             Button sellButton = sellableResource.Q<Button>("buybutton");
             sellButton.clicked += () => 
@@ -152,6 +152,8 @@ public class TradeMenu : MonoBehaviour
 
     private void sellResources(Resource resource, Label amount, Label price, Planet planet)
     {
+        planet.GetPlanetResourceHandler().RemoveResouce(resource, int.Parse(amount.text));
+        inventory.AddMoney(int.Parse(price.text));
         planet.UpdateResourceDisplays();
     }
 

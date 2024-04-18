@@ -22,7 +22,7 @@ public class CameraMovementHandler : MonoBehaviour
     private UniverseHandler universe;
 
     [SerializeField] private Transform target;
-    private float distanceFromTarget = 250.0f;
+    private float distanceFromTarget = 2500.0f;
 
     Vector3 targetPosition;
 
@@ -69,7 +69,8 @@ public class CameraMovementHandler : MonoBehaviour
         {
             //print(distanceFromTarget + " : " + target.localScale.x * 7.5f);
             float newDistanceFromTarget = distanceFromTarget + scrollWheelAxis * -distanceFromTarget;
-            distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 7.5f, target.localScale.x * 10.0f);
+            //distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 7.5f, target.localScale.x * 10.0f);
+            distanceFromTarget = Mathf.Clamp(newDistanceFromTarget, target.localScale.x * 2.5f, target.localScale.x * 20.0f);
             ChangePosition();
         }
 
@@ -111,14 +112,14 @@ public class CameraMovementHandler : MonoBehaviour
         {
             Star parentStar = universe.GetActivePlanet().parentStar;
             universe.SetLastActivePlanetInactive();
-            MoveToTarget(parentStar.transform, parentStar.nativeScale * 7.5f, false);
+            MoveToTarget(parentStar.transform, parentStar.nativeScale, false);
             parentStar.ScalePlanetsToNative();
-            parentStar.SetStarBodyScale(1.0f);
+            parentStar.ScaleToSize(1.0f, false);
         }
     }
 
     void MoveToClusterView()
     {
-        MoveToTarget(universe.transform, 250.0f, true);
+        MoveToTarget(universe.transform, 2500.0f, true);
     }
 }

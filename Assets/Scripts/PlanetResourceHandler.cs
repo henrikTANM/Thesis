@@ -8,6 +8,14 @@ public class PlanetResourceHandler
 {
     List<ResourceCount> resourceCounts = new();
 
+    public PlanetResourceHandler(List<Resource> resources)
+    {
+        foreach (Resource resource in resources)
+        {
+            resourceCounts.Add(new ResourceCount(resource, 0, 0));
+        }
+    }
+
     public void UpdateResourceCounts()
     {
         foreach (ResourceCount resourceCount in resourceCounts)
@@ -16,34 +24,28 @@ public class PlanetResourceHandler
         }
     }
 
-    public void AddPerCycle(Resource resource, int perCycle)
-    {
-        ResourceCount resourceCount = GetResourceCount(resource);
-        if (resourceCount != null)
-        {
-            resourceCount.secondAmount += perCycle;
-            //Debug.Log(resourceCount.perCycle + " : " + perCycle + " add");
-        }
-        else resourceCounts.Add(new ResourceCount(resource, 0, perCycle));
-    }
-
-    public void RemoveperCycle(Resource resource, int perCycle)
+    public void AddPerCycle(Resource resource, float perCycle)
     {
         ResourceCount resourceCount = GetResourceCount(resource);
         resourceCount.secondAmount += perCycle;
     }
 
-    public void RemoveResouce(Resource resource, int amount)
+    public void AddResouce(Resource resource, float amount)
+    {
+        ResourceCount resourceCount = GetResourceCount(resource);
+        resourceCount.amount += amount;
+    }
+
+    public void RemoveperCycle(Resource resource, float perCycle)
+    {
+        ResourceCount resourceCount = GetResourceCount(resource);
+        resourceCount.secondAmount -= perCycle;
+    }
+
+    public void RemoveResouce(Resource resource, float amount)
     {
         ResourceCount resourceCount = GetResourceCount(resource);
         resourceCount.amount -= amount;
-    }
-
-    public void AddResouce(Resource resource, int amount)
-    {
-        ResourceCount resourceCount = GetResourceCount(resource);
-        if (resourceCount != null) resourceCount.amount += amount;
-        else resourceCounts.Add(new ResourceCount(resource, amount, 0));
     }
 
     public ResourceCount GetResourceCount(Resource resource)

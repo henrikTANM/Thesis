@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SpaceBody : MonoBehaviour
 {
+    public GameObject body;
+
     private string name;
 
     public SpriteRenderer hoverOver;
@@ -23,7 +25,7 @@ public class SpaceBody : MonoBehaviour
 
         cameraMovementHandler = GameObject.Find("Main Camera").GetComponent<CameraMovementHandler>();
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
-        collider = GetComponent<SphereCollider>();
+        collider = GetComponentInChildren<SphereCollider>();
         nameTagCanvas = GetComponentInChildren<Canvas>();
 
         collider.radius = 2.0f;
@@ -78,13 +80,11 @@ public class SpaceBody : MonoBehaviour
         nameTagCanvas.enabled = false;
     }
 
-    public void ScaleToSize(float size)
+    public void ScaleToSize(float size, bool overTime)
     {
-        StartCoroutine(ScaleOverTime(transform, new(size, size, size), 0.5f));
+        if (overTime) StartCoroutine(ScaleOverTime(body.transform, new(size, size, size), 0.5f));
+        else body.transform.localScale = new(size, size, size);
     }
 
-    public void ScaleToNative()
-    {
-        ScaleToSize(nativeScale);
-    }
+    public void ScaleToNative() { ScaleToSize(nativeScale, false); }
 }

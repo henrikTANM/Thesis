@@ -33,13 +33,15 @@ public class Planet : SpaceBody
 
     private BuildingSlot specialBuildingSlot;
 
-    private PlanetResourceHandler planetResourceHandler = new();
+    private PlanetResourceHandler planetResourceHandler;
     private List<ProductionBuildingHandler> productionBuildingHandlers = new();
     private List<Resource> tradeableResources = new();
 
     private Sprite settlementSprite;
 
     private PlayerInventory inventory;
+
+    [SerializeField] private UniverseHandler universe;
 
     protected override void Awake()
     {
@@ -48,6 +50,8 @@ public class Planet : SpaceBody
 
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
         inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
+        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+        planetResourceHandler = new(universe.allResources);
     }
 
     protected override void OnDestroy()
@@ -56,20 +60,14 @@ public class Planet : SpaceBody
         ResourceEvents.OnCycleChange -= () => UpdateResources(true);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
         material.SetVector("_SunlightDirection", lightDirection);
         material.SetFloat("_TimeValue", universe.timeValue);
         nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
         nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
-    }
-
-    void Update()
-    {
-
-        nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
-        nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
+        collider.radius = body.transform.localScale.x;
     }
 
     private void OnMouseDown()
@@ -89,7 +87,7 @@ public class Planet : SpaceBody
             {
                 SetSelected(true);
                 StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
-                cameraMovementHandler.MoveToTarget(transform, transform.localScale.x * 10.0f * scaleDownMultiplier, false);
+                cameraMovementHandler.MoveToTarget(body.transform, nativeScale, false);
                 StartCoroutine(ShowPlanetMenu(true));
             }
         }
@@ -98,23 +96,22 @@ public class Planet : SpaceBody
     public void SetSelected(bool selected)
     {
         this.selected = selected;
-        collider.radius = selected ? 0.5f : 2.0f;
+        //collider.radius = selected ? 0.5f : 2.0f;
         orbitLine.SetActive(!selected);
 
         if (selected)
         {
             universe.SetLastActivePlanetInactive();
             universe.SetActivePlanet(this);
-            parentStar.SetStarBodyScale(scaleDownMultiplier);
-            foreach (Planet planet in parentStar.planets) planet.ScaleToSize(planet.nativeScale * scaleDownMultiplier);
-            //foreach (SpaceShip ship in inventory.GetOwnedShips()) ship.GetComponent<MotionSimulator>().body.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+            parentStar.ScaleToSize(scaleDownMultiplier, false);
+            foreach (Planet planet in parentStar.planets) planet.ScaleToSize(planet.nativeScale * scaleDownMultiplier, false);
         }
     }
 
     public void SetVisible(bool visible)
     {
         GetComponent<SphereCollider>().enabled = visible;
-        GetComponent<MeshRenderer>().enabled = visible;
+        body.GetComponent<MeshRenderer>().enabled = visible;
         nameTagCanvas.enabled = visible;
     }
 
@@ -289,7 +286,7 @@ public class Planet : SpaceBody
 
     IEnumerator ShowPlanetMenu(bool fromSystemView)
     {
-        if (fromSystemView) yield return new WaitForSeconds(0.5f);
+        if (fromSystemView) yield return new WaitForSeconds(0.3f);
         MakePlanetMenu();
     }
 

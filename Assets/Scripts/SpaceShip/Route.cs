@@ -16,7 +16,8 @@ public class Route
 
     public void Create()
     {
-        ship.setRoute(this);
+        ship.SetRoute(this);
+        AddRoutePersCycles();
     }
 
     public int GetCurrentRouteIndex() { return currentRouteIndex; }
@@ -73,5 +74,31 @@ public class Route
             if (routeStop.GetPlanet() == planet) return true;
         }
         return false;
+    }
+
+    public void AddRoutePersCycles()
+    {
+        foreach (RouteStop routeStop in routeStops)
+        {
+            PlanetResourceHandler planetResourceHandler = routeStop.GetPlanet().GetPlanetResourceHandler();
+
+            foreach (ResourceCount resourceCount in routeStop.GetPlanetState())
+            {
+                planetResourceHandler.AddPerCycle(resourceCount.resource, resourceCount.amount);
+            }
+        }
+    }
+
+    public void RemoveRoutePersCycles()
+    {
+        foreach (RouteStop routeStop in routeStops)
+        {
+            PlanetResourceHandler planetResourceHandler = routeStop.GetPlanet().GetPlanetResourceHandler();
+
+            foreach (ResourceCount resourceCount in routeStop.GetPlanetState())
+            {
+                planetResourceHandler.RemoveperCycle(resourceCount.resource, resourceCount.amount);
+            }
+        }
     }
 }

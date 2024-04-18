@@ -7,7 +7,7 @@ using UnityEngine;
 public class UniverseGenerator : MonoBehaviour
 {
     public int starCount = 20;
-    public float spaceRadius = 100.0f;
+    public float spaceRadius = 1000.0f;
 
     public GameObject starPrefab;
     public GameObject planetPrefab;
@@ -32,7 +32,7 @@ public class UniverseGenerator : MonoBehaviour
             bool generatePos = true;
             foreach (Vector3 starPosition in starPositions)
             {
-                if (Vector3.Distance(newStarPosition, starPosition) < 20.0f) generatePos = false;
+                if (Vector3.Distance(newStarPosition, starPosition) < 200.0f) generatePos = false;
             }
             if (generatePos) starPositions.Add(newStarPosition);
         }
@@ -51,10 +51,10 @@ public class UniverseGenerator : MonoBehaviour
             StarValues newStarValues = starValues.ElementAt(UnityEngine.Random.Range(0, starValues.Count));
 
             float scale = newStarValues.scale;
-            newStar.transform.localScale = new Vector3(scale, scale, scale);
 
             Star star = newStar.GetComponent<Star>();
-            star.nativeScale = scale;
+            star.nativeScale = scale * 10.0f;
+            star.ScaleToSize(star.nativeScale, false);
 
             star.SetName(newStarValues.starNames.ElementAt(UnityEngine.Random.Range(0, newStarValues.starNames.Count)));
 
@@ -62,7 +62,7 @@ public class UniverseGenerator : MonoBehaviour
             foreach (Planet planet in star.planets) planet.SetVisible(false);
             foreach (LineRenderer lineRenderer in star.GetComponentsInChildren<LineRenderer>()) lineRenderer.enabled = false;
 
-            Material starMaterial = star.starBody.GetComponent<MeshRenderer>().material;
+            Material starMaterial = star.body.GetComponent<MeshRenderer>().material;
             starMaterial.SetColor("_Base_color", newStarValues.color);
             starMaterial.SetColor("_CellColor", newStarValues.cellColor);
             starMaterial.SetFloat("_CellDensity", newStarValues.cellDensity);
@@ -113,25 +113,24 @@ public class UniverseGenerator : MonoBehaviour
             newPlanet.transform.position += planetPositions.ElementAt(i);
 
             float scale = UnityEngine.Random.Range(newPlanetValues.scale.x, newPlanetValues.scale.y);
-            newPlanet.transform.localScale = new Vector3(scale, scale, scale);
 
-            MeshRenderer meshRenderer = newPlanet.GetComponent<MeshRenderer>();
-            Material material = meshRenderer.material;
-
-            Texture2D randomPlanetTexture = newPlanetValues.planetTextures.ElementAt(UnityEngine.Random.Range(0, newPlanetValues.planetTextures.Count));
-            Texture2D randomCloudsTexture = newPlanetValues.cloudTextures.Count > 0 ? newPlanetValues.cloudTextures.ElementAt(UnityEngine.Random.Range(0, newPlanetValues.cloudTextures.Count)) : null;
-            material.SetTexture("_PlanetTexture", randomPlanetTexture);
-            if (randomCloudsTexture != null)
-            {
-                material.SetTexture("_CloudsTexture", randomCloudsTexture);
-            }
+            
 
             Orbiter orbiter = newPlanet.GetComponent<Orbiter>();
             orbiter.SetCentre(star.transform);
             orbiter.SetOrbitSpeed(UnityEngine.Random.Range(0.1f, 0.5f));
 
             Planet planet = newPlanet.GetComponent<Planet>();
-            planet.nativeScale = scale;
+
+            MeshRenderer meshRenderer = planet.body.GetComponent<MeshRenderer>();
+            Material material = meshRenderer.material;
+
+            Texture2D randomPlanetTexture = newPlanetValues.planetTextures.ElementAt(UnityEngine.Random.Range(0, newPlanetValues.planetTextures.Count));
+            Texture2D randomCloudsTexture = newPlanetValues.cloudTextures.Count > 0 ? newPlanetValues.cloudTextures.ElementAt(UnityEngine.Random.Range(0, newPlanetValues.cloudTextures.Count)) : null;
+            material.SetTexture("_PlanetTexture", randomPlanetTexture);
+
+            planet.nativeScale = scale * 2.0f;
+            planet.ScaleToSize(planet.nativeScale, false);
             planet.material = material;
             planet.type = newPlanetValues.planetType;
 
@@ -144,6 +143,11 @@ public class UniverseGenerator : MonoBehaviour
 
             planet.SetSettlementSprite(settlementSprites.ElementAt(UnityEngine.Random.Range(0, settlementSprites.Count())));
             planet.GenerateDeposits(newPlanetValues.possibleDeposits, UnityEngine.Random.Range(1, newPlanetValues.depositCap));
+
+            if (randomCloudsTexture != null)
+            {
+                material.SetTexture("_CloudsTexture", randomCloudsTexture);
+            }
 
             planets.Add(planet);
 

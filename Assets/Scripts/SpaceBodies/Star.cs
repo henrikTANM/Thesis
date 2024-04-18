@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class Star : SpaceBody
 {
-    public GameObject starBody;
+    //public GameObject starBody;
     [NonSerialized] public List<Planet> planets;
     [NonSerialized] public Material material;
 
@@ -27,6 +27,7 @@ public class Star : SpaceBody
         nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
 
         material.SetFloat("_TimeValue", universe.timeValue);
+        collider.radius = body.transform.localScale.x;
     }
 
     private void OnMouseDown()
@@ -35,7 +36,7 @@ public class Star : SpaceBody
         {
             SetSelected(true, false);
             StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
-            cameraMovementHandler.MoveToTarget(transform, nativeScale * 7.5f, false);
+            cameraMovementHandler.MoveToTarget(body.transform, nativeScale, false);
         }
     }
 
@@ -47,7 +48,7 @@ public class Star : SpaceBody
     public void SetSelected(bool selected, bool universeView)
     {   
         this.selected = selected;
-        collider.radius = selected ? 0.5f : 2.0f;
+        //collider.radius = selected ? 0.5f : 2.0f;
         nameTagCanvas.enabled = selected;
 
         foreach (Planet planet in planets) planet.SetVisible(selected);
@@ -55,16 +56,10 @@ public class Star : SpaceBody
 
         if (selected)
         {
-            ScaleToNative();
-            SetStarBodyScale(1.0f);
+            ScaleToSize(1.0f, false);
             foreach (Star star in universe.stars) if (star != this) star.SetSelected(false, false);
         }
-        else if (!universeView) ScaleToSize(0.25f);
-        else SetStarBodyScale(1.0f);
-    }
-
-    public void SetStarBodyScale(float scale)
-    {
-        starBody.transform.localScale = new(scale, scale, scale);
+        else if (!universeView) ScaleToSize(nativeScale / 8, false);
+        else ScaleToSize(nativeScale, false);
     }
 }

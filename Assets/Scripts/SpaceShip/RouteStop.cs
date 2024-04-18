@@ -32,7 +32,7 @@ public class RouteStop
     public void SetTravelTime(int travelTime) { this.travelTime = travelTime; }
 
     public List<ResourceCount> GetShipState() { return shipState; }
-    //public List<ResourceCount> GetPlanetState() { return planetState; }
+    public List<ResourceCount> GetPlanetState() { return planetState; }
 
     public Route Route() { return route; }
     public int GetTravelTime() { return travelTime; }

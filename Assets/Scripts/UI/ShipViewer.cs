@@ -48,7 +48,7 @@ public class ShipViewer : MonoBehaviour
             cancelButton.clicked += ship.RemoveRoute;
 
             Button pauseButton = routeButtonsContainer.Q<Button>("pausebutton");
-            pauseButton.clicked += () => { ship.setRoutePaused(!ship.IsRoutePaused()); };
+            pauseButton.clicked += ship.ChangeRoutePaused;
 
             routeButtons.Add(routeButtonsContainer);
         }

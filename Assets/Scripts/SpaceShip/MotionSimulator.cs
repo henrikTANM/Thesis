@@ -32,7 +32,6 @@ public class MotionSimulator : MonoBehaviour
     {
         if (moving)
         {
-
             if (Vector3.Distance(transform.position, endPos) <= halfDistance)
             {
                 mainPartycleSystem.startLifetime = Vector3.Distance(transform.position, endPos) / halfDistance;
@@ -41,7 +40,7 @@ public class MotionSimulator : MonoBehaviour
             } 
             else
             {
-                mainPartycleSystem.startLifetime = halfDistance / Vector3.Distance(transform.position, endPos);
+                mainPartycleSystem.startLifetime = Vector3.Distance(transform.position, startPos) / halfDistance;
             }
 
             float deltaV = (breaking ? -acceleration : acceleration) * Time.fixedDeltaTime;
@@ -50,6 +49,7 @@ public class MotionSimulator : MonoBehaviour
             {
                 moving = false;
                 ship.SetTravelling(false);
+                booster.Pause();
             }
             else
             {
@@ -62,8 +62,8 @@ public class MotionSimulator : MonoBehaviour
     public void StartMoving(Orbiter start, Orbiter end, int traveltime)
     {
         print(traveltime);
-        startPos = start.transform.position + Vector3.up / 10;
-        endPos = end.GetPosIn(traveltime * universe.cycleLength) + Vector3.up / 10;
+        startPos = start.transform.position + Vector3.up / 5;
+        endPos = end.GetPosIn(traveltime * universe.cycleLength) + Vector3.up / 5;
 
         transform.position = startPos;
         flightDirection = Vector3.Normalize(endPos - startPos);
@@ -76,5 +76,6 @@ public class MotionSimulator : MonoBehaviour
         acceleration = (2 * halfDistance) / Mathf.Pow((traveltime * universe.cycleLength) / 2.0f, 2);
 
         moving = true;
+        booster.Play();
     }
 }

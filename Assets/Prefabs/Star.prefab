@@ -134,6 +134,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9081544082863264195}
+  - {fileID: 6844702128607686915}
   m_Father: {fileID: 5168611588057210813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &641092923229209649
@@ -253,8 +254,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Star
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 54858c8266caec24983a1e834491a067, type: 2}
+  m_sharedMaterial: {fileID: 7673108437190724197, guid: 54858c8266caec24983a1e834491a067, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -347,10 +348,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5168611588057210813}
+  m_Father: {fileID: 6365116971343936724}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4614879503484443993
 SpriteRenderer:
@@ -414,7 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5168611588057210813}
   - component: {fileID: 6960199347420839591}
-  - component: {fileID: 2203100350575688320}
+  - component: {fileID: 1362505376237999730}
   m_Layer: 0
   m_Name: Star
   m_TagString: Untagged
@@ -436,7 +437,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6365116971343936724}
-  - {fileID: 6844702128607686915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6960199347420839591
@@ -451,9 +451,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c506acd3aa4819b40842d14acc5dcbca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  body: {fileID: 1168922734153814971}
   hoverOver: {fileID: 4614879503484443993}
-  starBody: {fileID: 1168922734153814971}
---- !u!135 &2203100350575688320
+--- !u!135 &1362505376237999730
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -472,5 +472,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
