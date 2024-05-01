@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PlanetTexture:
-        m_Texture: {fileID: 2800000, guid: 04c66185d1e994d40a200a6a757f5ad9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
@@ -68,6 +68,7 @@ Material:
     - _Blend: 0
     - _CastShadows: 1
     - _CloudsMoving: 0
+    - _CloudsSpeed: 200
     - _Cull: 2
     - _DstBlend: 0
     - _EdgeIntensity: 6
@@ -77,6 +78,7 @@ Material:
     - _RotationSpeed: 250
     - _SrcBlend: 1
     - _Surface: 0
+    - _TimeRunning: 1
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0

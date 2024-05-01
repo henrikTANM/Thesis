@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class EscapeMenu : MonoBehaviour
@@ -28,7 +29,7 @@ public class EscapeMenu : MonoBehaviour
         // optionsButton.clicked += ;
 
         Button exitButton = root.Q<Button>("ExitToMenuButton");
-        // exitButton.clicked += ;
+        exitButton.clicked += ExitToMenu;
 
         Button quitButton = root.Q<Button>("QuitGameButton");
         quitButton.clicked += Application.Quit;
@@ -38,5 +39,10 @@ public class EscapeMenu : MonoBehaviour
     {
         uiController.RemoveLastFromUIStack();
         universe.HandleEscapeMenu();
+    }
+
+    private void ExitToMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
     }
 }
