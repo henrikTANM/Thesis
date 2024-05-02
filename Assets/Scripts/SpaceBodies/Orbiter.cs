@@ -18,9 +18,9 @@ public class Orbiter : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (universe.timeRunning) transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.fixedDeltaTime);
+        if (universe.timeRunning) transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.deltaTime);
     }
 
     public Vector3 GetPosIn(float t)
@@ -32,9 +32,9 @@ public class Orbiter : MonoBehaviour
     private Vector3 Orbit(Vector3 orbiterPos, Vector3 centre, Vector3 axis, float angle)
     {
         Quaternion quaternion = Quaternion.AngleAxis(angle, axis);
-        Vector3 vector2 = orbiterPos - centre;
-        vector2 = quaternion * vector2;
-        return centre + vector2;
+        Vector3 vector3 = orbiterPos - centre;
+        vector3 = quaternion * vector3;
+        return centre + vector3;
     }
 
     public float DistanceFromCentre()

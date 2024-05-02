@@ -9,9 +9,9 @@ public class OrbiterTest : MonoBehaviour
     public float orbitSpeed;
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.fixedDeltaTime);
+        transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.deltaTime);
     }
 
     public Vector3 GetPosIn(float t)

@@ -37,16 +37,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CellDensity: 5
-    - _CellSpeed: 0.5
+    - _CellDensity: 7
+    - _CellSpeed: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SolarFlare: -1
+    - _SolarFlare: -1.2
     - _TimeRunning: 1
     - _TimeValue: 10
     m_Colors:
-    - _Base_color: {r: 0.6933962, g: 1, b: 0.9674381, a: 0}
-    - _CellColor: {r: 0, g: 1, b: 0.91234493, a: 0}
+    - _Base_color: {r: 0.16862746, g: 0.27450982, b: 0.27450982, a: 0}
+    - _CellColor: {r: 0.007843138, g: 0.007843138, b: 0.07450981, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2017676552932560780
 MonoBehaviour:

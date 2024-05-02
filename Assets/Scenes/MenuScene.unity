@@ -424,7 +424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56426165d6044d74680b6e989bfb7df8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 802931993}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +594,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 13e6d85f4acb4fb45b7f6a380845925a, type: 2}
+  sharedProfile: {fileID: 11400000, guid: c1b571e3d5ce2ca43a118d57533b2199, type: 2}
 --- !u!4 &1160234427
 Transform:
   m_ObjectHideFlags: 0
@@ -745,6 +744,7 @@ GameObject:
   - component: {fileID: 1765301967}
   - component: {fileID: 1765301966}
   - component: {fileID: 1765301965}
+  - component: {fileID: 1765301968}
   m_Layer: 0
   m_Name: s
   m_TagString: Untagged
@@ -838,6 +838,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765301963}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1765301968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765301963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de50625b90ed2dc44ae2c41f7269483b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

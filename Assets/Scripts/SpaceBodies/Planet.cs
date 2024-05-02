@@ -65,9 +65,16 @@ public class Planet : SpaceBody
         Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
         material.SetVector("_SunlightDirection", lightDirection);
         material.SetFloat("_TimeValue", universe.timeValue);
-        nameTagCanvas.transform.LookAt(cameraMovementHandler.transform);
-        nameTagCanvas.transform.Rotate(new(0.0f, 180.0f, 0.0f));
+
         collider.radius = body.transform.localScale.x;
+    }
+
+    private void LateUpdate()
+    {
+        nameTagCanvas.transform.LookAt(
+            nameTagCanvas.transform.position + Camera.main.transform.rotation * Vector3.forward,
+            Camera.main.transform.rotation * Vector3.up
+            );
     }
 
     private void OnMouseDown()
