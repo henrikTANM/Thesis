@@ -65,7 +65,7 @@ public class BuildingViewerMenu : MonoBehaviour
 
         VisualElement refundList = root.Q<VisualElement>("refund");
         refundList.Clear();
-        foreach (ProductionBuilding.ResourceAmount buildingCost in productionBuildingHandler.GetCostAmounts())
+        foreach (ResourceAmount buildingCost in productionBuildingHandler.GetCostAmounts())
         {
             VisualElement buildingCostTemplate = resourceNeedTemplate.Instantiate();
             buildingCostTemplate.Q<Label>("need").text = (buildingCost.amount / 2).ToString();
@@ -77,7 +77,7 @@ public class BuildingViewerMenu : MonoBehaviour
 
         VisualElement inputList = root.Q<VisualElement>("inputlist");
         inputList.Clear();
-        foreach (ProductionBuilding.ResourceAmount resourceNeed in productionBuildingHandler.GetInputResources())
+        foreach (ResourceAmount resourceNeed in productionBuildingHandler.GetInputResources())
         {
             VisualElement buildingNeedTemplate = resourceNeedTemplate.Instantiate();
             buildingNeedTemplate.Q<Label>("need").text = resourceNeed.amount + "/Cycle";

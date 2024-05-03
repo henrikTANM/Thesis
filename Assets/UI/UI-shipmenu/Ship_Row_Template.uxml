@@ -3,8 +3,8 @@
     <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: column; justify-content: space-around; width: 100%; margin-bottom: 5px;">
         <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="shipviewbutton" class="RouteButton" style="flex-grow: 1; align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row; justify-content: space-around;">
             <ui:Label tabindex="-1" text="ShipName" parse-escape-sequences="true" display-tooltip-when-elided="true" name="name" class="label" />
-            <ui:Label tabindex="-1" text="CargoCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="class" class="label" />
-            <ui:Label tabindex="-1" text="FuelCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="route" class="label" />
+            <ui:Label tabindex="-1" text="CargoCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="route" class="label" />
+            <ui:Label tabindex="-1" text="FuelCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="location" class="label" />
         </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

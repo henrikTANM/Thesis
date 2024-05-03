@@ -65,3 +65,7 @@ MonoBehaviour:
   depositBuildingButtonTemplate: {fileID: 9197481963319205126, guid: ec9408bd44d140b4588f580300629f58, type: 3}
   blockedConstructionSprite: {fileID: 21300000, guid: d3c2e7827b83bdb4999af730954cd6bc, type: 3}
   tradeMenuPrefab: {fileID: 8665136622434377338, guid: f8f5affd3712bbd418e9ed5a1f815629, type: 3}
+  specialBuildingChooserMenuPrefab: {fileID: 7202837000327844618, guid: 1dfc6f49e66f5634e968348d136ebcc4, type: 3}
+  bonusBuildingViewerPrefab: {fileID: 2865475627097863661, guid: ab7591e6586a5854e8c637b993134d39, type: 3}
+  shipyardMenuPrefab: {fileID: 4495625373100536215, guid: d9c0fdb1e9787194bbe1eda92d232083, type: 3}
+  defaultSpecialButtonImage: {fileID: 21300000, guid: 6399ffa8e802254418a193db7d984179, type: 3}

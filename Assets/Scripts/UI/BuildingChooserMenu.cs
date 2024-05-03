@@ -63,16 +63,7 @@ public class BuildingChooserMenu : MonoBehaviour
 
     private void UpdateSelectedInfo(VisualElement root)
     {
-        if (!buildingSlot.CanBuildBuilding(selectedProductiomBuilding))
-        {
-            buildButton.style.backgroundColor = new StyleColor(failColor);
-            buildButton.SetEnabled(false);
-        }
-        else
-        {
-            buildButton.SetEnabled(true);
-            buildButton.style.backgroundColor = new StyleColor(originalColor);
-        }
+        UpdateBuildButton();
 
         root.Q<Label>("name").text = selectedProductiomBuilding.name;
         root.Q<Label>("upkeep").text = selectedProductiomBuilding.upkeep + "/Cycle";
@@ -88,7 +79,7 @@ public class BuildingChooserMenu : MonoBehaviour
 
         VisualElement costList = root.Q<VisualElement>("costlist");
         costList.Clear();
-        foreach (ProductionBuilding.ResourceAmount buildingCost in selectedProductiomBuilding.cost)
+        foreach (ResourceAmount buildingCost in selectedProductiomBuilding.cost)
         {
             VisualElement buildingCostTemplate = resourceNeedTemplate.Instantiate();
             buildingCostTemplate.Q<Label>("need").text = buildingCost.amount.ToString();
@@ -100,7 +91,7 @@ public class BuildingChooserMenu : MonoBehaviour
 
         VisualElement inputList = root.Q<VisualElement>("inputlist");
         inputList.Clear();
-        foreach (ProductionBuilding.ResourceAmount resourceNeed in selectedProductiomBuilding.inputResources)
+        foreach (ResourceAmount resourceNeed in selectedProductiomBuilding.inputResources)
         {
             VisualElement buildingNeedTemplate = resourceNeedTemplate.Instantiate();
             buildingNeedTemplate.Q<Label>("need").text = resourceNeed.amount + "/Cycle";
@@ -121,17 +112,7 @@ public class BuildingChooserMenu : MonoBehaviour
 
     public void UpdateResourcePanel(Planet planet, UIDocument buildingChooserMenuUI)
     {
-        if (!buildingSlot.CanBuildBuilding(selectedProductiomBuilding))
-        {
-            buildButton.style.backgroundColor = new StyleColor(failColor);
-            buildButton.SetEnabled(false);
-        } 
-        else
-        {
-            buildButton.SetEnabled(true);
-            buildButton.style.backgroundColor = new StyleColor(originalColor);
-        }
-
+        UpdateBuildButton();
 
         VisualElement resourcesPanel = buildingChooserMenuUI.rootVisualElement.Q<VisualElement>("resourcespanel");
         List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
@@ -162,5 +143,19 @@ public class BuildingChooserMenu : MonoBehaviour
             if (resourceContainer.name == resource.name) return resourceContainer;
         }
         return null;
+    }
+
+    private void UpdateBuildButton()
+    {
+        if (!buildingSlot.CanBuildBuilding(selectedProductiomBuilding))
+        {
+            buildButton.style.backgroundColor = new StyleColor(failColor);
+            buildButton.SetEnabled(false);
+        }
+        else
+        {
+            buildButton.SetEnabled(true);
+            buildButton.style.backgroundColor = new StyleColor(originalColor);
+        }
     }
 }

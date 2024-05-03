@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fba62458c3a1a74fb05197568cd97d2, type: 3}
+  m_Name: Advanced logistics
+  m_EditorClassIdentifier: 
+  name: Advanced logistics
+  description: +50% production of advanced resources  and  -50% production of raw
+    resources
+  image: {fileID: 21300000, guid: f2d2a49e40a13404aa3a71f94f3432e6, type: 3}
+  cost:
+  - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
+    amount: 5000
+  - resource: {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
+    amount: 250
+  - resource: {fileID: 11400000, guid: cdeca4be7d3d1a942a000ad13f9bc40f, type: 2}
+    amount: 250

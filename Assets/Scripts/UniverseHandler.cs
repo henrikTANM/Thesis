@@ -63,7 +63,7 @@ public class UniverseHandler : MonoBehaviour
         {
             timeCycleValue = 0.0f;
             cycleCount++;
-            ResourceEvents.CycleChange();
+            GameEvents.CycleChange();
         }
         CycleText.text = timeCycleValue.ToString();
         if (Input.GetKeyDown(KeyCode.Space) & !escapeMenuDisplayed & !routeMakerDisplayed) InputEvents.TimeStateChange();

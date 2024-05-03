@@ -8,7 +8,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="conatiner" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
                 <ui:VisualElement name="VisualElement" style="width: 25%; margin-right: 5px; justify-content: center;">
-                    <ui:Label tabindex="-1" text="STATUS:&#10;ACTIVE" parse-escape-sequences="true" display-tooltip-when-elided="true" name="status" class="textElement" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 14px; margin-bottom: 5px; -unity-text-align: middle-center; margin-right: 0; margin-left: 0;" />
+                    <ui:Label tabindex="-1" text="STATUS:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="status" class="textElement" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 14px; margin-bottom: 5px; -unity-text-align: middle-center; margin-right: 0; margin-left: 0;" />
                     <ui:Button text="ACTIVATE" parse-escape-sequences="true" display-tooltip-when-elided="true" name="activatebutton" class="button" style="width: 100%; height: 15%; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 5px;" />
                     <ui:Button text="DECONSTRUCT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deletebutton" class="button" style="margin-top: 5px; width: 100%; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 15%;" />
                 </ui:VisualElement>
@@ -21,7 +21,7 @@
                                 <ui:Label tabindex="-1" text="Upkeep:" parse-escape-sequences="true" display-tooltip-when-elided="true" class="textElement" style="margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
                                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-items: stretch;">
                                     <ui:Label tabindex="-1" text="100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="upkeep" class="textElement" style="-unity-text-align: middle-right; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 2px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                                    <ui:VisualElement name="moneyicon" style="background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Resource%20Sprites/credit.png?fileID=2800000&amp;guid=5e75744630178934aa5fa4f1ec81d8bf&amp;type=3#credit&apos;); -unity-background-image-tint-color: rgb(247, 159, 63); -unity-background-scale-mode: scale-to-fit; width: 20px; height: 20px; align-self: center;" />
+                                    <ui:VisualElement name="moneyicon" style="background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Resource%20Sprites/credit.png?fileID=2800000&amp;guid=5e75744630178934aa5fa4f1ec81d8bf&amp;type=3#credit&apos;); -unity-background-image-tint-color: rgb(255, 243, 176); -unity-background-scale-mode: scale-to-fit; width: 20px; height: 20px; align-self: center;" />
                                 </ui:VisualElement>
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-direction: row;">

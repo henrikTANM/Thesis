@@ -26,6 +26,7 @@ public class MotionSimulator : MonoBehaviour
     {
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
         mainPartycleSystem = booster.main;
+        SetMoving(false);
     }
 
     void FixedUpdate()
@@ -35,7 +36,7 @@ public class MotionSimulator : MonoBehaviour
             if (Vector3.Distance(transform.position, endPos) <= halfDistance)
             {
                 mainPartycleSystem.startLifetime = Vector3.Distance(transform.position, endPos) / halfDistance;
-                body.transform.localRotation = Quaternion.LookRotation(flightDirection);
+                //body.transform.localRotation = Quaternion.LookRotation(flightDirection);
                 breaking = true;
             } 
             else
@@ -47,9 +48,9 @@ public class MotionSimulator : MonoBehaviour
 
             if (breaking & (currentV + deltaV <= 0.0f))
             {
-                moving = false;
                 ship.SetTravelling(false);
-                booster.Pause();
+                GameEvents.ShipStateChange();
+                SetMoving(false);
             }
             else
             {
@@ -61,7 +62,6 @@ public class MotionSimulator : MonoBehaviour
 
     public void StartMoving(Orbiter start, Orbiter end, int traveltime)
     {
-        print(traveltime);
         startPos = start.transform.position + Vector3.up / 5;
         endPos = end.GetPosIn(traveltime * universe.cycleLength) + Vector3.up / 5;
 
@@ -75,7 +75,15 @@ public class MotionSimulator : MonoBehaviour
         halfDistance = Vector3.Distance(startPos, endPos) / 2.0f;
         acceleration = (2 * halfDistance) / Mathf.Pow((traveltime * universe.cycleLength) / 2.0f, 2);
 
-        moving = true;
-        booster.Play();
+        SetMoving(true);
+    }
+
+    private void SetMoving(bool isMoving)
+    {
+        body.GetComponent<SphereCollider>().enabled = isMoving;
+        body.GetComponent<MeshRenderer>().enabled = isMoving;
+        if (isMoving) { booster.Play(); }
+        else {  booster.Pause(); }
+        moving = isMoving;
     }
 }

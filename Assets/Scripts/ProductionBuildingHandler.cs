@@ -49,7 +49,7 @@ public class ProductionBuildingHandler
         }
         else
         {
-            planetResourceHandler.RemoveperCycle(outputResource.resource, -outputResource.amount);
+            planetResourceHandler.RemoveperCycle(outputResource.resource, outputResource.amount);
             foreach (ResourceAmount inputResourcePerCycle in inputResources)
             {
                 planetResourceHandler.AddPerCycle(inputResourcePerCycle.resource, inputResourcePerCycle.amount);

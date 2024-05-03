@@ -5,27 +5,45 @@ using UnityEngine.UIElements;
 
 public class ShipsMenu : MonoBehaviour
 {
-    UIController uiController;
+    private UIController uiController;
+    private PlayerInventory inventory;
 
     public VisualTreeAsset ownedShipRowTemplate;
 
     [SerializeField] private GameObject shipViewerPrefab;
     private GameObject shipViewer;
 
-    public void MakeShipsMenu(PlayerInventory inventory)
+    private ScrollView shipsList;
+
+    private void Awake()
+    {
+        GameEvents.OnShipStateChange += UpdateShipsList;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnShipStateChange -= UpdateShipsList;
+    }
+
+    public void MakeShipsMenu()
     {
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
+        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
         Button exitButton = root.Q<Button>("exitbutton");
         exitButton.clicked += uiController.RemoveLastFromUIStack;
 
-        ScrollView shipsList = root.Q<ScrollView>("ShipList");
+        shipsList = root.Q<ScrollView>("ShipList");
         shipsList.mouseWheelScrollSize = 500.0f;
 
-        //shipsList.Clear();
+        UpdateShipsList();
+    }
 
+    public void UpdateShipsList()
+    {
+        shipsList.Clear();
         foreach (SpaceShip ship in inventory.GetOwnedShips())
         {
             VisualElement ship_Row = ownedShipRowTemplate.Instantiate();
@@ -34,8 +52,8 @@ public class ShipsMenu : MonoBehaviour
             shipViewButton.clicked += () => { MakeShipViewer(ship); };
 
             ship_Row.Q<Label>("name").text = ship.GetName();
-            ship_Row.Q<Label>("class").text = ship.GetCargoCapacity().ToString();
-            ship_Row.Q<Label>("route").text = "none";
+            ship_Row.Q<Label>("route").text = ship.IsTravelling() ? "On route to -" : "Currently at -";
+            ship_Row.Q<Label>("location").text = ship.GetCurrentPlanet().name;
 
             shipsList.Add(ship_Row);
         }

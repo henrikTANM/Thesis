@@ -63,4 +63,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   createRouteButtonPrefab: {fileID: 9197481963319205126, guid: 816a0feaa5266da4d989301a1a408323, type: 3}
   routeButtonsPrefab: {fileID: 9197481963319205126, guid: c7979489e00c4e64897071dc4f8e6480, type: 3}
+  routeStopNamePrefab: {fileID: 9197481963319205126, guid: 50162f1937876e349a7c7007a2898470, type: 3}
   routeMakerPrefab: {fileID: 467223104719716874, guid: e30b62901bcda3646884d359dbd93714, type: 3}

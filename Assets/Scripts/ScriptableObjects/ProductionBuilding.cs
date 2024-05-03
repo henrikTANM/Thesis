@@ -14,11 +14,4 @@ public class ProductionBuilding : ScriptableObject
 
     public ResourceAmount[] inputResources;
     public ResourceAmount outputResource;
-
-    [Serializable]
-    public class ResourceAmount
-    {
-        public Resource resource;
-        public int amount;
-    }
 }

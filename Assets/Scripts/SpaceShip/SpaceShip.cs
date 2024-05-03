@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpaceShip: MonoBehaviour
 {
     private string name;
-
+    private float fuelCapacity;
     private int cargoCapacity;
     private float maxAcceleration;
 
@@ -36,7 +36,7 @@ public class SpaceShip: MonoBehaviour
     {
         if (HasRoute() & !travelling & !routePaused)
         {
-            if (currentPlanet != route.GetRouteStop(0).GetPlanet())
+            if (!route.ContainsPlanet(currentPlanet))
             {
                 RouteStop firstRouteStop = route.GetRouteStop(0);
 
@@ -47,6 +47,7 @@ public class SpaceShip: MonoBehaviour
                     );
                 currentPlanet = firstRouteStop.GetPlanet();
                 travelling = true;
+                GameEvents.ShipStateChange();
             }
             else
             {
@@ -61,8 +62,9 @@ public class SpaceShip: MonoBehaviour
                     route.GetRouteStop(route.GetCurrentRouteIndex()).GetTravelTime()
                     );
                 travelling = true;
+                GameEvents.ShipStateChange();
             }
-        } 
+        }
         else if (!travelling | routePaused)
         {
             transform.position = currentPlanet.transform.position;
@@ -70,9 +72,10 @@ public class SpaceShip: MonoBehaviour
     }
 
 
-    public void CreateShip(string name, int cargoCapacity, float maxAcceleration, Planet currentPlanet)
+    public void CreateShip(string name, float fuelCapacity, int cargoCapacity, float maxAcceleration, Planet currentPlanet)
     {
         this.name = name;
+        this.fuelCapacity = fuelCapacity;
         this.cargoCapacity = cargoCapacity;
         this.maxAcceleration = maxAcceleration;
         this.currentPlanet = currentPlanet;
@@ -83,11 +86,18 @@ public class SpaceShip: MonoBehaviour
     public int GetCargoCapacity() {  return cargoCapacity; }
     public float GetMaxAcceleration() {  return maxAcceleration; }
 
+    public float GetFuelCapacity() { return fuelCapacity; }
+
+    public Planet GetCurrentPlanet() { return currentPlanet; }
+
+    public Route GetRoute() { return route; }
+
     public void SetTravelling(bool travelling) { this.travelling = travelling; }
     public void SetRoute(Route route) { this.route = route; }
 
     public bool IsRoutePaused() { return routePaused; }
     public bool HasRoute() { return route != null; }
+    public bool IsTravelling() { return travelling; }
 
     public void Sell()
     {

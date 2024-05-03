@@ -43,6 +43,11 @@ public class Route
         return routeStops.ElementAt(index);
     }
 
+    public List<RouteStop> GetRouteStops()
+    {
+        return routeStops;
+    }
+
 
 
     public int GetTotalTravelTime()

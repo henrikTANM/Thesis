@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5b026279ae0cc439bec164dd84e971, type: 3}
+  m_Name: Spaceship2
+  m_EditorClassIdentifier: 
+  name: S.T.S. Hauler
+  fuelCapacity: 300
+  cargoCapacity: 64
+  accelerationRate: 10
+  cost:
+  - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
+    amount: 3000
+  - resource: {fileID: 11400000, guid: 88b457fee76ee6a489d13a8798730017, type: 2}
+    amount: 500
+  - resource: {fileID: 11400000, guid: c84037520c35e834eb4d965ab6494eb1, type: 2}
+    amount: 100
+  - resource: {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
+    amount: 100
+  - resource: {fileID: 11400000, guid: cdeca4be7d3d1a942a000ad13f9bc40f, type: 2}
+    amount: 100

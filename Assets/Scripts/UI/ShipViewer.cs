@@ -9,10 +9,13 @@ public class ShipViewer : MonoBehaviour
 
     public VisualTreeAsset createRouteButtonPrefab;
     public VisualTreeAsset routeButtonsPrefab;
+    public VisualTreeAsset routeStopNamePrefab;
 
     [SerializeField] private GameObject routeMakerPrefab;
     private GameObject routeMaker;
 
+    private ScrollView routeStopList;
+    private VisualElement routeStopInfo;
     private VisualElement routeButtons;
 
     public void MakeShipViewer(ShipsMenu shipsMenu, SpaceShip ship)
@@ -29,11 +32,27 @@ public class ShipViewer : MonoBehaviour
         Button sellButton = root.Q<Button>("sellbutton");
         sellButton.clicked += ship.Sell;
 
-
-
+        routeStopList = root.Q<ScrollView>("routestoplist");
+        routeStopInfo = root.Q<ScrollView>("stopinfo");
+        UpdateRouteInfo(ship);
 
         routeButtons = root.Q<VisualElement>("buttons");
         UpdateButtons(ship);
+    }
+
+    public void UpdateRouteInfo(SpaceShip ship)
+    {
+        if (ship.HasRoute())
+        {
+            foreach (RouteStop routeStop in ship.GetRoute().GetRouteStops())
+            {
+                VisualElement routeStopName = routeStopNamePrefab.Instantiate();
+                Button routeStopNameButton = routeStopName.Q<Button>("button");
+                routeStopNameButton.text = routeStop.GetPlanet().GetName();
+                //routeStopNameButton.clicked +=
+                routeStopList.Add(routeStopName);
+            }
+        }
     }
 
     public void UpdateButtons(SpaceShip ship)

@@ -33,7 +33,7 @@ public class UIController : MonoBehaviour
         InputEvents.OnTimeStateChange += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += MakeEscapeMenu;
-        ResourceEvents.OnMoneyUpdate += UpdateMoney;
+        GameEvents.OnMoneyUpdate += UpdateMoney;
     }
 
     private void OnDestroy()
@@ -41,7 +41,7 @@ public class UIController : MonoBehaviour
         InputEvents.OnTimeStateChange -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= MakeEscapeMenu;
-        ResourceEvents.OnMoneyUpdate -= UpdateMoney;
+        GameEvents.OnMoneyUpdate -= UpdateMoney;
     }
 
     private void Start()
@@ -80,7 +80,7 @@ public class UIController : MonoBehaviour
         escapeButton.clicked += InputEvents.EscapeMenu;
 
         Button shipsButton = root.Q<Button>("shipsbutton");
-        shipsButton.clicked += () => { MakeShipsMenu(inventory); };
+        shipsButton.clicked += () => { MakeShipsMenu(); };
 
         Button planetsButton = root.Q<Button>("planetsbutton");
         // planetsButton.clicked += ;
@@ -135,12 +135,12 @@ public class UIController : MonoBehaviour
         escapeMenu.GetComponent<EscapeMenu>().MakeEscapeMenu();
         AddToUIStack(new UIElement(escapeMenu, escapeMenuUI), false); 
     }
-    private void MakeShipsMenu(PlayerInventory inventory) 
+    private void MakeShipsMenu() 
     {
         if (shipsMenu != null) return;
         shipsMenu = Instantiate(shipsMenuPrefab);
         UIDocument shipsMenuUI = shipsMenu.GetComponent<UIDocument>();
-        shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu(inventory);
+        shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu();
         AddToUIStack(new UIElement(shipsMenu, shipsMenuUI), false);
     }
 

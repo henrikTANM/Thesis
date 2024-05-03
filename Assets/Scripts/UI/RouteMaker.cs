@@ -40,6 +40,8 @@ public class RouteMaker : MonoBehaviour
         createButton.clicked += () => 
         { 
             route.Create();
+            shipViewer.UpdateRouteInfo(ship);
+            shipViewer.UpdateButtons(ship);
             Close();
         };
 

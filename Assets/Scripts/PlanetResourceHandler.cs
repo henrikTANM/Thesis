@@ -7,6 +7,9 @@ using static ProductionBuilding;
 public class PlanetResourceHandler
 {
     List<ResourceCount> resourceCounts = new();
+    float rawMultiplier = 1.0f;
+    float endMultiplier = 1.0f;
+    List<string> rawResourceNames = new() { "Ore", "Water", "Food", "Crystal", "Gas", "Fibre"};
 
     public PlanetResourceHandler(List<Resource> resources)
     {
@@ -24,10 +27,69 @@ public class PlanetResourceHandler
         }
     }
 
+    public void AddRawMultiplier(float rawMultiplier)
+    {
+        this.rawMultiplier *= rawMultiplier;
+        foreach (ResourceCount resourceCount in resourceCounts) 
+        { 
+            if (rawResourceNames.Contains(resourceCount.resource.name)) 
+            { 
+                resourceCount.secondAmount *= rawMultiplier; 
+            } 
+        }
+    }
+
+    public void RemoveRawMultipiler(float rawMultiplier)
+    {
+        this.rawMultiplier /= rawMultiplier;
+        foreach (ResourceCount resourceCount in resourceCounts)
+        {
+            if (rawResourceNames.Contains(resourceCount.resource.name))
+            {
+                resourceCount.secondAmount /= rawMultiplier;
+            }
+        }
+    }
+
+    public void AddEndMultiplier(float endMultiplier)
+    {
+        this.endMultiplier *= endMultiplier;
+        foreach (ResourceCount resourceCount in resourceCounts) 
+        { 
+            if (!rawResourceNames.Contains(resourceCount.resource.name)) 
+            { 
+                resourceCount.secondAmount *= endMultiplier; 
+            } 
+        }
+    }
+
+    public void RemoveEndMultipiler(float endMultiplier)
+    {
+        this.endMultiplier /= endMultiplier;
+        foreach (ResourceCount resourceCount in resourceCounts)
+        {
+            if (!rawResourceNames.Contains(resourceCount.resource.name))
+            {
+                resourceCount.secondAmount /= endMultiplier;
+            }
+        }
+    }
+
+    public float GetRawMultiplier()
+    {
+        return rawMultiplier;
+    }
+
+    public float GetEndMultiplier()
+    {
+        return endMultiplier;
+    }
+
     public void AddPerCycle(Resource resource, float perCycle)
     {
+        Debug.Log(rawMultiplier + " : " + endMultiplier);
         ResourceCount resourceCount = GetResourceCount(resource);
-        resourceCount.secondAmount += perCycle;
+        resourceCount.secondAmount += (perCycle * (rawResourceNames.Contains(resource.name) ? rawMultiplier : endMultiplier));
     }
 
     public void AddResouce(Resource resource, float amount)
@@ -38,8 +100,9 @@ public class PlanetResourceHandler
 
     public void RemoveperCycle(Resource resource, float perCycle)
     {
+        Debug.Log(rawMultiplier + " : " + endMultiplier);
         ResourceCount resourceCount = GetResourceCount(resource);
-        resourceCount.secondAmount -= perCycle;
+        resourceCount.secondAmount -= (perCycle * (rawResourceNames.Contains(resource.name) ? rawMultiplier : endMultiplier));
     }
 
     public void RemoveResouce(Resource resource, float amount)

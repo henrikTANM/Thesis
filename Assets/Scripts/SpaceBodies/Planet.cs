@@ -22,6 +22,8 @@ public class Planet : SpaceBody
     private GameObject planetMenu;
 
     private GameObject tradeMenu;
+    private GameObject specialBuildingChooserMenu;
+    private GameObject shipyardMenu;
     private GameObject activeBuildingChooserMenu;
     private GameObject activeBuildingViewerMenu;
 
@@ -43,10 +45,12 @@ public class Planet : SpaceBody
 
     [SerializeField] private UniverseHandler universe;
 
+    private SpecialBuilding specialBuilding;
+
     protected override void Awake()
     {
         base.Awake();
-        ResourceEvents.OnCycleChange += () => UpdateResources(true);
+        GameEvents.OnCycleChange += () => UpdateResources(true);
 
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
         inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
@@ -57,7 +61,7 @@ public class Planet : SpaceBody
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        ResourceEvents.OnCycleChange -= () => UpdateResources(true);
+        GameEvents.OnCycleChange -= () => UpdateResources(true);
     }
 
     private void Update()
@@ -67,6 +71,16 @@ public class Planet : SpaceBody
         material.SetFloat("_TimeValue", universe.timeValue);
 
         collider.radius = body.transform.localScale.x;
+
+        //development
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            foreach (Resource resource in universe.allResources) 
+            {
+                planetResourceHandler.AddResouce(resource, 1000);
+            }
+        }
+        //
     }
 
     private void LateUpdate()
@@ -168,6 +182,21 @@ public class Planet : SpaceBody
         this.tradeMenu = tradeMenu;
     }
 
+    public void SetSpecialBuildingChooserMenu(GameObject specialBuildingChooserMenu)
+    {
+        this.specialBuildingChooserMenu = specialBuildingChooserMenu;
+    }
+
+    public void SetShipyardMenu(GameObject shipyardMenu)
+    {
+        this.shipyardMenu = shipyardMenu;
+    }
+
+    public void SetSpecialBuilding(SpecialBuilding specialBuilding)
+    {
+        this.specialBuilding = specialBuilding;
+    }
+
     public Sprite GetSettlementSprite()
     {
         return settlementSprite;
@@ -181,6 +210,11 @@ public class Planet : SpaceBody
     public BuildingSlot GetSpecialBuildingSlot()
     {
         return specialBuildingSlot;
+    }
+
+    public SpecialBuilding GetSpecialBuilding()
+    {
+        return specialBuilding;
     }
 
     public List<Resource> GetTradeableResources()
@@ -252,8 +286,11 @@ public class Planet : SpaceBody
     private void UpdateResources(bool withUpkeep)
     {
         ActivateProductionBuildings();
-        if (withUpkeep) Upkeep();
-        planetResourceHandler.UpdateResourceCounts();
+        if (withUpkeep)
+        {
+            Upkeep();
+            planetResourceHandler.UpdateResourceCounts();
+        }
         UpdateResourceDisplays();
     }
 
@@ -263,6 +300,8 @@ public class Planet : SpaceBody
         if (tradeMenu != null) tradeMenu.GetComponent<TradeMenu>().UpdateResourcePanel(this);
         if (activeBuildingChooserMenu != null) activeBuildingChooserMenu.GetComponent<BuildingChooserMenu>().UpdateResourcePanel(this, activeBuildingChooserMenu.GetComponent<UIDocument>());
         if (activeBuildingViewerMenu != null) activeBuildingViewerMenu.GetComponent<BuildingViewerMenu>().UpdateResourcePanel(this, activeBuildingViewerMenu.GetComponent<UIDocument>());
+        if (specialBuildingChooserMenu != null) specialBuildingChooserMenu.GetComponent<SpecialBuildingMenu>().UpdateResourcePanel(this);
+        if (shipyardMenu != null) shipyardMenu.GetComponent<ShipyardMenu>().UpdateResourcePanel(this);
     }
 
     private void Upkeep()
@@ -297,9 +336,21 @@ public class Planet : SpaceBody
         MakePlanetMenu();
     }
 
-    public void AddShip()
+    public bool CanBuild(ResourceAmount[] resourceAmounts)
     {
-
-        inventory.AddShip(this);
+        foreach (ResourceAmount resourceNeeded in resourceAmounts)
+        {
+            if (resourceNeeded.resource == inventory.GetMoneyResource())
+            {
+                if (inventory.GetMoney() < resourceNeeded.amount) return false;
+            }
+            else
+            {
+                ResourceCount resourceCount = planetResourceHandler.GetResourceCount(resourceNeeded.resource);
+                if (resourceCount == null) return false;
+                if (resourceCount.amount < resourceNeeded.amount) return false;
+            }
+        }
+        return true;
     }
 }
