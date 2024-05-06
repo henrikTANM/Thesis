@@ -42,6 +42,7 @@ public class RouteMaker : MonoBehaviour
             route.Create();
             shipViewer.UpdateRouteInfo(ship);
             shipViewer.UpdateButtons(ship);
+            shipViewer.UpdateRouteStatus(ship);
             Close();
         };
 
@@ -52,6 +53,7 @@ public class RouteMaker : MonoBehaviour
     public void AddStop(Planet planet)
     {
         RouteStop routeStop = new(planet, stopList.childCount);
+
         VisualElement stopLine = stopPrefab.Instantiate();
 
         Button deletebutton = stopLine.Q<Button>("deletebutton");
@@ -65,8 +67,19 @@ public class RouteMaker : MonoBehaviour
         stopList.Add(stopLine);
     }
 
+    public bool CanAddStop(Planet end)
+    {
+        if (route.HasStops())
+        {
+            Planet start = route.GetLastRouteStop().GetPlanet();
+            if (Vector3.Distance(start.transform.position, end.transform.position) > ship.GetFuelCapacity()) { return false; }
+        }
+        return true;
+    }
+
     private void Close()
     {
+        if (previousStopManager != null) { uiController.RemoveLastFromUIStack(); }
         uiController.RemoveLastFromUIStack();
         universe.HandleRouteMaker();
     }

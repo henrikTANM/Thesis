@@ -9,23 +9,19 @@ public class SpaceShip: MonoBehaviour
     private int cargoCapacity;
     private float maxAcceleration;
 
+    private ResourceAmount[] cost;
+
     private Route route;
 
     private bool routePaused = false;
 
     private Planet currentPlanet;
-    private Planet destination;
 
     public MotionSimulator motionSimulator;
 
-    private bool travelling = false;
+    public Resource fuel;
 
-    private Type shipType;
-    private enum Type
-    {
-        WARP,
-        NON_WARP
-    }
+    private bool travelling = false;
 
     private void Update()
     {
@@ -36,6 +32,11 @@ public class SpaceShip: MonoBehaviour
     {
         if (HasRoute() & !travelling & !routePaused)
         {
+            if (!CanTravel())
+            {
+                ChangeRoutePaused();
+                return;
+            }
             if (!route.ContainsPlanet(currentPlanet))
             {
                 RouteStop firstRouteStop = route.GetRouteStop(0);
@@ -54,13 +55,13 @@ public class SpaceShip: MonoBehaviour
                 Planet startPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
                 route.ProgressRoute();
                 Planet endPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
-                currentPlanet = endPlanet;
 
                 motionSimulator.StartMoving(
                     startPlanet.GetOrbiter(),
                     endPlanet.GetOrbiter(),
                     route.GetRouteStop(route.GetCurrentRouteIndex()).GetTravelTime()
                     );
+                currentPlanet = endPlanet;
                 travelling = true;
                 GameEvents.ShipStateChange();
             }
@@ -71,13 +72,21 @@ public class SpaceShip: MonoBehaviour
         }
     }
 
+    public bool CanTravel() 
+    {
+        float fuelOnPlanet = currentPlanet.GetPlanetResourceHandler().GetResourceCount(fuel).amount;
+        float fuelNeeded = route.GetCurrentRouteStop().GetTravelDisctance();
+        return fuelOnPlanet >= fuelNeeded;
+    }
 
-    public void CreateShip(string name, float fuelCapacity, int cargoCapacity, float maxAcceleration, Planet currentPlanet)
+
+    public void CreateShip(string name, float fuelCapacity, int cargoCapacity, float maxAcceleration, ResourceAmount[] cost,  Planet currentPlanet)
     {
         this.name = name;
         this.fuelCapacity = fuelCapacity;
         this.cargoCapacity = cargoCapacity;
         this.maxAcceleration = maxAcceleration;
+        this.cost = cost;
         this.currentPlanet = currentPlanet;
         transform.position = currentPlanet.transform.position;
     }
@@ -92,7 +101,16 @@ public class SpaceShip: MonoBehaviour
 
     public Route GetRoute() { return route; }
 
-    public void SetTravelling(bool travelling) { this.travelling = travelling; }
+    public ResourceAmount[] GetCost()
+    {
+        return cost;
+    }
+
+    public void SetTravelling(bool travelling) 
+    { 
+        if (!travelling & !currentPlanet.GetReached()) { currentPlanet.SetReached(true); }
+        this.travelling = travelling; 
+    }
     public void SetRoute(Route route) { this.route = route; }
 
     public bool IsRoutePaused() { return routePaused; }
@@ -101,8 +119,7 @@ public class SpaceShip: MonoBehaviour
 
     public void Sell()
     {
-        if (HasRoute()) RemoveRoute();
-        //TODO add money back
+        Destroy(this);
     }
 
     public void RemoveRoute()

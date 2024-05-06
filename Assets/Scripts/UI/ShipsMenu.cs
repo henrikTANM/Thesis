@@ -52,8 +52,10 @@ public class ShipsMenu : MonoBehaviour
             shipViewButton.clicked += () => { MakeShipViewer(ship); };
 
             ship_Row.Q<Label>("name").text = ship.GetName();
-            ship_Row.Q<Label>("route").text = ship.IsTravelling() ? "On route to -" : "Currently at -";
-            ship_Row.Q<Label>("location").text = ship.GetCurrentPlanet().name;
+            ship_Row.Q<Label>("location").text = (ship.IsTravelling() ? "On route to " : "Currently at ") + ship.GetCurrentPlanet().GetName();
+
+            Button camera = ship_Row.Q<Button>("camera");
+            //camera.clicked +=
 
             shipsList.Add(ship_Row);
         }

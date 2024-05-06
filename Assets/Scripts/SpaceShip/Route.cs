@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class Route
 {
     private int currentRouteIndex = 0;
+    private RouteStop currentRouteStop;
     private SpaceShip ship;
     private List<RouteStop> routeStops = new();
     public Route(SpaceShip ship)
@@ -33,6 +34,17 @@ public class Route
         return routeStops.ElementAt(index == 0 ? routeStops.Count - 1 : index - 1);
     }
 
+    public RouteStop GetCurrentRouteStop()
+    {
+        return routeStops[currentRouteIndex];
+    }
+
+    public RouteStop GetNextRouteStop(RouteStop routeStop)
+    {
+        int index = routeStop.GetIndex();
+        return routeStops.ElementAt(index == routeStops.Count - 1 ? 0 : index + 1);
+    }
+
     public void ProgressRoute()
     {
         currentRouteIndex = currentRouteIndex == routeStops.Count - 1 ? 0 : currentRouteIndex + 1;
@@ -46,6 +58,16 @@ public class Route
     public List<RouteStop> GetRouteStops()
     {
         return routeStops;
+    }
+
+    public bool HasStops()
+    {
+        return routeStops.Count > 0;
+    }
+
+    public RouteStop GetLastRouteStop()
+    {
+        return HasStops() ? routeStops.ElementAt(routeStops.Count - 1) : null;
     }
 
 

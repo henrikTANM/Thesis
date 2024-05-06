@@ -2,11 +2,12 @@
     <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
     <ui:VisualElement style="height: 60%; width: 50%; align-self: auto; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; background-color: rgba(0, 0, 0, 0.71); translate: 50% 40%; align-items: flex-start; padding-top: 5px; padding-right: 5px; padding-bottom: 0; padding-left: 5px;">
         <ui:VisualElement style="flex-direction: row; align-self: stretch; justify-content: space-between;">
-            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="stopname" class="textElement" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-self: center;" />
-            <ui:SliderInt picking-mode="Ignore" label="tt" value="42" high-value="100" name="SliderInt" style="color: rgb(224, 225, 224); flex-grow: 1; -unity-text-align: upper-right; align-self: auto;" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="stopname" class="textElement" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 5px; align-self: center;" />
             <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="exitbutton" class="button" style="align-self: center; background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Game%20sprites/cross.png?fileID=2800000&amp;guid=fdd33b51b234ac545bc4e18bcb0f5e42&amp;type=3#cross&apos;);" />
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; align-self: stretch; align-items: center;">
+        <ui:Label tabindex="-1" text="Current cargo:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cargo" class="textElement" style="align-self: center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+        <ui:Label tabindex="-1" text="Fuel needed to reach next stop: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="fuel" class="textElement" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: center;" />
+        <ui:VisualElement style="flex-grow: 1; align-self: stretch; align-items: center; margin-left: 5px; margin-right: 5px;">
             <ui:ScrollView name="dropoffpickup" style="align-items: center;" />
         </ui:VisualElement>
     </ui:VisualElement>

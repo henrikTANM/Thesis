@@ -17,6 +17,8 @@ public class UIController : MonoBehaviour
     GameObject escapeMenu;
     [SerializeField] private GameObject shipsMenuPrefab;
     GameObject shipsMenu;
+    [SerializeField] private GameObject planetsMenuPrefab;
+    GameObject planetsMenu;
 
     private UIStack uiStack = new();
 
@@ -27,6 +29,8 @@ public class UIController : MonoBehaviour
 
     private UniverseHandler universe;
     private PlayerInventory inventory;
+
+    private ProgressBar timer;
 
     private void Awake()
     {
@@ -68,6 +72,7 @@ public class UIController : MonoBehaviour
                 RemoveLastFromUIStack();
             }
         }
+        timer.value = universe.timeCycleValue;
     }
 
     //main UI buttons
@@ -80,10 +85,10 @@ public class UIController : MonoBehaviour
         escapeButton.clicked += InputEvents.EscapeMenu;
 
         Button shipsButton = root.Q<Button>("shipsbutton");
-        shipsButton.clicked += () => { MakeShipsMenu(); };
+        shipsButton.clicked += MakeShipsMenu;
 
         Button planetsButton = root.Q<Button>("planetsbutton");
-        // planetsButton.clicked += ;
+        planetsButton.clicked += MakePlanetsMenu;
 
         Button clusterViewButton = root.Q<Button>("clusterviewbutton");
         clusterViewButton.clicked += InputEvents.ClusterView;
@@ -93,6 +98,10 @@ public class UIController : MonoBehaviour
 
         Button systemViewButton = root.Q<Button>("systemviewbutton");
         systemViewButton.clicked += InputEvents.SystemView;
+
+        timer = root.Q<ProgressBar>("time");
+        timer.lowValue = 0.0f;
+        timer.highValue = universe.cycleLength;
     }
 
     public void SetGameUIActive(bool active)
@@ -142,6 +151,15 @@ public class UIController : MonoBehaviour
         UIDocument shipsMenuUI = shipsMenu.GetComponent<UIDocument>();
         shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu();
         AddToUIStack(new UIElement(shipsMenu, shipsMenuUI), false);
+    }
+
+    private void MakePlanetsMenu()
+    {
+        if (planetsMenu != null) return;
+        planetsMenu = Instantiate(planetsMenuPrefab);
+        UIDocument planetsMenuUI = planetsMenu.GetComponent<UIDocument>();
+        planetsMenu.GetComponent<PlanetsMenu>().MakePlanetsMenu();
+        AddToUIStack(new UIElement(planetsMenu, planetsMenuUI), false);
     }
 
     private void UpdateMoney()

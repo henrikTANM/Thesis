@@ -19,8 +19,10 @@ public class SpecialBuildingMenu : MonoBehaviour
 
     private Button buildButton;
 
+    /*
     [SerializeField] private Color failColor;
     [SerializeField] private Color originalColor;
+    */
 
     public void MakeSpecialBuildingChooserMenu(PlanetMenu planetMenu, Planet planet)
     {
@@ -45,6 +47,7 @@ public class SpecialBuildingMenu : MonoBehaviour
         rawBonusButton.clicked += () => 
         { 
             selectedSpecialBuilding = advancedMachinery;
+            buildButton.text = "Build Advanced Machinery";
             UpdateBuildButton(planet);
         };
         VisualElement rawBonusCost = rawBonusButton.Q<VisualElement>("cost");
@@ -63,6 +66,7 @@ public class SpecialBuildingMenu : MonoBehaviour
         shipYardButton.clicked += () => 
         { 
             selectedSpecialBuilding = shipYard;
+            buildButton.text = "Build ShipYard";
             UpdateBuildButton(planet);
         };
         VisualElement shipYardCost = shipYardButton.Q<VisualElement>("cost");
@@ -80,6 +84,7 @@ public class SpecialBuildingMenu : MonoBehaviour
         advancedLogisticsButton.clicked += () => 
         { 
             selectedSpecialBuilding = advancedLogistics;
+            buildButton.text = "Build Advanced Logistics";
             UpdateBuildButton(planet);
         };
         VisualElement advancedLogisticsCost = advancedLogisticsButton.Q<VisualElement>("cost");
@@ -119,13 +124,13 @@ public class SpecialBuildingMenu : MonoBehaviour
     {
         if (!planet.CanBuild(selectedSpecialBuilding.cost))
         {
-            buildButton.style.backgroundColor = new StyleColor(failColor);
+            //buildButton.style.backgroundColor = new StyleColor(failColor);
             buildButton.SetEnabled(false);
         }
         else
         {
             buildButton.SetEnabled(true);
-            buildButton.style.backgroundColor = new StyleColor(originalColor);
+            //buildButton.style.backgroundColor = new StyleColor(originalColor);
         }
     }
 

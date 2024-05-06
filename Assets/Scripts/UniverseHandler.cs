@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 public class UniverseHandler : MonoBehaviour
 {
     private UniverseGenerator universeGenerator;
-    public TextMeshProUGUI CycleText;
+    [SerializeField] private CameraMovementHandler cameraMovementHandler;
     [SerializeField] private UIController uiController;
 
     [NonSerialized] public List<Star> stars = new();
@@ -29,6 +29,8 @@ public class UniverseHandler : MonoBehaviour
     private RouteMaker activeRouteMaker;
 
     public List<Resource> allResources;
+
+    public bool startWait = true;
 
     private void Awake()
     {
@@ -50,6 +52,10 @@ public class UniverseHandler : MonoBehaviour
         InputEvents.OnClusterView -= SetLastActivePlanetInactive;
         InputEvents.OnClusterView -= SetAllStarsInactive;
     }
+    private void Start()
+    {
+        StartCoroutine(WaitForSeconds());
+    }
 
     private void Update()
     {
@@ -65,8 +71,14 @@ public class UniverseHandler : MonoBehaviour
             cycleCount++;
             GameEvents.CycleChange();
         }
-        CycleText.text = timeCycleValue.ToString();
         if (Input.GetKeyDown(KeyCode.Space) & !escapeMenuDisplayed & !routeMakerDisplayed) InputEvents.TimeStateChange();
+    }
+
+    public List<Planet> GetAllManagedPlanets()
+    {
+        List<Planet> managedPlanets = new();
+        foreach (Star star in stars){ foreach (Planet planet in star.planets) { if (planet.GetManaged()) managedPlanets.Add(planet); } }
+        return managedPlanets;
     }
 
     public void SetAllStarsInactive()
@@ -125,5 +137,14 @@ public class UniverseHandler : MonoBehaviour
     public void HandleTimeChange()
     {
         timeRunning = !timeRunning;
+    }
+
+    IEnumerator WaitForSeconds()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Star firstStar = stars.ElementAt(0);
+        firstStar.SetSelected(true, false);
+        foreach (Planet planet in firstStar.planets) { planet.SetReached(true); }
+        cameraMovementHandler.MoveToTarget(firstStar.body.transform, firstStar.nativeScale, false);
     }
 }

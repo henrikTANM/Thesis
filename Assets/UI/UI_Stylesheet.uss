@@ -24,6 +24,7 @@
     flex-direction: column;
     width: 25px;
     height: 25px;
+    transition-duration: 0.1s;
 }
 
 .button:hover {
@@ -39,6 +40,7 @@
     border-left-width: 1px;
     color: rgb(171, 220, 255);
     -unity-font-style: bold;
+    transition-duration: 0.1s;
 }
 
 .button:active {
@@ -94,6 +96,7 @@
     border-bottom-color: rgba(0, 0, 0, 0);
     flex-shrink: 0;
     flex-grow: 1;
+    transition-duration: 0.1s;
 }
 
 #building_button:hover {
@@ -111,6 +114,7 @@
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     -unity-background-image-tint-color: rgb(171, 220, 255);
+    transition-duration: 0.1s;
 }
 
 #building_button:active {
@@ -149,6 +153,7 @@
     height: 100%;
     align-self: flex-start;
     background-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.1s;
 }
 
 .spec_button:hover {
@@ -162,6 +167,7 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
+    transition-duration: 0.1s;
 }
 
 .spec_button:active {
@@ -170,7 +176,7 @@
     border-top-color: rgb(226, 226, 226);
     border-bottom-color: rgb(226, 226, 226);
     -unity-background-image-tint-color: rgb(0, 0, 0);
-    background-color: rgba(226, 226, 226, 0.47);
+    background-color: rgb(226, 226, 226);
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;

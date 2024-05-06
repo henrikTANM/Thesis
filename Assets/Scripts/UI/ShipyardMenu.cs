@@ -18,8 +18,17 @@ public class ShipyardMenu : MonoBehaviour
     public List<SpaceShipValues> shipValues;
     private SpaceShipValues selectedSpaceShip;
 
+    // COLOR CHANGE PROBLEM INLINE
+    /*
     [SerializeField] private Color failColor;
     [SerializeField] private Color originalColor;
+
+    public Color whiteish;
+    public Color black1;
+    public Color black2;
+
+    private Button previousButton;
+    */
 
     public void MakeShipyardMenu(PlanetMenu planetMenu, Planet planet)
     {
@@ -55,11 +64,21 @@ public class ShipyardMenu : MonoBehaviour
         {
             VisualElement shipsOption = shipsOptionTemplate.Instantiate();
             Button optionButton = shipsOption.Q<Button>("optionbutton");
+            //if (previousButton == null) { previousButton = optionButton; }
             optionButton.clicked += () =>
             {
+                /*
+                ButtonStyleRepository repository = new ButtonStyleRepository();
+                repository.ChangeStyle(previousButton, black1, black1, whiteish);
+                repository.ChangeStyle(optionButton, whiteish, whiteish, black2);
+
+
+                previousButton = optionButton;
+                */
+
                 selectedSpaceShip = spaceShipValues;
                 UpdateSelectedInfo(planet, root);
-                uiController.RemoveLastFromUIStack();
+
             };
 
             shipsOption.style.flexGrow = 1;
@@ -72,6 +91,7 @@ public class ShipyardMenu : MonoBehaviour
         if (planet.CanBuild(selectedSpaceShip.cost))
         {
             inventory.AddShip(planet, selectedSpaceShip);
+            uiController.RemoveLastFromUIStack();
         }
     }
 
@@ -136,13 +156,13 @@ public class ShipyardMenu : MonoBehaviour
     {
         if (!planet.CanBuild(selectedSpaceShip.cost))
         {
-            buildButton.style.backgroundColor = new StyleColor(failColor);
+            //buildButton.style.backgroundColor = new StyleColor(failColor);
             buildButton.SetEnabled(false);
         }
         else
         {
             buildButton.SetEnabled(true);
-            buildButton.style.backgroundColor = new StyleColor(originalColor);
+            //buildButton.style.backgroundColor = new StyleColor(originalColor);
         }
     }
 

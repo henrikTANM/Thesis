@@ -47,3 +47,49 @@
 .RouteButton:active .label {
     color: rgb(0, 0, 0);
 }
+
+#camera {
+    width: 30px;
+    height: 30px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgba(0, 0, 0, 0.39);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    background-image: url('project://database/Assets/Textures%20and%20Sprites/camera.png?fileID=2800000&guid=37548c6f05152904d9703a1ce68ee35b&type=3#camera');
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+#camera:hover {
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
+    background-color: rgba(56, 56, 60, 0.59);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+#camera:active {
+    background-color: rgb(226, 226, 226);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+}

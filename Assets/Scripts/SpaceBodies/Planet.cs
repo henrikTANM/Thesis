@@ -47,6 +47,9 @@ public class Planet : SpaceBody
 
     private SpecialBuilding specialBuilding;
 
+    private bool managed;
+    private bool reached = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -66,10 +69,6 @@ public class Planet : SpaceBody
 
     private void Update()
     {
-        Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
-        material.SetVector("_SunlightDirection", lightDirection);
-        material.SetFloat("_TimeValue", universe.timeValue);
-
         collider.radius = body.transform.localScale.x;
 
         //development
@@ -85,6 +84,10 @@ public class Planet : SpaceBody
 
     private void LateUpdate()
     {
+        Vector3 lightDirection = Vector3.Normalize(parentStar.transform.position - transform.position);
+        material.SetVector("_SunlightDirection", lightDirection);
+        material.SetFloat("_TimeValue", universe.timeValue);
+
         nameTagCanvas.transform.LookAt(
             nameTagCanvas.transform.position + Camera.main.transform.rotation * Vector3.forward,
             Camera.main.transform.rotation * Vector3.up
@@ -97,19 +100,24 @@ public class Planet : SpaceBody
         {
             if (universe.routeMakerDisplayed) 
             {
-                hoverOver.color = Color.green;
-                universe.GetActiveRouteMaker().AddStop(this);
+                RouteMaker activeRouteMaker = universe.GetActiveRouteMaker();
+                if (activeRouteMaker.CanAddStop(this))
+                {
+                    hoverOver.color = Color.green;
+                    activeRouteMaker.AddStop(this);
+                }
+                else { hoverOver.color = Color.red; }
             }
             else if (selected)
             {
-                StartCoroutine(ShowPlanetMenu(false));
+                if (reached) { StartCoroutine(ShowPlanetMenu(false)); }
             }
             else
             {
                 SetSelected(true);
                 StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
                 cameraMovementHandler.MoveToTarget(body.transform, nativeScale, false);
-                StartCoroutine(ShowPlanetMenu(true));
+                if (reached) { StartCoroutine(ShowPlanetMenu(true)); }
             }
         }
     }
@@ -162,6 +170,16 @@ public class Planet : SpaceBody
         }
     }
 
+    public bool GetReached() 
+    {
+        return reached;
+    }
+
+    public void SetReached(bool reached)
+    {
+        this.reached = reached;
+    }
+
     public void SetActiveBuildingChooserMenu(GameObject buildingChooserMenu)
     {
         activeBuildingChooserMenu = buildingChooserMenu;
@@ -195,6 +213,11 @@ public class Planet : SpaceBody
     public void SetSpecialBuilding(SpecialBuilding specialBuilding)
     {
         this.specialBuilding = specialBuilding;
+    }
+
+    public bool GetManaged()
+    {
+        return productionBuildingHandlers.Count > 0;
     }
 
     public Sprite GetSettlementSprite()

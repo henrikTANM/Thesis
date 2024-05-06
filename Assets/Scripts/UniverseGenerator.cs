@@ -142,7 +142,7 @@ public class UniverseGenerator : MonoBehaviour
             planet.type = newPlanetValues.planetType;
 
             planet.SetSettlementSprite(settlementSprites.ElementAt(UnityEngine.Random.Range(0, settlementSprites.Count())));
-            planet.GenerateDeposits(newPlanetValues.possibleDeposits, UnityEngine.Random.Range(1, newPlanetValues.depositCap));
+            planet.GenerateDeposits(newPlanetValues.possibleDeposits, newPlanetValues.depositCap);
 
             if (randomCloudsTexture != null)
             {

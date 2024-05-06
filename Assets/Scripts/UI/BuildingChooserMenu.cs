@@ -16,8 +16,10 @@ public class BuildingChooserMenu : MonoBehaviour
     private BuildingSlot buildingSlot;
     private Button buildButton;
 
+    /*
     [SerializeField] private Color failColor;
     [SerializeField] private Color originalColor;
+    */
 
     private void Awake()
     {
@@ -149,13 +151,13 @@ public class BuildingChooserMenu : MonoBehaviour
     {
         if (!buildingSlot.CanBuildBuilding(selectedProductiomBuilding))
         {
-            buildButton.style.backgroundColor = new StyleColor(failColor);
+            //buildButton.style.backgroundColor = new StyleColor(failColor);
             buildButton.SetEnabled(false);
         }
         else
         {
             buildButton.SetEnabled(true);
-            buildButton.style.backgroundColor = new StyleColor(originalColor);
+            //buildButton.style.backgroundColor = new StyleColor(originalColor);
         }
     }
 }

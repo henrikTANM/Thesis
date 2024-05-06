@@ -16,4 +16,4 @@ MonoBehaviour:
   depositSprite: {fileID: 21300000, guid: 748921c9903473249a8f66b34530b0dd, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 2462fcfa9f7606b408e405216c830ccd, type: 2}
-  buildingCap: 2
+  buildingCap: 3

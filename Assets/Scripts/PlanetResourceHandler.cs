@@ -87,7 +87,6 @@ public class PlanetResourceHandler
 
     public void AddPerCycle(Resource resource, float perCycle)
     {
-        Debug.Log(rawMultiplier + " : " + endMultiplier);
         ResourceCount resourceCount = GetResourceCount(resource);
         resourceCount.secondAmount += (perCycle * (rawResourceNames.Contains(resource.name) ? rawMultiplier : endMultiplier));
     }

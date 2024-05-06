@@ -22,7 +22,7 @@ public class CameraMovementHandler : MonoBehaviour
     private UniverseHandler universe;
 
     [SerializeField] private Transform target;
-    private float distanceFromTarget = 2500.0f;
+    private float distanceFromTarget = 5000.0f;
 
     Vector3 targetPosition;
 
@@ -32,6 +32,8 @@ public class CameraMovementHandler : MonoBehaviour
 
     private void Awake()
     {
+        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+
         InputEvents.OnClusterView += MoveToClusterView;
         InputEvents.OnSystemView += MoveToParentStar;
     }
@@ -44,13 +46,14 @@ public class CameraMovementHandler : MonoBehaviour
 
     void Start()
     {
-        ChangePosition();
-        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+        targetPosition = target.position - transform.forward * distanceFromTarget + transform.up * distanceFromTarget;
+        transform.position = targetPosition;
+        transform.LookAt(universe.transform);
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(1) & !movingToTarget & !universe.escapeMenuDisplayed)
+        if (Input.GetMouseButton(1) & !movingToTarget & !universe.escapeMenuDisplayed & !universe.startWait)
         {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -65,7 +68,7 @@ public class CameraMovementHandler : MonoBehaviour
         }
 
         float scrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollWheelAxis != 0 & !universeView & !universe.escapeMenuDisplayed) // & universe.timeRunning)
+        if (scrollWheelAxis != 0 & !universeView & !universe.escapeMenuDisplayed & !universe.startWait) // & universe.timeRunning)
         {
             //print(distanceFromTarget + " : " + target.localScale.x * 7.5f);
             float newDistanceFromTarget = distanceFromTarget + scrollWheelAxis * -distanceFromTarget;
@@ -80,6 +83,7 @@ public class CameraMovementHandler : MonoBehaviour
             if (transform.position == targetPosition)
             {
                 movingToTarget = false;
+                universe.startWait = false;
             }
         } 
         else
@@ -96,7 +100,7 @@ public class CameraMovementHandler : MonoBehaviour
         this.universeView = universeView;
         targetPosition = target.position - transform.forward * distanceFromTarget;
         movingToTarget = true;
-        moveSpeed = 5.0f * (Vector3.Distance(transform.position, targetPosition)) * Time.deltaTime;
+        moveSpeed = 3.0f * (Vector3.Distance(transform.position, targetPosition)) * Time.deltaTime;
     }
 
     void ChangePosition()

@@ -22,23 +22,10 @@
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
+    transition-duration: 0.1s;
 }
 
 .button:hover {
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
-    background-color: rgba(56, 56, 60, 0.59);
-    color: rgb(255, 255, 255);
-    -unity-font-style: bold;
-}
-
-.button:active {
     border-left-color: rgb(171, 220, 255);
     border-right-color: rgb(171, 220, 255);
     border-top-color: rgb(171, 220, 255);
@@ -47,5 +34,21 @@
     border-right-width: 3px;
     border-bottom-width: 3px;
     border-left-width: 3px;
+    background-color: rgba(56, 56, 60, 0.59);
     color: rgb(171, 220, 255);
+    -unity-font-style: bold;
+    transition-duration: 0.1s;
+}
+
+.button:active {
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(226, 226, 226);
 }

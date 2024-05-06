@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motionSimulator: {fileID: 7271489690930470795}
+  fuel: {fileID: 11400000, guid: 324e2fec89ef060488ea837de16bf091, type: 2}
 --- !u!114 &7271489690930470795
 MonoBehaviour:
   m_ObjectHideFlags: 0

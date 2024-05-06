@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b92d02be8eb23e24eafc6462cc507c0a, type: 3}
-  m_Name: Big
+  m_Name: Gas
   m_EditorClassIdentifier: 
-  scale: {x: 0.25, y: 0.3}
+  scale: {x: 0.3, y: 0.4}
   planetTextures:
   - {fileID: 2800000, guid: 2619d8374a9159c40ada49b970bb66d4, type: 3}
   - {fileID: 2800000, guid: a96ac1e505800a6499a28078f352e0ae, type: 3}

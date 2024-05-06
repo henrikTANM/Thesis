@@ -75,16 +75,38 @@ public class RouteStop
         planetState.Add(new ResourceCount(resource, amount));
     }
 
+    public ResourceCount GetInShipState(Resource resource)
+    {
+        foreach (ResourceCount resourceCount in shipState) { if (resourceCount.resource == resource) { return resourceCount; } }
+        return null;
+    }
+
     public int GetMinTravelTimeForRoutes()
     {
         return GetMinTravelTime(GetPlanet().GetOrbiter(), route.GetPreviousRouteStop(this).GetPlanet().GetOrbiter());
+    }
+
+    public float GetTravelDisctance()
+    {
+        return Vector3.Distance(stop.transform.position, route.GetNextRouteStop(this).GetPlanet().transform.position);
+    }
+
+    public float GetMaxTravelDistance(Orbiter start, Orbiter end)
+    {
+        Vector3 startCentrePos = start.GetCentrePos();
+        Vector3 endCentrePos = end.GetCentrePos();
+
+        float xzDistance = start.DistanceFromCentre() + end.DistanceFromCentre() + Vector2.Distance(new(startCentrePos.x, startCentrePos.z), new(endCentrePos.x, endCentrePos.z));
+        float yDistance = Mathf.Abs(startCentrePos.y - endCentrePos.y);
+        float maxDistance = Mathf.Sqrt(Mathf.Pow(xzDistance, 2) + Mathf.Pow(yDistance, 2));
+        return maxDistance;
     }
 
     public int GetMinTravelTime(Orbiter start, Orbiter end)
     {
         Vector3 startCentrePos = start.GetCentrePos();
         Vector3 endCentrePos = end.GetCentrePos();
-        Vector3 startPos = start.transform.position;
+        //Vector3 startPos = start.transform.position;
 
         float xzDistance = start.DistanceFromCentre() + end.DistanceFromCentre() + Vector2.Distance(new(startCentrePos.x, startCentrePos.z), new(endCentrePos.x, endCentrePos.z));
         float yDistance = Mathf.Abs(startCentrePos.y - endCentrePos.y);
@@ -93,7 +115,7 @@ public class RouteStop
 
         for (int i = 1; i < 100; i++)
         {
-            Vector3 endPos = end.GetPosIn(i);
+            //Vector3 endPos = end.GetPosIn(i);
 
             float halfDistance = maxDistance / 2.0f;
             float halfTravelTime = i / 2.0f;

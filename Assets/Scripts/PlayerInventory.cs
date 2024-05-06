@@ -44,11 +44,16 @@ public class PlayerInventory : MonoBehaviour
             spaceShipValues.fuelCapacity, 
             spaceShipValues.cargoCapacity, 
             spaceShipValues.accelerationRate, 
+            spaceShipValues.cost,
             planet);
         ownedShips.Add(spaceShip);
     }
 
-    public void RemoveShip(SpaceShip starShip) { ownedShips.Remove(starShip); }
+    public void RemoveShip(SpaceShip ship) 
+    {
+        foreach (ResourceAmount resourceAmount in ship.GetCost()) { if (resourceAmount.resource == moneyResource) { AddMoney(resourceAmount.amount); } }
+        ownedShips.Remove(ship); 
+    }
 
     public List<SpaceShip> GetOwnedShips() {  return ownedShips; }
 }

@@ -29,7 +29,7 @@ public class TradeMenu : MonoBehaviour
         Button exitButton = root.Q<Button>("exitbutton");
         exitButton.clicked += uiController.RemoveLastFromUIStack;
 
-        root.Q<VisualElement>("mainwindow").style.backgroundImage = new StyleBackground(planet.GetSettlementSprite());
+        //root.Q<VisualElement>("mainwindow").style.backgroundImage = new StyleBackground(planet.GetSettlementSprite());
 
         foreach (Resource resource in planet.GetTradeableResources())
         {
@@ -53,8 +53,8 @@ public class TradeMenu : MonoBehaviour
                 ModifyBuyAmount(resource, buyCount, buyPrice, 0);
                 buyResources(resource, buyCount, buyPrice, planet); 
             };
-            Button buyRepeatingButton = buyableResource.Q<Button>("repeatingbutton");
-            buyRepeatingButton.clicked += () => { MakeRepeatingBuyTransaction(); };
+            //Button buyRepeatingButton = buyableResource.Q<Button>("repeatingbutton");
+            //buyRepeatingButton.clicked += () => { MakeRepeatingBuyTransaction(); };
 
             buyList.Add(buyableResource);
 
@@ -70,9 +70,9 @@ public class TradeMenu : MonoBehaviour
             Label sellPrice = sellableResource.Q<Label>("price");
 
             Button sellMinusButton = sellableResource.Q<Button>("minusbutton");
-            sellMinusButton.clicked += () => { ModifySellAmount(planet, resource, sellCount, sellPrice, -1); };
+            sellMinusButton.clicked += () => { ModifySellAmount(planet, resource, sellCount, sellPrice, -5); };
             Button sellPlusButton = sellableResource.Q<Button>("plusbutton");
-            sellPlusButton.clicked += () => { ModifySellAmount(planet, resource, sellCount, sellPrice, 1); };
+            sellPlusButton.clicked += () => { ModifySellAmount(planet, resource, sellCount, sellPrice, 5); };
 
             Button sellButton = sellableResource.Q<Button>("buybutton");
             sellButton.clicked += () => 
@@ -127,6 +127,8 @@ public class TradeMenu : MonoBehaviour
         planet.GetPlanetResourceHandler().AddResouce(resource, int.Parse(amount.text));
         inventory.RemoveMoney(int.Parse(price.text));
         planet.UpdateResourceDisplays();
+        amount.text = "0";
+        price.text = "0";
     }
 
     private void MakeRepeatingBuyTransaction()
@@ -155,6 +157,8 @@ public class TradeMenu : MonoBehaviour
         planet.GetPlanetResourceHandler().RemoveResouce(resource, int.Parse(amount.text));
         inventory.AddMoney(int.Parse(price.text));
         planet.UpdateResourceDisplays();
+        amount.text = "0";
+        price.text = "0";
     }
 
     private void MakeRepeatingSellTransaction()
