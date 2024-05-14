@@ -13,4 +13,7 @@ public class GameEvents
 
     public static event Action OnShipStateChange;
     public static void ShipStateChange() => OnShipStateChange?.Invoke();
+
+    public static event Action OnUniverseViewChange;
+    public static void UniverseViewChange() => OnUniverseViewChange?.Invoke();
 }

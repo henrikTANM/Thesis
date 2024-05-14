@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class MotionSimulator : MonoBehaviour
 {
-    public GameObject body;
-    public ParticleSystem booster;
-    ParticleSystem.MainModule mainPartycleSystem;
+    private ParticleSystem.MainModule mainPartycleSystem;
     public SpaceShip ship;
 
     private UniverseHandler universe;
@@ -25,7 +23,7 @@ public class MotionSimulator : MonoBehaviour
     private void Awake()
     {
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
-        mainPartycleSystem = booster.main;
+        mainPartycleSystem = ship.booster.main;
         SetMoving(false);
     }
 
@@ -69,7 +67,7 @@ public class MotionSimulator : MonoBehaviour
         flightDirection = Vector3.Normalize(endPos - startPos);
         breaking = false;
 
-        body.transform.localRotation = Quaternion.LookRotation(-flightDirection);
+        ship.body.transform.localRotation = Quaternion.LookRotation(flightDirection);
 
         currentV = initialV;
         halfDistance = Vector3.Distance(startPos, endPos) / 2.0f;
@@ -80,10 +78,12 @@ public class MotionSimulator : MonoBehaviour
 
     private void SetMoving(bool isMoving)
     {
-        body.GetComponent<SphereCollider>().enabled = isMoving;
-        body.GetComponent<MeshRenderer>().enabled = isMoving;
-        if (isMoving) { booster.Play(); }
-        else {  booster.Pause(); }
+        ship.EnableEffects(isMoving);
         moving = isMoving;
+    }
+
+    public bool IsMoving()
+    {
+        return moving;
     }
 }

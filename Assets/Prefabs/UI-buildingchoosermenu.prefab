@@ -65,5 +65,3 @@ MonoBehaviour:
   buildingOptionButton: {fileID: 9197481963319205126, guid: 3ee811ca2546760459ffe9d893c9b765, type: 3}
   resourceNeedTemplate: {fileID: 9197481963319205126, guid: a75da1841bb40f24e9b141ca4177dc8d, type: 3}
   selectedProductiomBuilding: {fileID: 0}
-  failColor: {r: 0.5471698, g: 0, b: 0, a: 0.5882353}
-  originalColor: {r: 0.043137256, g: 0.050980393, b: 0.05882353, a: 0.47058824}

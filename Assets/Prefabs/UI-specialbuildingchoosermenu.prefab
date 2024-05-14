@@ -66,5 +66,3 @@ MonoBehaviour:
   advancedMachinery: {fileID: 11400000, guid: 02d4f3ccb13ce6740b1f9907b7d5adca, type: 2}
   shipYard: {fileID: 11400000, guid: 9200f8dfa2b77214fa718182cb27e5fb, type: 2}
   advancedLogistics: {fileID: 11400000, guid: 3d9152b149565a24f86edd5f3e7ecd42, type: 2}
-  failColor: {r: 0.54901963, g: 0, b: 0, a: 0.5882353}
-  originalColor: {r: 0.043137256, g: 0.050980393, b: 0.05882353, a: 0.47058824}

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class SpaceShip: MonoBehaviour
 {
+    public GameObject body;
+    public ParticleSystem booster;
+    private TrailRenderer trailRenderer;
+
+    private UniverseHandler universe;
     private string name;
     private float fuelCapacity;
     private int cargoCapacity;
@@ -23,9 +28,25 @@ public class SpaceShip: MonoBehaviour
 
     private bool travelling = false;
 
+    private void Awake()
+    {
+        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+        trailRenderer = body.GetComponent<TrailRenderer>();
+        trailRenderer.enabled = false;
+        trailRenderer.textureScale = new(0.0f, 0.0f);
+
+        GameEvents.OnUniverseViewChange += ToggleTrailRenderer;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnUniverseViewChange -= ToggleTrailRenderer;
+    }
+
     private void Update()
     {
         Moving();
+        body.transform.localScale = (universe.GetActivePlanet() == null ? new(0.1f, 0.1f, 0.1f) : new(0.01f, 0.01f, 0.01f));
     }
 
     void Moving()
@@ -133,5 +154,22 @@ public class SpaceShip: MonoBehaviour
         routePaused = !routePaused;
         if (routePaused) route.RemoveRoutePersCycles();
         else route.AddRoutePersCycles();
+    }
+
+    public void EnableEffects(bool enable)
+    {
+        body.GetComponent<BoxCollider>().enabled = enable;
+        body.GetComponent<MeshRenderer>().enabled = enable;
+        trailRenderer.enabled = enable;
+        if (motionSimulator.IsMoving()) { booster.Play(); }
+        else { booster.Pause(); }
+    }
+
+    public void ToggleTrailRenderer()
+    {
+        if (travelling)
+        {
+            trailRenderer.textureScale = trailRenderer.textureScale.x == 0.0f ? new(1.0f, 1.0f) : new(0.0f, 0.0f);
+        }
     }
 }

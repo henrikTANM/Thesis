@@ -79,17 +79,23 @@ public class UniverseGenerator : MonoBehaviour
     private List<Vector3> GeneratePlanetPositions()
     {
         List<Vector3> planetPositions = new();
-        int nrOfPlanets = UnityEngine.Random.Range(2, 6);
+        int nrOfPlanets = UnityEngine.Random.Range(3, 6);
 
         while (planetPositions.Count < nrOfPlanets)
         {
-            float z = UnityEngine.Random.Range(6.0f, 20.0f);
-            Vector3 newPlanetPosition = new(0.0f, 0.0f, z);
+            Vector2 randomPos = UnityEngine.Random.insideUnitCircle;
+            Vector3 newPlanetPosition = new(randomPos.x * 20.0f, 0.0f, randomPos.y * 20.0f);
 
             bool generatePos = true;
             foreach (Vector3 planetPosition in planetPositions)
             {
-                if (Vector3.Distance(newPlanetPosition, planetPosition) < 2.0f) generatePos = false;
+                bool closeToPlanet = Mathf.Abs(Vector3.Distance(Vector3.zero, newPlanetPosition) - Vector3.Distance(Vector3.zero, planetPosition)) < 2.0f;
+                bool closeToStar = Vector3.Distance(Vector3.zero, newPlanetPosition) < 5.0f;
+                if (closeToPlanet | closeToStar)
+                {
+                    generatePos = false;
+                    break;
+                }
             }
             if (generatePos) planetPositions.Add(newPlanetPosition);
         }

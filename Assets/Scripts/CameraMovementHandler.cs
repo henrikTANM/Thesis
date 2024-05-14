@@ -49,6 +49,7 @@ public class CameraMovementHandler : MonoBehaviour
         targetPosition = target.position - transform.forward * distanceFromTarget + transform.up * distanceFromTarget;
         transform.position = targetPosition;
         transform.LookAt(universe.transform);
+        newRotation = transform.localEulerAngles;
     }
 
     void Update()
@@ -97,6 +98,7 @@ public class CameraMovementHandler : MonoBehaviour
     {
         this.target = target;
         this.distanceFromTarget = distanceFromTarget;
+        if (this.universeView != universeView) GameEvents.UniverseViewChange();
         this.universeView = universeView;
         targetPosition = target.position - transform.forward * distanceFromTarget;
         movingToTarget = true;

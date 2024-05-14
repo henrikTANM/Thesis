@@ -122,7 +122,6 @@ public class UniverseHandler : MonoBehaviour
         escapeMenuDisplayed = !escapeMenuDisplayed;
         timeRunning = !escapeMenuDisplayed;
         uiController.ChangeTimeButtonIcon();
-        print(escapeMenuDisplayed);
         uiController.SetGameUIActive(!escapeMenuDisplayed);
     }
 

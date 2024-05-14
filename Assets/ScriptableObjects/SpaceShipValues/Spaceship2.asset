@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spaceship2
   m_EditorClassIdentifier: 
   name: S.T.S. Hauler
-  fuelCapacity: 300
+  fuelCapacity: 1200
   cargoCapacity: 64
   accelerationRate: 10
   cost:
