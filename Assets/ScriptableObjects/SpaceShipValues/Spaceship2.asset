@@ -15,7 +15,7 @@ MonoBehaviour:
   name: S.T.S. Hauler
   fuelCapacity: 1200
   cargoCapacity: 64
-  accelerationRate: 10
+  accelerationRate: 5
   cost:
   - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
     amount: 3000
@@ -27,3 +27,4 @@ MonoBehaviour:
     amount: 100
   - resource: {fileID: 11400000, guid: cdeca4be7d3d1a942a000ad13f9bc40f, type: 2}
     amount: 100
+  shipScale: 0.04

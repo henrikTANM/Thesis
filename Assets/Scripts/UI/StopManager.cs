@@ -45,7 +45,7 @@ public class StopManager : MonoBehaviour
 
         Label fuelToNextStop = root.Q<Label>("fuel");
         fuelToNextStop.text = "Maximum amount of fuel needed to reach next stop: " + 
-            routeStop.GetMaxTravelDistance(routeStop.GetPlanet().GetOrbiter(), routeStop.Route().GetNextRouteStop(routeStop).GetPlanet().GetOrbiter()).ToString();
+            (routeStop.GetMaxTravelDistance(routeStop.GetPlanet().GetOrbiter(), routeStop.Route().GetNextRouteStop(routeStop).GetPlanet().GetOrbiter()) / 2).ToString();
 
         if (stopList.childCount > 1) 
         {

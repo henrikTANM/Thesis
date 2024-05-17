@@ -15,7 +15,7 @@ MonoBehaviour:
   name: S.T.S. Runner
   fuelCapacity: 50
   cargoCapacity: 16
-  accelerationRate: 30
+  accelerationRate: 10
   cost:
   - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
     amount: 1000
@@ -25,3 +25,4 @@ MonoBehaviour:
     amount: 50
   - resource: {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
     amount: 50
+  shipScale: 0.025

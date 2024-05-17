@@ -29,7 +29,8 @@ public class MotionSimulator : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (moving)
+        //print(universe.timeRunning);
+        if (moving & universe.timeRunning)
         {
             if (Vector3.Distance(transform.position, endPos) <= halfDistance)
             {
@@ -60,8 +61,8 @@ public class MotionSimulator : MonoBehaviour
 
     public void StartMoving(Orbiter start, Orbiter end, int traveltime)
     {
-        startPos = start.transform.position + Vector3.up / 5;
-        endPos = end.GetPosIn(traveltime * universe.cycleLength) + Vector3.up / 5;
+        startPos = start.transform.position;
+        endPos = end.GetPosIn(traveltime * universe.cycleLength);
 
         transform.position = startPos;
         flightDirection = Vector3.Normalize(endPos - startPos);
@@ -78,8 +79,8 @@ public class MotionSimulator : MonoBehaviour
 
     private void SetMoving(bool isMoving)
     {
-        ship.EnableEffects(isMoving);
         moving = isMoving;
+        ship.EnableEffects(isMoving);
     }
 
     public bool IsMoving()

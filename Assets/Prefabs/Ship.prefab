@@ -90,9 +90,9 @@ Transform:
   m_GameObject: {fileID: 8368851533298544505}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -0.83, z: -9}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: -0.83, z: -9.44}
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6046494040330538199}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -171,7 +171,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -4905,6 +4905,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spaceship
       objectReference: {fileID: 0}
+    - target: {fileID: 3746924929825189104, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4933100652016665237, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.1
@@ -4927,7 +4931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4933100652016665237, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.487
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4933100652016665237, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4967,6 +4971,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1138548110250671408, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4147448198106180617}
+    - targetCorrespondingSourceObject: {fileID: 1138548110250671408, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3530676373173053281}
   m_SourcePrefab: {fileID: 100100000, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}
 --- !u!1 &1752038630604829554 stripped
 GameObject:
@@ -5032,6 +5039,15 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -5077,6 +5093,19 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &3530676373173053281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752038630604829554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949d5b7a214fd8f4d9c496ca35fdb133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipViewerPrefab: {fileID: 5362047318867954781, guid: dff78f6faae064c44a9b0c720ed4ba46, type: 3}
 --- !u!4 &6046494040330538199 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4933100652016665237, guid: 86ebcc6a94743774e9967f8f5c3f7e4d, type: 3}

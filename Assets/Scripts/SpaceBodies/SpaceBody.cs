@@ -38,15 +38,16 @@ public class SpaceBody : MonoBehaviour
         InputEvents.OnClusterView -= ScaleToNative;
     }
 
-    private void OnMouseEnter()
+    protected virtual void OnMouseEnter()
     {
+        hoverOver.color = Color.white;
         if (!Input.GetMouseButton(1) & !selected & (universe.routeMakerDisplayed | !universe.UIDisplayed())) 
-            StartCoroutine(ScaleOverTime(hoverOver.transform, new Vector3(0.1f, 0.1f, 0.1f), 0.3f));
+            StartCoroutine(ScaleOverTime(hoverOver.transform, new Vector3(0.1f, 0.1f, 0.1f), 0.1f));
     }
 
-    private void OnMouseExit()
+    protected virtual void OnMouseExit()
     {
-        StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
+        StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.1f));
         hoverOver.color = Color.white;
     }
 

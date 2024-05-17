@@ -134,9 +134,14 @@ public class UIController : MonoBehaviour
         uiStack.RemoveLast();
     }
 
+    public void ClearUIStack()
+    {
+        uiStack.Clear();
+    }
+
     public bool UIDisplayed() { return !uiStack.IsEmpty(); }
 
-    private void MakeEscapeMenu() 
+    public void MakeEscapeMenu() 
     {
         if (escapeMenu != null) return;
         escapeMenu = Instantiate(escapeMenuPrefab);
@@ -144,7 +149,7 @@ public class UIController : MonoBehaviour
         escapeMenu.GetComponent<EscapeMenu>().MakeEscapeMenu();
         AddToUIStack(new UIElement(escapeMenu, escapeMenuUI), false); 
     }
-    private void MakeShipsMenu() 
+    public void MakeShipsMenu() 
     {
         if (shipsMenu != null) return;
         shipsMenu = Instantiate(shipsMenuPrefab);
@@ -153,7 +158,7 @@ public class UIController : MonoBehaviour
         AddToUIStack(new UIElement(shipsMenu, shipsMenuUI), false);
     }
 
-    private void MakePlanetsMenu()
+    public void MakePlanetsMenu()
     {
         if (planetsMenu != null) return;
         planetsMenu = Instantiate(planetsMenuPrefab);

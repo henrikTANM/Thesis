@@ -6,7 +6,10 @@
             <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="exitbutton" class="button" style="align-self: center; background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Game%20sprites/cross.png?fileID=2800000&amp;guid=fdd33b51b234ac545bc4e18bcb0f5e42&amp;type=3#cross&apos;);" />
         </ui:VisualElement>
         <ui:Label tabindex="-1" text="Current cargo:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cargo" class="textElement" style="align-self: center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-        <ui:Label tabindex="-1" text="Fuel needed to reach next stop: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="fuel" class="textElement" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: center;" />
+        <ui:VisualElement style="width: 100%; flex-direction: row; justify-content: center; align-items: center;">
+            <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Resource%20Sprites/liquid.png?fileID=2800000&amp;guid=29b8888ef96c08743883863a140bdfc5&amp;type=3#liquid&apos;); -unity-background-scale-mode: scale-to-fit; width: 20px; height: 20px; -unity-background-image-tint-color: rgb(171, 65, 20);" />
+            <ui:Label tabindex="-1" text="Fuel needed to reach next stop: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="fuel" class="textElement" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: center;" />
+        </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; align-self: stretch; align-items: center; margin-left: 5px; margin-right: 5px;">
             <ui:ScrollView name="dropoffpickup" style="align-items: center;" />
         </ui:VisualElement>

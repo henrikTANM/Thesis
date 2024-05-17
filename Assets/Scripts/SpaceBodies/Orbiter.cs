@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +10,7 @@ public class Orbiter : MonoBehaviour
 {
     private UniverseHandler universe;
 
-    public Transform centre;
+    private Transform centre;
     private float orbitSpeed;
 
     private void Awake()
@@ -17,7 +18,6 @@ public class Orbiter : MonoBehaviour
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (universe.timeRunning) transform.position = Orbit(transform.position, centre.position, Vector3.up, orbitSpeed * Time.deltaTime);

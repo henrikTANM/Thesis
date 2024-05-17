@@ -19,7 +19,7 @@ public class UniverseHandler : MonoBehaviour
     [NonSerialized] public float cycleLength = 3.0f;
     [NonSerialized] public float timeCycleValue = 0.0f;
     [NonSerialized] public float timeValue = 0.0f;
-    [NonSerialized] public bool timeRunning = true;
+    [NonSerialized] public bool timeRunning = false;
 
     [NonSerialized] public bool escapeMenuDisplayed = false;
     [NonSerialized] public bool routeMakerDisplayed = false;
@@ -31,6 +31,7 @@ public class UniverseHandler : MonoBehaviour
     public List<Resource> allResources;
 
     public bool startWait = true;
+    public Star startStar;
 
     private void Awake()
     {
@@ -54,7 +55,7 @@ public class UniverseHandler : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(WaitForSeconds());
+        StartCoroutine(GameStartCameraMove());
     }
 
     private void Update()
@@ -138,12 +139,15 @@ public class UniverseHandler : MonoBehaviour
         timeRunning = !timeRunning;
     }
 
-    IEnumerator WaitForSeconds()
+    IEnumerator GameStartCameraMove()
     {
         yield return new WaitForSeconds(1.0f);
         Star firstStar = stars.ElementAt(0);
+        Planet firstPlanet = firstStar.planets.ElementAt(0);
         firstStar.SetSelected(true, false);
         foreach (Planet planet in firstStar.planets) { planet.SetReached(true); }
-        cameraMovementHandler.MoveToTarget(firstStar.body.transform, firstStar.nativeScale, false);
+        firstPlanet.SetSelected(true);
+        cameraMovementHandler.MoveToTarget(firstPlanet.body.transform, firstPlanet.body.transform.localScale.x * 3.0f, false);
+        timeRunning = true;
     }
 }

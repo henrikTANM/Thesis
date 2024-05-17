@@ -19,7 +19,7 @@ MonoBehaviour:
     amount: 200
   - resource: {fileID: 11400000, guid: 8d8103336adc63e4db1151c238a89eeb, type: 2}
     amount: 100
-  upkeep: 10
+  upkeep: 5
   inputResources: []
   outputResource:
     resource: {fileID: 11400000, guid: cdeca4be7d3d1a942a000ad13f9bc40f, type: 2}

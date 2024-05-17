@@ -182,6 +182,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
   - {fileID: 11400000, guid: 7eea87dc34711da409d9983fc045de22, type: 2}
   startWait: 1
+  startStar: {fileID: 0}
 --- !u!114 &5695620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +219,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 43e771796b30c194fac0117302652515, type: 3}
   - {fileID: 21300000, guid: 417d9f5afd1e56b448e21d10742c3b08, type: 3}
   - {fileID: 21300000, guid: 0d3f6859ebe64ae4da1577dadd9082e3, type: 3}
+  startSettings: {fileID: 11400000, guid: 5387e6db13fcece4fb7ac64422d6d626, type: 2}
+  fuelResource: {fileID: 11400000, guid: 324e2fec89ef060488ea837de16bf091, type: 2}
 --- !u!1 &107508163
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyResource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
   spaceShipPrefab: {fileID: 4767268908894481153, guid: 4ad34bee0c961fd4fbb157ece97d4ce1, type: 3}
+  startShipValues: {fileID: 11400000, guid: 338bf4dfd1de0954ebf91f73b68a6a70, type: 2}
 --- !u!4 &107508165
 Transform:
   m_ObjectHideFlags: 0
@@ -499,7 +503,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 3
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0

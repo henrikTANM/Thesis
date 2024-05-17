@@ -16,6 +16,7 @@ public class SpecialBuildingMenu : MonoBehaviour
     private SpecialBuilding selectedSpecialBuilding;
 
     private UIController uiController;
+    private PlayerInventory inventory;
 
     private Button buildButton;
 
@@ -27,6 +28,7 @@ public class SpecialBuildingMenu : MonoBehaviour
     public void MakeSpecialBuildingChooserMenu(PlanetMenu planetMenu, Planet planet)
     {
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
+        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
         Button exitButton = root.Q<Button>("exitbutton");
@@ -105,7 +107,21 @@ public class SpecialBuildingMenu : MonoBehaviour
         {
             planet.SetSpecialBuilding(selectedSpecialBuilding);
             planetMenu.ChangeSpecialBuildingButtonImage(selectedSpecialBuilding.image);
+
             PlanetResourceHandler planetResourceHandler = planet.GetPlanetResourceHandler();
+
+            foreach(ResourceAmount cost in selectedSpecialBuilding.cost)
+            {
+                if (cost.resource == inventory.GetMoneyResource())
+                {
+                    inventory.RemoveMoney(cost.amount);
+                }
+                else
+                {
+                    planetResourceHandler.RemoveResouce(cost.resource, cost.amount);
+                }
+            }
+
             if (selectedSpecialBuilding.name == "Advanced machinery") 
             {
                 planetResourceHandler.AddRawMultiplier(1.5f);
@@ -116,6 +132,7 @@ public class SpecialBuildingMenu : MonoBehaviour
                 planetResourceHandler.AddRawMultiplier(0.5f);
                 planetResourceHandler.AddEndMultiplier(1.5f);
             }
+
             uiController.RemoveLastFromUIStack();
         }
     }

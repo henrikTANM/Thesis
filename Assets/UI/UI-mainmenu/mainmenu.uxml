@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/UI-mainmenu/mainmenu.uss?fileID=7433441132597879392&amp;guid=95c4c9aaad47f024b89f5ca1687803d3&amp;type=3#mainmenu" />
     <ui:VisualElement style="flex-grow: 1; justify-content: center; margin-left: 20px; margin-top: 20px; margin-right: 20px; margin-bottom: 20px;">
-        <ui:Label tabindex="-1" text="Star Transporter" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(218, 218, 218); font-size: 50px; -unity-font-definition: url(&apos;project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&amp;guid=a3064f1950e0154439cc49f0d9693048&amp;type=2#CourierPrime-Regular SDF&apos;); margin-bottom: 20px;" />
+        <ui:Label tabindex="-1" text="Stellar Manager" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(218, 218, 218); font-size: 50px; -unity-font-definition: url(&apos;project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&amp;guid=a3064f1950e0154439cc49f0d9693048&amp;type=2#CourierPrime-Regular SDF&apos;); margin-bottom: 20px;" />
         <ui:VisualElement style="width: 25%;">
             <ui:Button text="New Game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="newgame" class="button" />
             <ui:Button text="Load Game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="loadgame" class="button" />

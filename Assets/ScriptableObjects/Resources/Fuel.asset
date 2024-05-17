@@ -15,4 +15,4 @@ MonoBehaviour:
   name: Fuel
   resourceSprite: {fileID: 21300000, guid: 29b8888ef96c08743883863a140bdfc5, type: 3}
   spriteColor: {r: 0.6698113, g: 0.25633818, b: 0.078987174, a: 1}
-  defaultValue: 20
+  defaultValue: 50

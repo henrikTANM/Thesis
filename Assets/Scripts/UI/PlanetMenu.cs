@@ -45,7 +45,8 @@ public class PlanetMenu : MonoBehaviour
 
         specialBuildingButton = root.Q<Button>("specialbutton"); ;
         specialBuildingButton.clicked += () => { HandleSpecialBuildingButton(planet); };
-        specialBuildingButton.style.backgroundImage = new StyleBackground(defaultSpecialButtonImage);
+        SpecialBuilding specialBuilding = planet.GetSpecialBuilding();
+        specialBuildingButton.style.backgroundImage = new StyleBackground(specialBuilding != null ? specialBuilding.image : defaultSpecialButtonImage);
 
         List<VisualElement> depositContainers = root.Query("de").ToList();
         List<DepositHandler> deposits = planet.GetDeposits();

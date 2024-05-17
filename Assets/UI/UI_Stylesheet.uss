@@ -22,9 +22,9 @@
     -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
     background-color: rgba(0, 0, 0, 0.39);
     flex-direction: column;
-    width: 25px;
-    height: 25px;
     transition-duration: 0.1s;
+    width: 30px;
+    height: 30px;
 }
 
 .button:hover {
@@ -168,6 +168,7 @@
     border-bottom-width: 1px;
     border-left-width: 1px;
     transition-duration: 0.1s;
+    -unity-text-align: middle-center;
 }
 
 .spec_button:active {
@@ -246,10 +247,12 @@
     border-right-color: rgb(226, 226, 226);
     border-top-color: rgb(226, 226, 226);
     -unity-background-image-tint-color: rgb(226, 226, 226);
+    transition-duration: 0.1s;
 }
 
 #unity-low-button:hover {
     -unity-background-image-tint-color: rgb(171, 220, 255);
+    transition-duration: 0.1s;
 }
 
 #unity-high-button {
@@ -260,10 +263,12 @@
     border-right-color: rgb(226, 226, 226);
     border-bottom-color: rgb(226, 226, 226);
     -unity-background-image-tint-color: rgb(226, 226, 226);
+    transition-duration: 0.1s;
 }
 
 #unity-high-button:hover {
     -unity-background-image-tint-color: rgb(171, 220, 255);
+    transition-duration: 0.1s;
 }
 
 #unity-slider {
@@ -283,6 +288,7 @@
     border-top-color: rgb(226, 226, 226);
     border-bottom-color: rgb(226, 226, 226);
     background-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.1s;
 }
 
 #unity-dragger:hover {
@@ -291,6 +297,7 @@
     border-right-color: rgb(171, 220, 255);
     border-top-color: rgb(171, 220, 255);
     border-bottom-color: rgb(171, 220, 255);
+    transition-duration: 0.1s;
 }
 
 #unity-dragger:selected {
@@ -304,4 +311,46 @@
 
 #unity-drag-container {
     background-color: rgba(0, 0, 0, 0);
+}
+
+.trade_button {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+    -unity-background-scale-mode: scale-to-fit;
+    width: 30%;
+    height: 100%;
+    align-self: flex-start;
+    background-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.1s;
+    -unity-text-align: middle-center;
+    color: rgba(0, 0, 0, 0);
+    font-size: 40px;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
+}
+
+.trade_button:hover {
+    border-left-color: rgb(171, 220, 255);
+    border-right-color: rgb(171, 220, 255);
+    border-top-color: rgb(171, 220, 255);
+    border-bottom-color: rgb(171, 220, 255);
+    background-color: rgba(56, 56, 60, 0.47);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    transition-duration: 0.1s;
+    -unity-text-align: middle-center;
+    color: rgb(226, 226, 226);
 }

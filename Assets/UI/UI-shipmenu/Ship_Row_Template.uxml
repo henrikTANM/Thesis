@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/UI-shipmenu/Ship_Row_Template_StyleSheet.uss?fileID=7433441132597879392&amp;guid=6f8e627f0f66e8e44bc3dfb19e9d4816&amp;type=3#Ship_Row_Template_StyleSheet" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: column; justify-content: space-around; width: 100%; margin-bottom: 5px;">
-        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="shipviewbutton" class="RouteButton" style="flex-grow: 1; align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row; justify-content: space-around; align-items: center;">
+    <ui:VisualElement name="VisualElement" style="flex-direction: row; justify-content: space-around; margin-bottom: 5px; align-items: center;">
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="shipviewbutton" class="RouteButton" style="flex-grow: 1; align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row; justify-content: space-around; align-items: center;">
             <ui:Label tabindex="-1" text="ShipName" parse-escape-sequences="true" display-tooltip-when-elided="true" name="name" class="label" />
-            <ui:Label tabindex="-1" text="FuelCapacity" parse-escape-sequences="true" display-tooltip-when-elided="true" name="location" class="label" />
-            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="camera" />
+            <ui:Label tabindex="-1" text="Location" parse-escape-sequences="true" display-tooltip-when-elided="true" name="location" class="label" />
         </ui:Button>
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="camera" style="margin-left: 5px;" />
     </ui:VisualElement>
 </ui:UXML>

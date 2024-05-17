@@ -20,6 +20,6 @@ MonoBehaviour:
   possibleDeposits:
   - {fileID: 11400000, guid: 49c4b9197d3f8f34e8eca16610a67ead, type: 2}
   - {fileID: 11400000, guid: 49c4b9197d3f8f34e8eca16610a67ead, type: 2}
-  - {fileID: 11400000, guid: c5b3333256961d243a23235c10daadc2, type: 2}
+  - {fileID: 11400000, guid: ee2073cdf631dc249a0df4a48c64554a, type: 2}
   depositCap: 3
   planetType: 1

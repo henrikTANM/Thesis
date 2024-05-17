@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,9 +22,16 @@ public class ShipViewer : MonoBehaviour
     private VisualElement routeButtons;
 
     private Label routeStatus;
+    private Label fuel;
 
-    public void MakeShipViewer(ShipsMenu shipsMenu, SpaceShip ship)
+    private Button pauseButton;
+
+    private SpaceShip ship;
+
+    public void MakeShipViewer(SpaceShip ship)
     {
+        this.ship = ship;
+
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
         inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
 
@@ -35,11 +43,14 @@ public class ShipViewer : MonoBehaviour
         exitButton.clicked += uiController.RemoveLastFromUIStack;
 
         root.Q<Label>("acceleration").text = "Acceleration rate: " + ship.GetMaxAcceleration().ToString();
-        root.Q<Label>("fuel").text = "Fuel capacity: " + ship.GetFuelCapacity().ToString();
         root.Q<Label>("cargo").text = "Cargo capacity: " + ship.GetCargoCapacity().ToString();
+        root.Q<Label>("fuel").text = "Fuel capacity: " + ship.GetFuelCapacity().ToString();
+        fuel = root.Q<Label>("currentfuel");
+        UpdateFuel(ship);
 
         Button sellButton = root.Q<Button>("sellbutton");
-        sellButton.clicked += () =>  Sell(ship);
+        sellButton.text = "Sell for " + inventory.GetShipCost(ship).ToString();
+        sellButton.clicked += () => Sell(ship);
 
         routeStatus = root.Q<Label>("status");
         UpdateRouteStatus(ship);
@@ -50,6 +61,16 @@ public class ShipViewer : MonoBehaviour
 
         routeButtons = root.Q<VisualElement>("buttons");
         UpdateButtons(ship);
+    }
+
+    private void Update()
+    {
+        UpdateFuel(ship);
+    }
+
+    private void UpdateFuel(SpaceShip ship)
+    {
+        fuel.text = "Fuel capacity: " + ship.GetFuelOnShip().ToString();
     }
 
     public void UpdateRouteInfo(SpaceShip ship)
@@ -98,7 +119,8 @@ public class ShipViewer : MonoBehaviour
             Button cancelButton = routeButtonsContainer.Q<Button>("cancelbutton");
             cancelButton.clicked += () => CancelRoute(ship);
 
-            Button pauseButton = routeButtonsContainer.Q<Button>("pausebutton");
+            pauseButton = routeButtonsContainer.Q<Button>("pausebutton");
+            pauseButton.text = ship.IsRoutePaused() ? "Unpause route" : "Pause route";
             pauseButton.clicked += () =>
             {
                 ship.ChangeRoutePaused();

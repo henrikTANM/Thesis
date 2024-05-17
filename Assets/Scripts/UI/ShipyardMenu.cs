@@ -92,6 +92,8 @@ public class ShipyardMenu : MonoBehaviour
         {
             inventory.AddShip(planet, selectedSpaceShip);
             uiController.RemoveLastFromUIStack();
+            uiController.RemoveLastFromUIStack();
+            uiController.MakeShipsMenu();
         }
     }
 

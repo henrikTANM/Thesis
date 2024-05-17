@@ -18,6 +18,9 @@ public class UniverseGenerator : MonoBehaviour
 
     public List<Sprite> settlementSprites;
 
+    [SerializeField] private StartSettings startSettings;
+    [SerializeField] private Resource fuelResource;
+
     private List<Vector3> GenerateStarPositions()
     {
         List<Vector3> starPositions = new() { new Vector3(0.0f, 0.0f, 0.0f) };
@@ -45,9 +48,9 @@ public class UniverseGenerator : MonoBehaviour
         List<Star> stars = new();
         List<Vector3> starPositions = GenerateStarPositions();
 
-        foreach (Vector3 starPosition in starPositions)
+        for (int i = 0; i < starPositions.Count; i++)
         {
-            GameObject newStar = Instantiate(starPrefab, starPosition, Quaternion.identity);
+            GameObject newStar = Instantiate(starPrefab, starPositions.ElementAt(i), Quaternion.identity);
             StarValues newStarValues = starValues.ElementAt(UnityEngine.Random.Range(0, starValues.Count));
 
             float scale = newStarValues.scale;
@@ -58,7 +61,7 @@ public class UniverseGenerator : MonoBehaviour
 
             star.SetName(newStarValues.starNames.ElementAt(UnityEngine.Random.Range(0, newStarValues.starNames.Count)));
 
-            GeneratePlanets(star);
+            GeneratePlanets(star, i == 0 ? startSettings.startSystemPlanets : null);
             foreach (Planet planet in star.planets) planet.SetVisible(false);
             foreach (LineRenderer lineRenderer in star.GetComponentsInChildren<LineRenderer>()) lineRenderer.enabled = false;
 
@@ -76,10 +79,10 @@ public class UniverseGenerator : MonoBehaviour
         return stars;
     }
 
-    private List<Vector3> GeneratePlanetPositions()
+    private List<Vector3> GeneratePlanetPositions(List<StartSettings.PlanetSettings> planetValues)
     {
         List<Vector3> planetPositions = new();
-        int nrOfPlanets = UnityEngine.Random.Range(3, 6);
+        int nrOfPlanets = planetValues == null ? UnityEngine.Random.Range(3, 6) : planetValues.Count;
 
         while (planetPositions.Count < nrOfPlanets)
         {
@@ -103,16 +106,16 @@ public class UniverseGenerator : MonoBehaviour
         return planetPositions;
     }
 
-    private void GeneratePlanets(Star star)
+    private void GeneratePlanets(Star star, List<StartSettings.PlanetSettings> startPlanetValues)
     {
-        List<Vector3> planetPositions = GeneratePlanetPositions();
+        List<Vector3> planetPositions = GeneratePlanetPositions(startPlanetValues);
 
         List<Planet> planets = new();
 
         for (int i = 0; i < planetPositions.Count; i++)
         {
             GameObject newPlanet = Instantiate(planetPrefab, star.transform.position, Quaternion.identity);
-            PlanetValues newPlanetValues = planetValues.ElementAt(UnityEngine.Random.Range(0, planetValues.Count));
+            PlanetValues newPlanetValues = startPlanetValues == null ? planetValues.ElementAt(UnityEngine.Random.Range(0, planetValues.Count)) : startPlanetValues.ElementAt(i).planetValues;
 
             newPlanet.transform.parent = star.transform;
 
@@ -148,7 +151,14 @@ public class UniverseGenerator : MonoBehaviour
             planet.type = newPlanetValues.planetType;
 
             planet.SetSettlementSprite(settlementSprites.ElementAt(UnityEngine.Random.Range(0, settlementSprites.Count())));
-            planet.GenerateDeposits(newPlanetValues.possibleDeposits, newPlanetValues.depositCap);
+            if (startPlanetValues == null)
+            {
+                planet.GenerateDeposits(newPlanetValues.possibleDeposits, newPlanetValues.depositCap);
+            } else
+            {
+                planet.GenerateStartDeposits(startPlanetValues.ElementAt(i).depositList);
+                if (i == 0) { planet.GetPlanetResourceHandler().AddResouce(fuelResource, 1000.0f); }
+            }
 
             if (randomCloudsTexture != null)
             {

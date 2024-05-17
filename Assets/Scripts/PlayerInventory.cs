@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -10,6 +11,15 @@ public class PlayerInventory : MonoBehaviour
 
     [SerializeField] private Resource moneyResource;
     [SerializeField] private GameObject spaceShipPrefab;
+    [SerializeField] private SpaceShipValues startShipValues;
+
+    private UniverseHandler universe;
+
+    public void Start()
+    {
+        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
+        AddShip(universe.stars.ElementAt(0).planets.ElementAt(0), startShipValues);
+    }
 
     public void Update()
     {
@@ -45,14 +55,21 @@ public class PlayerInventory : MonoBehaviour
             spaceShipValues.cargoCapacity, 
             spaceShipValues.accelerationRate, 
             spaceShipValues.cost,
-            planet);
+            planet,
+            spaceShipValues.shipScale);
         ownedShips.Add(spaceShip);
     }
 
     public void RemoveShip(SpaceShip ship) 
     {
-        foreach (ResourceAmount resourceAmount in ship.GetCost()) { if (resourceAmount.resource == moneyResource) { AddMoney(resourceAmount.amount); } }
+        AddMoney(GetShipCost(ship));
         ownedShips.Remove(ship); 
+    }
+
+    public int GetShipCost(SpaceShip ship)
+    {
+        foreach (ResourceAmount resourceAmount in ship.GetCost()) { if (resourceAmount.resource == moneyResource) { return resourceAmount.amount; } }
+        return 0;
     }
 
     public List<SpaceShip> GetOwnedShips() {  return ownedShips; }

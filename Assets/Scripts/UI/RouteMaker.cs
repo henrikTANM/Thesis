@@ -20,6 +20,8 @@ public class RouteMaker : MonoBehaviour
 
     private Route route;
 
+    private Button createButton;
+
     public void MakeRouteMaker(ShipViewer shipViewer, SpaceShip ship)
     {
         uiController = GameObject.Find("UIController").GetComponent<UIController>();
@@ -36,15 +38,16 @@ public class RouteMaker : MonoBehaviour
         Button exitButton = root.Q<Button>("cancelbutton");
         exitButton.clicked += Close;
 
-        Button createButton = root.Q<Button>("createbutton");
+        createButton = root.Q<Button>("createbutton");
         createButton.clicked += () => 
-        { 
+        {
             route.Create();
             shipViewer.UpdateRouteInfo(ship);
             shipViewer.UpdateButtons(ship);
             shipViewer.UpdateRouteStatus(ship);
             Close();
         };
+        createButton.SetEnabled(false);
 
         stopList = root.Q<ScrollView>("stoplist");
         stopList.mouseWheelScrollSize = 100.0f;
@@ -65,16 +68,21 @@ public class RouteMaker : MonoBehaviour
 
         route.Add(routeStop);
         stopList.Add(stopLine);
+        if (route.GetRouteStops().Count >= 2)
+        {
+            createButton.SetEnabled(true);
+        } 
     }
 
-    public bool CanAddStop(Planet end)
+    public Tuple<bool, string> CanAddStop(Planet end)
     {
         if (route.HasStops())
         {
             Planet start = route.GetLastRouteStop().GetPlanet();
-            if (Vector3.Distance(start.transform.position, end.transform.position) > ship.GetFuelCapacity()) { return false; }
+            if (Vector3.Distance(start.transform.position, end.transform.position) > ship.GetFuelCapacity()) { return new(false, "Not enough fuel to reach"); }
+            if (route.GetLastRouteStop().GetPlanet() == end) { return new(false, "Cannot add last stop"); }
         }
-        return true;
+        return new(true, "lol");
     }
 
     private void Close()

@@ -112,7 +112,7 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    background-color: rgba(0, 0, 0, 0.39);
+    background-color: rgba(255, 255, 255, 0.57);
     height: 100%;
     min-height: 100%;
 }

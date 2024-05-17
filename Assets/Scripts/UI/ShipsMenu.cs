@@ -7,6 +7,7 @@ public class ShipsMenu : MonoBehaviour
 {
     private UIController uiController;
     private PlayerInventory inventory;
+    [SerializeField] private CameraMovementHandler cameraMovementHandler;
 
     public VisualTreeAsset ownedShipRowTemplate;
 
@@ -55,7 +56,12 @@ public class ShipsMenu : MonoBehaviour
             ship_Row.Q<Label>("location").text = (ship.IsTravelling() ? "On route to " : "Currently at ") + ship.GetCurrentPlanet().GetName();
 
             Button camera = ship_Row.Q<Button>("camera");
-            //camera.clicked +=
+            camera.clicked += () =>
+            {
+                ship.GetCurrentPlanet().MoveToPlanet();
+                ship.GetCurrentPlanet().SetSelected(true);
+                uiController.ClearUIStack();
+            };
 
             shipsList.Add(ship_Row);
         }
@@ -65,7 +71,7 @@ public class ShipsMenu : MonoBehaviour
     {
         shipViewer = Instantiate(shipViewerPrefab);
         UIDocument shipViewerUI = shipViewer.GetComponent<UIDocument>();
-        shipViewer.GetComponent<ShipViewer>().MakeShipViewer(this, ship);
+        shipViewer.GetComponent<ShipViewer>().MakeShipViewer(ship);
         uiController.AddToUIStack(new UIElement(shipViewer, shipViewerUI), false);
     }
 }

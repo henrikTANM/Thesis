@@ -19,4 +19,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8c39e1595a91d03429e74108a69cf9f5, type: 2}
   - {fileID: 11400000, guid: eca6bcc566acaf544b640cde00af70d4, type: 2}
   - {fileID: 11400000, guid: 5ee8447c3022cf64e9e413ecea3f2a0b, type: 2}
-  buildingCap: 4
+  buildingCap: 2

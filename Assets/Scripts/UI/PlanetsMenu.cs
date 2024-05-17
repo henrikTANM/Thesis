@@ -25,10 +25,10 @@ public class PlanetsMenu : MonoBehaviour
         planetsList = root.Q<ScrollView>("planetslist");
         planetsList.mouseWheelScrollSize = 500.0f;
 
-        UpdateShipsList();
+        UpdatePlanetsList();
     }
 
-    public void UpdateShipsList()
+    public void UpdatePlanetsList()
     {
         planetsList.Clear();
         foreach (Planet planet in universe.GetAllManagedPlanets())
@@ -38,7 +38,12 @@ public class PlanetsMenu : MonoBehaviour
             planetRow.Q<Label>("name").text = planet.GetName();
 
             Button camera = planetRow.Q<Button>("camera");
-            //camera.clicked +=
+            camera.clicked += () =>
+            {
+                planet.MoveToPlanet();
+                planet.SetSelected(true);
+                uiController.ClearUIStack();
+            };
 
             planetsList.Add(planetRow);
         }

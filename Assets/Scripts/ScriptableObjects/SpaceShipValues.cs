@@ -10,4 +10,5 @@ public class SpaceShipValues : ScriptableObject
     public int cargoCapacity;
     public float accelerationRate;
     public ResourceAmount[] cost;
+    public float shipScale;
 }

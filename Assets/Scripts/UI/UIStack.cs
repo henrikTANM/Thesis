@@ -37,6 +37,14 @@ public class UIStack : MonoBehaviour
         if (!IsEmpty()) SetUIVisible(GetLast().GetUIDocument(), true);
     }
 
+    public void Clear() {
+        foreach (UIElement uiElement in uiStack)
+        {
+            Destroy(uiElement.GetGameObject());
+        }
+        uiStack.Clear(); 
+    }
+
     public void SetUIVisible(UIDocument uiDoc, bool visible)
     {
         uiDoc.sortingOrder = visible ? 1 : 0;

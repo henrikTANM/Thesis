@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308fe71804fd2824d88666f3c933c6f7, type: 3}
+  m_Name: StartSettings
+  m_EditorClassIdentifier: 
+  startSystemPlanets:
+  - planetValues: {fileID: 11400000, guid: f78e5d834a181a14e8fc7399e3301f24, type: 2}
+    depositList:
+    - {fileID: 11400000, guid: c5b3333256961d243a23235c10daadc2, type: 2}
+    - {fileID: 11400000, guid: ee2073cdf631dc249a0df4a48c64554a, type: 2}
+    - {fileID: 11400000, guid: a72670432da65134e97ed3de8f5cf36c, type: 2}
+  - planetValues: {fileID: 11400000, guid: df685990b33659f4aa793f0f8a2d1689, type: 2}
+    depositList:
+    - {fileID: 11400000, guid: 49660ba634def7c498f0cd6d8a201c85, type: 2}
+    - {fileID: 11400000, guid: b5a79b95dfb812c45958112b52df9a7f, type: 2}
+    - {fileID: 11400000, guid: a72670432da65134e97ed3de8f5cf36c, type: 2}
+  - planetValues: {fileID: 11400000, guid: 2450a2c224790a147b8d58df4b9b9bdc, type: 2}
+    depositList:
+    - {fileID: 11400000, guid: 1e72c4b0f6cef674391c7f13e0e28624, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
+  - planetValues: {fileID: 11400000, guid: 364bf953292286b45b799321cd8d5961, type: 2}
+    depositList:
+    - {fileID: 11400000, guid: 49c4b9197d3f8f34e8eca16610a67ead, type: 2}
+    - {fileID: 11400000, guid: 49c4b9197d3f8f34e8eca16610a67ead, type: 2}
+    - {fileID: 11400000, guid: ee2073cdf631dc249a0df4a48c64554a, type: 2}
+  startSpaceShipValue: {fileID: 11400000, guid: 338bf4dfd1de0954ebf91f73b68a6a70, type: 2}

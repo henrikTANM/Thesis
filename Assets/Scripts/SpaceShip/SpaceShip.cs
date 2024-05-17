@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpaceShip: MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class SpaceShip: MonoBehaviour
     private UniverseHandler universe;
     private string name;
     private float fuelCapacity;
+    private float fuelOnShip;
     private int cargoCapacity;
     private float maxAcceleration;
 
@@ -28,8 +30,16 @@ public class SpaceShip: MonoBehaviour
 
     private bool travelling = false;
 
+    private Vector3 nativeScale;
+
+    private Vector3 posInOrbit;
+
+    private ShipViewer shipViewer;
+
     private void Awake()
     {
+        body.GetComponent<BoxCollider>().enabled = false;
+        body.GetComponent<MeshRenderer>().enabled = false;
         universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
         trailRenderer = body.GetComponent<TrailRenderer>();
         trailRenderer.enabled = false;
@@ -46,28 +56,38 @@ public class SpaceShip: MonoBehaviour
     private void Update()
     {
         Moving();
-        body.transform.localScale = (universe.GetActivePlanet() == null ? new(0.1f, 0.1f, 0.1f) : new(0.01f, 0.01f, 0.01f));
+        body.transform.localScale = (universe.GetActivePlanet() == null ? nativeScale : nativeScale / 10.0f);
+        //booster.transform.localScale = (universe.GetActivePlanet() == null ? new(0.4f, 0.4f, 0.4f) : new(0.04f, 0.04f, 0.04f));
+        //booster.transform.localPosition = new(0.0f, -0.83f, -9.21f);
+        if (!travelling | (routePaused & !travelling)) { transform.position = currentPlanet.shipPos + posInOrbit; }
     }
 
     void Moving()
     {
+
         if (HasRoute() & !travelling & !routePaused)
         {
+            TryToLoadFuel();
             if (!CanTravel())
             {
                 ChangeRoutePaused();
                 return;
+            } 
+            else
+            {
+                fuelOnShip -= route.GetCurrentRouteStop().GetTravelDisctance() / 2;
             }
-            if (!route.ContainsPlanet(currentPlanet))
+            if (!route.ContainsPlanet(currentPlanet) | currentPlanet != route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet())
             {
                 RouteStop firstRouteStop = route.GetRouteStop(0);
-
+                currentPlanet.RemoveShipFromOrbit(this);
                 motionSimulator.StartMoving(
                     currentPlanet.GetOrbiter(),
                     firstRouteStop.GetPlanet().GetOrbiter(),
                     firstRouteStop.GetMinTravelTime(currentPlanet.GetOrbiter(), firstRouteStop.GetPlanet().GetOrbiter())
                     );
                 currentPlanet = firstRouteStop.GetPlanet();
+                currentPlanet.AddShipToOrbit(this);
                 travelling = true;
                 GameEvents.ShipStateChange();
             }
@@ -76,32 +96,54 @@ public class SpaceShip: MonoBehaviour
                 Planet startPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
                 route.ProgressRoute();
                 Planet endPlanet = route.GetRouteStop(route.GetCurrentRouteIndex()).GetPlanet();
-
+                currentPlanet.RemoveShipFromOrbit(this);
                 motionSimulator.StartMoving(
                     startPlanet.GetOrbiter(),
                     endPlanet.GetOrbiter(),
                     route.GetRouteStop(route.GetCurrentRouteIndex()).GetTravelTime()
                     );
                 currentPlanet = endPlanet;
+                currentPlanet.AddShipToOrbit(this);
                 travelling = true;
                 GameEvents.ShipStateChange();
             }
         }
-        else if (!travelling | routePaused)
+    }
+
+    public void SetPosInOrbit(Vector3 pos)
+    {
+        posInOrbit = pos;
+    }
+
+    public void TryToLoadFuel()
+    {
+        PlanetResourceHandler currentPlanetResourceHandler = currentPlanet.GetPlanetResourceHandler();
+        if (fuelOnShip < fuelCapacity)
         {
-            transform.position = currentPlanet.transform.position;
+            float loadAmount = fuelCapacity - fuelOnShip;
+            float fuelOnPlanet = currentPlanetResourceHandler.GetResourceCount(fuel).amount;
+            if (loadAmount >= fuelOnPlanet & fuelOnPlanet > 0.0f)
+            {
+                fuelOnShip += fuelOnPlanet;
+                currentPlanetResourceHandler.RemoveResouce(fuel, fuelOnPlanet);
+
+            }
+            else if (fuelOnPlanet > 0.0f)
+            {
+                fuelOnShip += loadAmount;
+                currentPlanetResourceHandler.RemoveResouce(fuel, loadAmount);
+            }
         }
     }
 
     public bool CanTravel() 
     {
-        float fuelOnPlanet = currentPlanet.GetPlanetResourceHandler().GetResourceCount(fuel).amount;
-        float fuelNeeded = route.GetCurrentRouteStop().GetTravelDisctance();
-        return fuelOnPlanet >= fuelNeeded;
+        float fuelNeeded = route.GetCurrentRouteStop().GetTravelDisctance() / 2;
+        return fuelOnShip >= fuelNeeded;
     }
 
 
-    public void CreateShip(string name, float fuelCapacity, int cargoCapacity, float maxAcceleration, ResourceAmount[] cost,  Planet currentPlanet)
+    public void CreateShip(string name, float fuelCapacity, int cargoCapacity, float maxAcceleration, ResourceAmount[] cost,  Planet currentPlanet, float scale)
     {
         this.name = name;
         this.fuelCapacity = fuelCapacity;
@@ -109,7 +151,9 @@ public class SpaceShip: MonoBehaviour
         this.maxAcceleration = maxAcceleration;
         this.cost = cost;
         this.currentPlanet = currentPlanet;
-        transform.position = currentPlanet.transform.position;
+        nativeScale = new(scale, scale, scale);
+        body.GetComponent<BoxCollider>().enabled = true;
+        body.GetComponent<MeshRenderer>().enabled = true;
     }
 
     public string GetName() { return name; }
@@ -118,6 +162,8 @@ public class SpaceShip: MonoBehaviour
 
     public float GetFuelCapacity() { return fuelCapacity; }
 
+    public float GetFuelOnShip() {  return fuelOnShip; }
+
     public Planet GetCurrentPlanet() { return currentPlanet; }
 
     public Route GetRoute() { return route; }
@@ -125,6 +171,11 @@ public class SpaceShip: MonoBehaviour
     public ResourceAmount[] GetCost()
     {
         return cost;
+    }
+
+    public void SetShipViewer(ShipViewer shipViewer)
+    {
+        this.shipViewer = shipViewer;
     }
 
     public void SetTravelling(bool travelling) 
@@ -145,7 +196,7 @@ public class SpaceShip: MonoBehaviour
 
     public void RemoveRoute()
     {
-        if (!routePaused) route.RemoveRoutePersCycles();
+        if (HasRoute()) { if (!routePaused) route.RemoveRoutePersCycles(); }
         route = null;
     }
 
@@ -158,8 +209,6 @@ public class SpaceShip: MonoBehaviour
 
     public void EnableEffects(bool enable)
     {
-        body.GetComponent<BoxCollider>().enabled = enable;
-        body.GetComponent<MeshRenderer>().enabled = enable;
         trailRenderer.enabled = enable;
         if (motionSimulator.IsMoving()) { booster.Play(); }
         else { booster.Pause(); }

@@ -16,11 +16,11 @@ MonoBehaviour:
   buildingSprite: {fileID: 21300000, guid: d62a4c1decd10bd4499656c7e304b1d4, type: 3}
   cost:
   - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
-    amount: 100
+    amount: 500
   - resource: {fileID: 11400000, guid: 88b457fee76ee6a489d13a8798730017, type: 2}
-    amount: 100
-  - resource: {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
-    amount: 100
+    amount: 200
+  - resource: {fileID: 11400000, guid: ef127b089296fbe47b448db3ba41f730, type: 2}
+    amount: 500
   upkeep: 10
   inputResources:
   - resource: {fileID: 11400000, guid: ef127b089296fbe47b448db3ba41f730, type: 2}

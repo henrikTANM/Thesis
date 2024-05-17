@@ -30,6 +30,11 @@ public class DepositHandler : MonoBehaviour
         }
     }
 
+    public string GetName()
+    {
+        return name;
+    }
+
     public Planet GetPlanet()
     {
         return planet;

@@ -21,6 +21,8 @@ public class Planet : SpaceBody
     [SerializeField] private GameObject planetMenuPrefab;
     private GameObject planetMenu;
 
+    [SerializeField] private GameObject errorMessagePrefab;
+
     private GameObject tradeMenu;
     private GameObject specialBuildingChooserMenu;
     private GameObject shipyardMenu;
@@ -37,18 +39,22 @@ public class Planet : SpaceBody
 
     private PlanetResourceHandler planetResourceHandler;
     private List<ProductionBuildingHandler> productionBuildingHandlers = new();
-    private List<Resource> tradeableResources = new();
 
     private Sprite settlementSprite;
 
     private PlayerInventory inventory;
 
-    [SerializeField] private UniverseHandler universe;
+    private UniverseHandler universe;
 
     private SpecialBuilding specialBuilding;
 
-    private bool managed;
     private bool reached = false;
+
+    [NonSerialized] public Vector3 shipPos;
+
+    private List<SpaceShip> shipsInOrbit = new();
+
+    [SerializeField] private List<Resource> tradeableResources;
 
     protected override void Awake()
     {
@@ -69,7 +75,8 @@ public class Planet : SpaceBody
 
     private void Update()
     {
-        collider.radius = body.transform.localScale.x;
+        collider.radius = body.transform.localScale.x * 0.75f;
+        shipPos = transform.position + (body.transform.localScale.x * Vector3.up);
 
         //development
         if (Input.GetKeyDown(KeyCode.G))
@@ -77,6 +84,13 @@ public class Planet : SpaceBody
             foreach (Resource resource in universe.allResources) 
             {
                 planetResourceHandler.AddResouce(resource, 1000);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            foreach (Resource resource in universe.allResources)
+            {
+                planetResourceHandler.RemoveResouce(resource, 1000);
             }
         }
         //
@@ -94,6 +108,27 @@ public class Planet : SpaceBody
             );
     }
 
+    protected override void OnMouseEnter()
+    {
+        base.OnMouseEnter();
+        if (universe.routeMakerDisplayed)
+        {
+            RouteMaker activeRouteMaker = universe.GetActiveRouteMaker();
+            if (activeRouteMaker.CanAddStop(this).Item1)
+            {
+                hoverOver.color = Color.green;
+            }
+            else { hoverOver.color = Color.red; }
+        }
+    }
+
+    protected override void OnMouseExit()
+    {   
+        Color lastColor = hoverOver.color;
+        base.OnMouseExit();
+        hoverOver.color = lastColor;
+    }
+
     private void OnMouseDown()
     {
         if (universe.routeMakerDisplayed | !universe.UIDisplayed())
@@ -101,12 +136,13 @@ public class Planet : SpaceBody
             if (universe.routeMakerDisplayed) 
             {
                 RouteMaker activeRouteMaker = universe.GetActiveRouteMaker();
-                if (activeRouteMaker.CanAddStop(this))
-                {
-                    hoverOver.color = Color.green;
+                Tuple<bool, string> canAddStop = activeRouteMaker.CanAddStop(this);
+                if (canAddStop.Item1) 
+                { 
                     activeRouteMaker.AddStop(this);
+                    hoverOver.color = Color.red;
                 }
-                else { hoverOver.color = Color.red; }
+                else { MakeErrorMessage(canAddStop.Item2); }
             }
             else if (selected)
             {
@@ -115,11 +151,24 @@ public class Planet : SpaceBody
             else
             {
                 SetSelected(true);
-                StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.3f));
-                cameraMovementHandler.MoveToTarget(body.transform, nativeScale, false);
+                StartCoroutine(ScaleOverTime(hoverOver.transform, Vector3.zero, 0.1f));
+                MoveToPlanet();
                 if (reached) { StartCoroutine(ShowPlanetMenu(true)); }
             }
         }
+    }
+
+    public void MoveToPlanet()
+    {
+        cameraMovementHandler.MoveToTarget(body.transform, nativeScale, false);
+    }
+
+    private void MakeErrorMessage(string error)
+    {
+        GameObject errorMessage = Instantiate(errorMessagePrefab);
+        UIDocument errorMessageUI = errorMessage.GetComponent<UIDocument>();
+        errorMessageUI.rootVisualElement.Q<Label>("error").text = error;
+        StartCoroutine(WaitForSeconds(errorMessage));
     }
 
     public void SetSelected(bool selected)
@@ -250,6 +299,26 @@ public class Planet : SpaceBody
         return GetComponent<Orbiter>();
     }
 
+    public void AddShipToOrbit(SpaceShip ship)
+    {
+        shipsInOrbit.Add(ship);
+        GenerateDisplacedShipPositions();
+    }
+
+    public void RemoveShipFromOrbit(SpaceShip ship)
+    {
+        shipsInOrbit.Remove(ship);
+        GenerateDisplacedShipPositions();
+    }
+
+    public void GenerateDisplacedShipPositions()
+    {
+        for (int i = 0; i < shipsInOrbit.Count; i++)
+        {
+            shipsInOrbit.ElementAt(i).SetPosInOrbit(i % 2 == 0 ? Vector3.left * i : Vector3.left * -1 * (i - 1));
+        }
+    }
+
     public void GenerateDeposits(List<Deposit> possibleDepositList, int depositCap)
     {
         for (int i = 0; i < 3; i++)
@@ -264,12 +333,25 @@ public class Planet : SpaceBody
                 DepositHandler depositHandler = newDeposit.GetComponent<DepositHandler>();
                 Deposit randomDeposit = possibleDepositList.ElementAt(UnityEngine.Random.Range(0, possibleDepositList.Count));
                 depositHandler.Make(i < depositCap ? randomDeposit : factoryDeposit, this);
-                foreach (ProductionBuilding productionBuilding in depositHandler.GetPossibleProductionBuildings())
-                {
-                    Resource resource = productionBuilding.outputResource.resource;
-                    if (!tradeableResources.Contains(resource)) tradeableResources.Add(resource);
-                }
                 deposits.Add(depositHandler);
+            }
+        }
+    }
+
+    public void GenerateStartDeposits(List<Deposit> startDepositValues)
+    {
+        foreach (Deposit deposit in startDepositValues)
+        {
+            if (deposit != null)
+            {
+                GameObject newDeposit = Instantiate(depositPrefab);
+                DepositHandler depositHandler = newDeposit.GetComponent<DepositHandler>();
+                depositHandler.Make(deposit, this);
+                deposits.Add(depositHandler);
+            } 
+            else
+            {
+                deposits.Add(null);
             }
         }
     }
@@ -308,6 +390,10 @@ public class Planet : SpaceBody
 
     private void UpdateResources(bool withUpkeep)
     {
+        foreach(ProductionBuildingHandler pbh in productionBuildingHandlers)
+        {
+            print(pbh.GetName());
+        }
         ActivateProductionBuildings();
         if (withUpkeep)
         {
@@ -359,6 +445,11 @@ public class Planet : SpaceBody
         MakePlanetMenu();
     }
 
+    IEnumerator WaitForSeconds(GameObject error)
+    {
+        yield return new WaitForSeconds(2.0f);
+        Destroy(error);
+    }
     public bool CanBuild(ResourceAmount[] resourceAmounts)
     {
         foreach (ResourceAmount resourceNeeded in resourceAmounts)
