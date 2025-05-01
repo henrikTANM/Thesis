@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row; flex-shrink: 0; align-items: center; justify-content: center; margin-top: 2px; margin-bottom: 2px;">
+        <ui:VisualElement name="resourceimage" style="background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Resource%20Sprites/crystal.png?fileID=2800000&amp;guid=d6d5434d1d2f63249b5d6a42c75b307f&amp;type=3#crystal&apos;); -unity-background-scale-mode: scale-to-fit; width: 20px; height: 20px;" />
+        <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="minusbutton" class="button" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-right: 5px; margin-left: 5px; width: 20px; height: 20px;" />
+        <ui:Label tabindex="-1" text="0" parse-escape-sequences="true" display-tooltip-when-elided="true" name="resourcecount" style="margin-top: 0; margin-right: 2px; margin-bottom: 0; margin-left: 2px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; color: rgb(226, 226, 226); -unity-text-align: middle-center; width: 40px; -unity-font-definition: url(&apos;project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&amp;guid=a3064f1950e0154439cc49f0d9693048&amp;type=2#CourierPrime-Regular SDF&apos;);" />
+        <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="plusbutton" class="button" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-right: 5px; margin-left: 5px; width: 20px; height: 20px;" />
+        <ui:VisualElement style="width: 20px; height: 20px;" />
+    </ui:VisualElement>
+</ui:UXML>

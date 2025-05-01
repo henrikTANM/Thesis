@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Deposit : ScriptableObject
 {
     public string name;
-    public Sprite depositSprite;
+    public List<Sprite> possibleDepositSprites;
     public List<ProductionBuilding> possibleProductionBuildings;
     public int buildingCap;
 }

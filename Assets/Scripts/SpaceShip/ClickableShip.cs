@@ -9,27 +9,29 @@ public class ClickableShip : MonoBehaviour
     private GameObject shipViewer;
     ShipViewer shipViewerMenu;
 
-    private UIController uiController;
-
-    private SpaceShip ship;
+    private SpaceShipHandler spaceShipHandler;
 
     private void Awake()
     {
-        uiController = GameObject.Find("UIController").GetComponent<UIController>();
-        ship = GetComponentInParent<SpaceShip>();
+        spaceShipHandler = GetComponentInParent<SpaceShipHandler>();
     }
 
     private void OnMouseDown()
     {
-        if (shipViewer == null) MakeShipViewer(ship);
+
+        if (!UIController.UIDisplayed()) 
+        {
+            UIController.ClearUIStack();
+            UIController.MakeShipViewer(spaceShipHandler);
+            //universe.MoveToShip(spaceShipHandler);
+        }
     }
 
-    public void MakeShipViewer(SpaceShip ship)
+    /*
+    IEnumerator ShowShipViewer()
     {
-        shipViewer = Instantiate(shipViewerPrefab);
-        UIDocument shipViewerUI = shipViewer.GetComponent<UIDocument>();
-        shipViewerMenu = shipViewer.GetComponent<ShipViewer>();
-        shipViewerMenu.MakeShipViewer(ship);
-        uiController.AddToUIStack(new UIElement(shipViewer, shipViewerUI), false);
+        yield return new WaitForSeconds(0.5f);
+        uiController.MakeShipViewer(spaceShipHandler);
     }
+    */
 }

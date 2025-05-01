@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Ui-game/UI_game_Sytlesheet.uss?fileID=7433441132597879392&amp;guid=ab91e5ece42aa26409be17b040776517&amp;type=3#UI_game_Sytlesheet" />
+    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" text="Button" name="button" class="listbutton" />
+</ui:UXML>

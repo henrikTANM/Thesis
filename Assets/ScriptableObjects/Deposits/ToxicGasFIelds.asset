@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: ToxicGasFIelds
   m_EditorClassIdentifier: 
   name: Toxic gas fields
-  depositSprite: {fileID: 21300000, guid: 84440c6ba2b47e146bb4312834d72c73, type: 3}
+  possibleDepositSprites:
+  - {fileID: 21300000, guid: e1a60bd8adbd74b409d0b1046003ba1d, type: 3}
+  - {fileID: 21300000, guid: af3bf56f199cf4d45a87edbe9e6dd9b6, type: 3}
+  - {fileID: 21300000, guid: 2334f53825c3e8f498026a7b35928143, type: 3}
+  - {fileID: 21300000, guid: dcece353975417a44ad9dc7d7111ba17, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 2462fcfa9f7606b408e405216c830ccd, type: 2}
   buildingCap: 2

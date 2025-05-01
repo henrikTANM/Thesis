@@ -21,14 +21,12 @@ MonoBehaviour:
     amount: 100
   - resource: {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
     amount: 100
-  upkeep: 10
+  upkeep: 20
   inputResources:
-  - resource: {fileID: 11400000, guid: c84037520c35e834eb4d965ab6494eb1, type: 2}
-    amount: 5
   - resource: {fileID: 11400000, guid: 50b1893327bd7564fa65fc0f7d71c9f2, type: 2}
     amount: 10
   - resource: {fileID: 11400000, guid: 8d8103336adc63e4db1151c238a89eeb, type: 2}
     amount: 10
   outputResource:
     resource: {fileID: 11400000, guid: 324e2fec89ef060488ea837de16bf091, type: 2}
-    amount: 5
+    amount: 30

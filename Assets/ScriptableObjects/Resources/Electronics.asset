@@ -15,4 +15,5 @@ MonoBehaviour:
   name: Electronics
   resourceSprite: {fileID: 21300000, guid: 4c074a41c78a43b439f2013a357ef957, type: 3}
   spriteColor: {r: 0.09967959, g: 0.6037736, b: 0.33320844, a: 1}
-  defaultValue: 15
+  defaultValue: 7
+  type: 1

@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: CrystalCaves1
   m_EditorClassIdentifier: 
   name: CrystalCaves1
-  depositSprite: {fileID: 21300000, guid: 08baed84946f487498c48d7d71af6195, type: 3}
+  possibleDepositSprites:
+  - {fileID: 21300000, guid: c6aaa3cfd5e74434e95cf64833b8974e, type: 3}
+  - {fileID: 21300000, guid: 0f14a6e656f437b46bccf80ab9ecce8f, type: 3}
+  - {fileID: 21300000, guid: 45906bac1026fb742be4b98590d0780d, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 9d58d7d4c2973a142bb4099f73541c0c, type: 2}
   - {fileID: 11400000, guid: 23da43263b52d0943afc092feb639ddc, type: 2}

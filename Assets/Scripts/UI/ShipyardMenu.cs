@@ -6,104 +6,113 @@ using UnityEngine.UIElements;
 
 public class ShipyardMenu : MonoBehaviour
 {
+    private VisualElement root;
+
+    private bool mouseOnMenu = false;
+    private Vector2 localMousePosition;
+
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset resourceNeedTemplate;
     public VisualTreeAsset shipsOptionTemplate;
 
-    private UIController uiController;
-    private PlayerInventory inventory;
+    private Planet planet;
 
     private Button buildButton;
 
-    public List<SpaceShipValues> shipValues;
-    private SpaceShipValues selectedSpaceShip;
+    public List<SpaceShip> shipValues;
+    private SpaceShip selectedSpaceShip;
 
-    // COLOR CHANGE PROBLEM INLINE
-    /*
-    [SerializeField] private Color failColor;
-    [SerializeField] private Color originalColor;
-
-    public Color whiteish;
-    public Color black1;
-    public Color black2;
-
-    private Button previousButton;
-    */
-
-    public void MakeShipyardMenu(PlanetMenu planetMenu, Planet planet)
+    private void Update()
     {
-        uiController = GameObject.Find("UIController").GetComponent<UIController>();
-        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        if (Input.GetMouseButton(0) & mouseOnMenu) MoveWindow(root, Input.mousePosition);
+    }
+
+    private void OnDestroy()
+    {
+        planet.SetShipyardMenu(null);
+        planet.UpdateResourceDisplays();
+        UIController.UpdateMoney();
+    }
+
+    public void MakeShipyardMenu(Planet planet)
+    {
+        this.planet = planet;
+
+        root = GetComponent<UIDocument>().rootVisualElement;
+        root.RegisterCallback<NavigationSubmitEvent>((evt) =>
+        {
+            evt.StopPropagation();
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseDownEvent>(evt =>
+        {
+            mouseOnMenu = true;
+            localMousePosition = evt.localMousePosition;
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseUpEvent>(evt => mouseOnMenu = false, TrickleDown.TrickleDown);
 
         Button exitButton = root.Q<Button>("exitbutton");
         exitButton.clicked += () =>
         {
-            planet.SetShipyardMenu(null);
-            uiController.RemoveLastFromUIStack();
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+            UIController.RemoveLastFromUIStack();
         };
 
         selectedSpaceShip = shipValues.ElementAt(0);
 
         buildButton = root.Q<Button>("buildbutton");
-        buildButton.clicked += () => { BuildSelected(planet); };
+        buildButton.clicked += () => { BuildSelected(); };
 
-        UpdateResourcePanel(planet);
-        UpdateSelectedInfo(planet, root);
+        UpdateSelectedInfo(root);
 
         Button deconstructButton = root.Q<Button>("deconstructbutton");
         deconstructButton.clicked += () =>
         {
             planet.SetSpecialBuilding(null);
-            planetMenu.ChangeSpecialBuildingButtonImage();
-            uiController.RemoveLastFromUIStack();
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+            UIController.RemoveLastFromUIStack();
         };
 
         VisualElement shipButtonContainer = root.Q<VisualElement>("shipsbuttoncontainer");
-        foreach (SpaceShipValues spaceShipValues in shipValues)
+        foreach (SpaceShip spaceShipValues in shipValues)
         {
             VisualElement shipsOption = shipsOptionTemplate.Instantiate();
             Button optionButton = shipsOption.Q<Button>("optionbutton");
             //if (previousButton == null) { previousButton = optionButton; }
             optionButton.clicked += () =>
             {
-                /*
-                ButtonStyleRepository repository = new ButtonStyleRepository();
-                repository.ChangeStyle(previousButton, black1, black1, whiteish);
-                repository.ChangeStyle(optionButton, whiteish, whiteish, black2);
-
-
-                previousButton = optionButton;
-                */
-
+                SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_SELECT);
                 selectedSpaceShip = spaceShipValues;
-                UpdateSelectedInfo(planet, root);
-
+                UpdateSelectedInfo(root);
             };
 
             shipsOption.style.flexGrow = 1;
             shipButtonContainer.Add(shipsOption);
         }
+
+        planet.UpdateResourceDisplays();
     }
 
-    private void BuildSelected(Planet planet)
+    private void BuildSelected()
     {
-        if (planet.CanBuild(selectedSpaceShip.cost))
+        if (CanBuild())
         {
-            inventory.AddShip(planet, selectedSpaceShip);
-            uiController.RemoveLastFromUIStack();
-            uiController.RemoveLastFromUIStack();
-            uiController.MakeShipsMenu();
+            foreach (ResourceAmount cost in selectedSpaceShip.cost)
+            {
+                if (cost.resource.type == Resource.Type.MONEY) PlayerInventory.ChangeMoneyAmount(-cost.amount);
+                else planet.GetPlanetResourceHandler().ChangeResourceAmount(new ResourceAmount(cost.resource, -cost.amount));
+            }
+            PlayerInventory.AddShip(planet, selectedSpaceShip);
+            planet.UpdateResourceDisplays();
+            UIController.UpdateShipsList();
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
         }
     }
 
-    private void UpdateSelectedInfo(Planet planet, VisualElement root)
+    private void UpdateSelectedInfo(VisualElement root)
     {
-        UpdateBuildButton(planet);
+        buildButton.SetEnabled(CanBuild());
 
         root.Q<Label>("name").text = selectedSpaceShip.name;
-        root.Q<Label>("acceleration").text = "Acceleraion rate: " + selectedSpaceShip.accelerationRate;
-        root.Q<Label>("fuelcapacity").text = "Fuel capacity: " + selectedSpaceShip.fuelCapacity + " tonnes";
         root.Q<Label>("cargocapacity").text = "Cargo capacity: " + selectedSpaceShip.cargoCapacity + " units";
 
         VisualElement costList = root.Q<VisualElement>("costlist");
@@ -119,30 +128,13 @@ public class ShipyardMenu : MonoBehaviour
         }
     }
 
-    public void UpdateResourcePanel(Planet planet)
+    public void UpdateResourcePanel(List<VisualElement> resourceContainers)
     {
-        UpdateBuildButton(planet);
+        buildButton.SetEnabled(CanBuild());
 
         VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("resourcespanel");
-        List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
-
-        foreach (ResourceCount resourceCount in resourceCounts)
-        {
-            VisualElement resourceContainer = GetResourceContainer(resourceCount.resource, resourcesPanel);
-            if (resourceContainer == null)
-            {
-                resourceContainer = resourceTemplate.Instantiate();
-                resourceContainer.name = resourceCount.resource.name;
-                VisualElement resourceImage = resourceContainer.Q<VisualElement>("resourceimage");
-                resourceImage.style.backgroundImage =
-                    new StyleBackground(resourceCount.resource.resourceSprite);
-                resourceImage.style.unityBackgroundImageTintColor =
-                    new StyleColor(resourceCount.resource.spriteColor);
-                resourceContainer.style.alignSelf = Align.Center;
-                resourcesPanel.Add(resourceContainer);
-            }
-            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.secondAmount.ToString();
-        }
+        resourcesPanel.Clear();
+        foreach (VisualElement resourceContainer in resourceContainers) resourcesPanel.Add(resourceContainer);
     }
 
     private VisualElement GetResourceContainer(Resource resource, VisualElement resourcesPanel)
@@ -154,19 +146,23 @@ public class ShipyardMenu : MonoBehaviour
         return null;
     }
 
-    private void UpdateBuildButton(Planet planet)
+    private bool CanBuild()
     {
-        if (!planet.CanBuild(selectedSpaceShip.cost))
+        foreach (ResourceAmount resourceNeeded in selectedSpaceShip.cost)
         {
-            //buildButton.style.backgroundColor = new StyleColor(failColor);
-            buildButton.SetEnabled(false);
+            if (resourceNeeded.resource.type == Resource.Type.MONEY) { if (!PlayerInventory.CanChangeMoneyAmount(resourceNeeded.amount)) return false; }
+            else if (!planet.GetPlanetResourceHandler().CanChangeResourceAmount(resourceNeeded)) return false;
         }
-        else
-        {
-            buildButton.SetEnabled(true);
-            //buildButton.style.backgroundColor = new StyleColor(originalColor);
-        }
+        return true;
     }
 
+    private void MoveWindow(VisualElement root, Vector3 mousePos)
+    {
+        Vector2 pos = new(mousePos.x, Screen.height - mousePos.y);
+        pos = RuntimePanelUtils.ScreenToPanel(root.panel, pos);
+        pos = new(pos.x - localMousePosition.x, pos.y - localMousePosition.y);
 
+        root.style.top = pos.y;
+        root.style.left = pos.x;
+    }
 }

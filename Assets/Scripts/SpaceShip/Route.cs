@@ -1,131 +1,138 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Route
+public class Route : ResourceSource
 {
-    private int currentRouteIndex = 0;
-    private RouteStop currentRouteStop;
-    private SpaceShip ship;
-    private List<RouteStop> routeStops = new();
-    public Route(SpaceShip ship)
+    [NonSerialized] public SpaceShipHandler spaceShipHandler;
+    [NonSerialized] public Planet home;
+    [NonSerialized] public Planet destination;
+    [NonSerialized] public float travelTime;
+    [NonSerialized] public ResourceFactor fuelFactor;
+    [NonSerialized] public List<Tuple<bool, ResourceFactor>> homeResourceFactors;
+    [NonSerialized] public List<Tuple<bool, ResourceFactor>> destinationResourceFactors;
+
+    public Route(SpaceShipHandler spaceShipHandler, Planet destination, float travelTime)
     {
-        this.ship = ship;
+        active = false;
+        this.spaceShipHandler = spaceShipHandler;
+        home = spaceShipHandler.home;
+        this.destination = destination;
+        this.travelTime = travelTime;
+        homeResourceFactors = new();
+        destinationResourceFactors = new();
+
+        fuelFactor = new ResourceFactor(new ResourceAmount(spaceShipHandler.spaceShip.fuelConsumption.resource, -spaceShipHandler.spaceShip.fuelConsumption.amount), this);
+        home.GetPlanetResourceHandler().AddResourceFactor(fuelFactor);
+        home.UpdateResourceDisplays();
     }
 
-    public void Create()
+    public void AddHomePickupFactors(List<ResourceAmount> pickUpList)
     {
-        ship.SetRoute(this);
-        AddRoutePersCycles();
-    }
-
-    public int GetCurrentRouteIndex() { return currentRouteIndex; }
-
-    public SpaceShip GetShip()
-    {
-        return ship;
-    }
-
-    public RouteStop GetPreviousRouteStop(RouteStop routeStop)
-    {
-        int index = routeStop.GetIndex();
-        return routeStops.ElementAt(index == 0 ? routeStops.Count - 1 : index - 1);
-    }
-
-    public RouteStop GetCurrentRouteStop()
-    {
-        return routeStops[currentRouteIndex];
-    }
-
-    public RouteStop GetNextRouteStop(RouteStop routeStop)
-    {
-        int index = routeStop.GetIndex();
-        return routeStops.ElementAt(index == routeStops.Count - 1 ? 0 : index + 1);
-    }
-
-    public void ProgressRoute()
-    {
-        currentRouteIndex = currentRouteIndex == routeStops.Count - 1 ? 0 : currentRouteIndex + 1;
-    }
-
-    public RouteStop GetRouteStop(int index)
-    {
-        return routeStops.ElementAt(index);
-    }
-
-    public List<RouteStop> GetRouteStops()
-    {
-        return routeStops;
-    }
-
-    public bool HasStops()
-    {
-        return routeStops.Count > 0;
-    }
-
-    public RouteStop GetLastRouteStop()
-    {
-        return HasStops() ? routeStops.ElementAt(routeStops.Count - 1) : null;
-    }
-
-
-
-    public int GetTotalTravelTime()
-    {
-        int sum = 0;
-        foreach (RouteStop routeStop in routeStops) { sum += routeStop.GetTravelTime(); }
-        return sum;
-    }
-
-    public void Add(RouteStop routeStop)
-    {
-        routeStop.SetRoute(this);
-        routeStops.Add(routeStop);
-
-        if (routeStops.Count > 1) { routeStops.ForEach(rS => rS.SetTravelTime(rS.GetMinTravelTimeForRoutes())); }
-    }
-
-    public void Remove(RouteStop routeStop)
-    {
-        routeStops.Remove(routeStop);
-
-        if (routeStops.Count > 1) { routeStops.ForEach(rS => rS.SetTravelTime(rS.GetMinTravelTimeForRoutes())); }
-    }
-
-    public bool ContainsPlanet(Planet planet)
-    {
-        foreach (RouteStop routeStop in routeStops)
+        foreach (ResourceAmount resourceAmount in pickUpList)
         {
-            if (routeStop.GetPlanet() == planet) return true;
+            homeResourceFactors.Add(new(true, new ResourceFactor(new ResourceAmount(resourceAmount.resource, -resourceAmount.amount), this)));
+            destinationResourceFactors.Add(new(false, new ResourceFactor(new ResourceAmount(resourceAmount.resource, resourceAmount.amount), this)));
         }
-        return false;
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in homeResourceFactors) if (resourceFactor.Item1) home.GetPlanetResourceHandler().AddResourceFactor(resourceFactor.Item2);
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in destinationResourceFactors) if (!resourceFactor.Item1) destination.GetPlanetResourceHandler().AddResourceFactor(resourceFactor.Item2);
+
+        UpdateResourceDisplays();
     }
 
-    public void AddRoutePersCycles()
+    public void AddDestinationPickupFactors(List<ResourceAmount> pickUpList)
     {
-        foreach (RouteStop routeStop in routeStops)
+        foreach (ResourceAmount resourceAmount in pickUpList)
         {
-            PlanetResourceHandler planetResourceHandler = routeStop.GetPlanet().GetPlanetResourceHandler();
+            homeResourceFactors.Add(new(false, new ResourceFactor(new ResourceAmount(resourceAmount.resource, resourceAmount.amount), this)));
+            destinationResourceFactors.Add(new(true, new ResourceFactor(new ResourceAmount(resourceAmount.resource, -resourceAmount.amount), this)));
+        }
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in destinationResourceFactors) if (resourceFactor.Item1) destination.GetPlanetResourceHandler().AddResourceFactor(resourceFactor.Item2);
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in homeResourceFactors) if (!resourceFactor.Item1) home.GetPlanetResourceHandler().AddResourceFactor(resourceFactor.Item2);
 
-            foreach (ResourceCount resourceCount in routeStop.GetPlanetState())
+        UpdateResourceDisplays();
+    }
+
+    public void RemoveHomePickupFactors()
+    {
+        List<Tuple<bool, ResourceFactor>> homeFactorsToRemove = new();
+        List<Tuple<bool, ResourceFactor>> destinationFactorsToRemove = new();
+
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in homeResourceFactors)
+        {
+            if (resourceFactor.Item1)
             {
-                planetResourceHandler.AddPerCycle(resourceCount.resource, resourceCount.amount);
+                home.GetPlanetResourceHandler().RemoveResourceFactor(resourceFactor.Item2);
+                homeFactorsToRemove.Add(resourceFactor);
             }
         }
-    }
-
-    public void RemoveRoutePersCycles()
-    {
-        foreach (RouteStop routeStop in routeStops)
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in destinationResourceFactors)
         {
-            PlanetResourceHandler planetResourceHandler = routeStop.GetPlanet().GetPlanetResourceHandler();
-
-            foreach (ResourceCount resourceCount in routeStop.GetPlanetState())
+            if (!resourceFactor.Item1)
             {
-                planetResourceHandler.RemoveperCycle(resourceCount.resource, resourceCount.amount);
+                destination.GetPlanetResourceHandler().RemoveResourceFactor(resourceFactor.Item2);
+                destinationFactorsToRemove.Add(resourceFactor);
             }
         }
+
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in homeFactorsToRemove) homeResourceFactors.Remove(resourceFactor);
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in destinationFactorsToRemove) destinationResourceFactors.Remove(resourceFactor);
+
+        UpdateResourceDisplays();
+    }
+
+    public void RemoveDestinationPickupFactors()
+    {
+        List<Tuple<bool, ResourceFactor>> destinationFactorsToRemove = new();
+        List<Tuple<bool, ResourceFactor>> homeFactorsToRemove = new();
+
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in destinationResourceFactors)
+        {
+            if (resourceFactor.Item1)
+            {
+                destination.GetPlanetResourceHandler().RemoveResourceFactor(resourceFactor.Item2);
+                destinationFactorsToRemove.Add(resourceFactor);
+            }
+        }
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in homeResourceFactors)
+        {
+            if (!resourceFactor.Item1)
+            {
+                home.GetPlanetResourceHandler().RemoveResourceFactor(resourceFactor.Item2);
+                homeFactorsToRemove.Add(resourceFactor);
+            }
+        }
+
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in destinationFactorsToRemove) destinationResourceFactors.Remove(resourceFactor);
+        foreach (Tuple<bool, ResourceFactor> resourceFactor in homeFactorsToRemove) homeResourceFactors.Remove(resourceFactor);
+
+        UpdateResourceDisplays();
+    }
+
+    public void RemoveAllResourceFactors()
+    {
+        home.GetPlanetResourceHandler().RemoveResourceFactor(fuelFactor);
+        RemoveHomePickupFactors();
+        RemoveDestinationPickupFactors();
+    }
+
+    public void UpdateResourceDisplays()
+    {
+        home.UpdateResourceDisplays();
+        destination.UpdateResourceDisplays();
+    }
+
+    public override void SetActive(bool active, Planet planet, string message)
+    {
+        base.SetActive(active, planet, message);
+        UIController.AddMessage(new Message(
+            message != null ? message : "Route has been stopped: not enough resources at " + planet.name + ".",
+            Message.MessageType.WARNING,
+            new MessageSender<Route>(this),
+            Message.SenderType.ROUTE
+            ));
     }
 }

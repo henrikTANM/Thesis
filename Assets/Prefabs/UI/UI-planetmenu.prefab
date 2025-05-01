@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8840291940204054009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4093407149016975900}
+  - component: {fileID: 4371694526096119843}
+  - component: {fileID: 1394323327028865712}
+  - component: {fileID: -111380329813777407}
+  m_Layer: 0
+  m_Name: UI-planetmenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4093407149016975900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840291940204054009}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.036025047, y: -0.5991962, z: -0.05812645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4371694526096119843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840291940204054009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 1780d92b414d8ac45a908978a66164d4, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: ba68faefc69e1244c9a19e0474e38d68, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &1394323327028865712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840291940204054009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de74251a4ae34147805ea56ee4d52ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceTemplate: {fileID: 9197481963319205126, guid: a4b53f226e54fe74c9a00158dc7dfb25, type: 3}
+  depositBuildingButtonTemplate: {fileID: 9197481963319205126, guid: ec9408bd44d140b4588f580300629f58, type: 3}
+  blockedConstructionSprite: {fileID: 21300000, guid: 3ec8d0c9acc77e24696ecafd59f2479d, type: 3}
+  defaultSpecialButtonImage: {fileID: 21300000, guid: 6399ffa8e802254418a193db7d984179, type: 3}
+  specialBuildingChooserMenuPrefab: {fileID: 7202837000327844618, guid: 1dfc6f49e66f5634e968348d136ebcc4, type: 3}
+--- !u!114 &-111380329813777407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840291940204054009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6737715d881d94bb1ddbebc5d181ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonusBuildingViewerPrefab: {fileID: 2865475627097863661, guid: ab7591e6586a5854e8c637b993134d39, type: 3}
+  shipyardMenuPrefab: {fileID: 4495625373100536215, guid: d9c0fdb1e9787194bbe1eda92d232083, type: 3}
+  tradeHubMenuPrefab: {fileID: 8665136622434377338, guid: f8f5affd3712bbd418e9ed5a1f815629, type: 3}
+  discoveryHubMenuPrefab: {fileID: 1269045188986414996, guid: c449f94200cdb5447b8f4d868818a722, type: 3}
+  bhcfMenuPrefab: {fileID: 7913533016724394282, guid: 9833323a67737fd49808d32da0840930, type: 3}

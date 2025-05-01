@@ -12,13 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92d02be8eb23e24eafc6462cc507c0a, type: 3}
   m_Name: Gas
   m_EditorClassIdentifier: 
-  scale: {x: 0.3, y: 0.4}
+  scale: {x: 3, y: 4}
   planetTextures:
   - {fileID: 2800000, guid: 2619d8374a9159c40ada49b970bb66d4, type: 3}
   - {fileID: 2800000, guid: a96ac1e505800a6499a28078f352e0ae, type: 3}
   - {fileID: 2800000, guid: 3ecde0918ca4f2142a368944d5314a2f, type: 3}
   - {fileID: 2800000, guid: d297fbc0ad0cc8b439a951e8d72addf1, type: 3}
-  cloudTextures: []
+  cloudTextures:
+  - {fileID: 0}
+  specialBuildings:
+  - {fileID: 11400000, guid: 3d9152b149565a24f86edd5f3e7ecd42, type: 2}
+  - {fileID: 11400000, guid: 02d4f3ccb13ce6740b1f9907b7d5adca, type: 2}
+  - {fileID: 11400000, guid: f0f05e124b6996c40b845a54f773dc5d, type: 2}
+  - {fileID: 11400000, guid: 9200f8dfa2b77214fa718182cb27e5fb, type: 2}
+  - {fileID: 11400000, guid: 6fcb5822b7b04f044a55a8e1dfe3abcc, type: 2}
   possibleDeposits:
   - {fileID: 11400000, guid: 1e72c4b0f6cef674391c7f13e0e28624, type: 2}
   depositCap: 1

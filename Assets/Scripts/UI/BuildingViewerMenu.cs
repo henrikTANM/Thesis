@@ -6,66 +6,95 @@ using UnityEngine.UIElements;
 
 public class BuildingViewerMenu : MonoBehaviour
 {
+    private BuildingSlot buildingSlot;
+
+    private VisualElement root;
+
+    private bool mouseOnMenu = false;
+    private Vector2 localMousePosition;
+
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset resourceNeedTemplate;
 
-    private PlayerInventory playerInventory;
-
-    private void Awake()
+    private void Update()
     {
-        playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
+        if (Input.GetMouseButton(0) & mouseOnMenu) MoveWindow(root, Input.mousePosition);
+    }
+
+    private void OnDestroy() 
+    {
+        buildingSlot.GetPlanet().SetBuildingViewerMenu(null);
+        buildingSlot.GetPlanet().UpdateResourceDisplays();
+        UIController.UpdateMoney();
     }
 
     public void MakeBuildingViewerMenu(BuildingSlot buildingSlot, ProductionBuildingHandler productionBuildingHandler)
     {
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        this.buildingSlot = buildingSlot;
+
+        root = GetComponent<UIDocument>().rootVisualElement;
+        root.RegisterCallback<NavigationSubmitEvent>((evt) =>
+        {
+            evt.StopPropagation();
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseDownEvent>(evt =>
+        {
+            mouseOnMenu = true;
+            localMousePosition = evt.localMousePosition;
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseUpEvent>(evt => mouseOnMenu = false, TrickleDown.TrickleDown);
 
         Button exitButton = root.Q<Button>("exitbutton");
-        exitButton.clicked += buildingSlot.CloseMenu;
-
-        Button activateButton = root.Q<Button>("activatebutton");
-        bool active = productionBuildingHandler.IsActive();
-        activateButton.text = active ? "ACTIVE" : "DEACTIVATED";
-        activateButton.clicked += () =>
+        exitButton.clicked += () =>
         {
-            if (productionBuildingHandler.IsManuallyDeActivated() & productionBuildingHandler.CanBeActived())
-            {
-                productionBuildingHandler.SetManuallyDeActivated(false);
-                activateButton.text = "ACTIVE";
-            }
-            else if (active) {
-                productionBuildingHandler.SetManuallyDeActivated(true);
-                activateButton.text = "DEACTIVATED";
-
-            }
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+            UIController.RemoveLastFromUIStack();
         };
 
-        Button deleteButton = root.Q<Button>("deletebutton");
-        deleteButton.clicked += () => buildingSlot.DeleteBuilding(productionBuildingHandler.GetCostAmounts());
+        Button activateButton = root.Q<Button>("activatebutton");
+        activateButton.text = productionBuildingHandler.active ? "DEACTIVATE" : "ACTIVATE";
+        activateButton.clicked += () =>
+        {
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+            productionBuildingHandler.active = !productionBuildingHandler.active;
+            activateButton.text = productionBuildingHandler.active ? "DEACTIVATE" : "ACTIVATE";
+            buildingSlot.GetPlanet().GetPlanetResourceHandler().UpdateResourcePerCycles();
+            buildingSlot.GetPlanet().UpdateResourceDisplays();
+        };
+
+        Button deconstructButton = root.Q<Button>("deletebutton");
+        deconstructButton.clicked += () =>
+        {
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+            buildingSlot.DeleteBuilding(productionBuildingHandler.costResources);
+            UIController.RemoveLastFromUIStack();
+        };
 
         root.Q<VisualElement>("moneyicon").style.unityBackgroundImageTintColor =
-            new StyleColor(playerInventory.GetMoneyResource().spriteColor);
+            new StyleColor(PlayerInventory.instance.moneyResource.spriteColor);
 
         UpdateSelectedInfo(root.Q<VisualElement>("info"), productionBuildingHandler);
+
+        buildingSlot.GetPlanet().UpdateResourceDisplays();
     }
 
     private void UpdateSelectedInfo(VisualElement root, ProductionBuildingHandler productionBuildingHandler)
     {
-        root.Q<Label>("name").text = productionBuildingHandler.GetName();
-        root.Q<Label>("upkeep").text = productionBuildingHandler.GetUpkeep() + "/Cycle";
+        root.Q<Label>("name").text = productionBuildingHandler.name;
+        root.Q<Label>("upkeep").text = productionBuildingHandler.upkeep.resourceAmount.amount + "/Cycle";
 
         VisualElement producesImage = root.Q<VisualElement>("outputimage");
-        producesImage.style.backgroundImage = new StyleBackground(productionBuildingHandler.GetOutputResource().resource.resourceSprite);
-        producesImage.style.unityBackgroundImageTintColor = new StyleColor(productionBuildingHandler.GetOutputResource().resource.spriteColor);
+        producesImage.style.backgroundImage = new StyleBackground(productionBuildingHandler.outputFactor.resourceAmount.resource.resourceSprite);
+        producesImage.style.unityBackgroundImageTintColor = new StyleColor(productionBuildingHandler.outputFactor.resourceAmount.resource.spriteColor);
         //producesImage.style.flexGrow = 1;
 
-        root.Q<Label>("outputvalue").text = productionBuildingHandler.GetOutputResource().amount + "/Cycle";
+        root.Q<Label>("outputvalue").text = productionBuildingHandler.outputFactor.resourceAmount.amount + "/Cycle";
 
         //buildingOption.style.flexGrow = 1;
 
         VisualElement refundList = root.Q<VisualElement>("refund");
         refundList.Clear();
-        foreach (ResourceAmount buildingCost in productionBuildingHandler.GetCostAmounts())
+        foreach (ResourceAmount buildingCost in productionBuildingHandler.costResources)
         {
             VisualElement buildingCostTemplate = resourceNeedTemplate.Instantiate();
             buildingCostTemplate.Q<Label>("need").text = (buildingCost.amount / 2).ToString();
@@ -77,47 +106,31 @@ public class BuildingViewerMenu : MonoBehaviour
 
         VisualElement inputList = root.Q<VisualElement>("inputlist");
         inputList.Clear();
-        foreach (ResourceAmount resourceNeed in productionBuildingHandler.GetInputResources())
+        foreach (ResourceFactor resourceNeed in productionBuildingHandler.inputFactors)
         {
             VisualElement buildingNeedTemplate = resourceNeedTemplate.Instantiate();
-            buildingNeedTemplate.Q<Label>("need").text = resourceNeed.amount + "/Cycle";
+            buildingNeedTemplate.Q<Label>("need").text = resourceNeed.resourceAmount.amount + "/Cycle";
             VisualElement buildingNeedTemplateImage = buildingNeedTemplate.Q<VisualElement>("needimage");
-            buildingNeedTemplateImage.style.backgroundImage = new StyleBackground(resourceNeed.resource.resourceSprite);
-            buildingNeedTemplateImage.style.unityBackgroundImageTintColor = new StyleColor(resourceNeed.resource.spriteColor);
+            buildingNeedTemplateImage.style.backgroundImage = new StyleBackground(resourceNeed.resourceAmount.resource.resourceSprite);
+            buildingNeedTemplateImage.style.unityBackgroundImageTintColor = new StyleColor(resourceNeed.resourceAmount.resource.spriteColor);
             inputList.Add(buildingNeedTemplate);
         }
     }
 
-    public void UpdateResourcePanel(Planet planet, UIDocument buildingViewerMenuUI)
+    public void UpdateResourcePanel(List<VisualElement> resourceContainers)
     {
-        VisualElement resourcesPanel = buildingViewerMenuUI.rootVisualElement.Q<VisualElement>("resourcespanel");
-        List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
-
-        foreach (ResourceCount resourceCount in resourceCounts)
-        {
-            VisualElement resourceContainer = GetResourceContainer(resourceCount.resource, resourcesPanel);
-            if (resourceContainer == null)
-            {
-                resourceContainer = resourceTemplate.Instantiate();
-                resourceContainer.name = resourceCount.resource.name;
-                VisualElement resourceImage = resourceContainer.Q<VisualElement>("resourceimage");
-                resourceImage.style.backgroundImage =
-                    new StyleBackground(resourceCount.resource.resourceSprite);
-                resourceImage.style.unityBackgroundImageTintColor =
-                    new StyleColor(resourceCount.resource.spriteColor);
-                resourceContainer.style.alignSelf = Align.Center;
-                resourcesPanel.Add(resourceContainer);
-            }
-            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.secondAmount.ToString();
-        }
+        VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("resourcespanel");
+        resourcesPanel.Clear();
+        foreach (VisualElement resourceContainer in resourceContainers) resourcesPanel.Add(resourceContainer);
     }
 
-    private VisualElement GetResourceContainer(Resource resource, VisualElement resourcesPanel)
+    private void MoveWindow(VisualElement root, Vector3 mousePos)
     {
-        foreach (VisualElement resourceContainer in resourcesPanel.Children())
-        {
-            if (resourceContainer.name == resource.name) return resourceContainer;
-        }
-        return null;
+        Vector2 pos = new(mousePos.x, Screen.height - mousePos.y);
+        pos = RuntimePanelUtils.ScreenToPanel(root.panel, pos);
+        pos = new(pos.x - localMousePosition.x, pos.y - localMousePosition.y);
+
+        root.style.top = pos.y;
+        root.style.left = pos.x;
     }
 }

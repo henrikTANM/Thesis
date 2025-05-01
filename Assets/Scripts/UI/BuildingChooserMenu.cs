@@ -6,34 +6,54 @@ using UnityEngine.UIElements;
 
 public class BuildingChooserMenu : MonoBehaviour
 {
+    private VisualElement root;
+
+    private bool mouseOnMenu = false;
+    private Vector2 localMousePosition;
+
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset buildingOptionButton;
     public VisualTreeAsset resourceNeedTemplate;
 
-    public ProductionBuilding selectedProductiomBuilding;
-    private PlayerInventory playerInventory;
+    private ProductionBuilding selectedProductionBuilding;
 
     private BuildingSlot buildingSlot;
     private Button buildButton;
 
-    /*
-    [SerializeField] private Color failColor;
-    [SerializeField] private Color originalColor;
-    */
-
-    private void Awake()
+    private void Update()
     {
-        playerInventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
+        if (Input.GetMouseButton(0) & mouseOnMenu) MoveWindow(root, Input.mousePosition);
+    }
+
+    private void OnDestroy() 
+    {
+        buildingSlot.GetPlanet().SetBuildingChooserMenu(null);
+        buildingSlot.GetPlanet().UpdateResourceDisplays();
+        UIController.UpdateMoney();
     }
 
     public void MakeBuildingChooserMenu(BuildingSlot buildingSlot, List<ProductionBuilding> possibleProductionBuildings)
     {
         this.buildingSlot = buildingSlot;
 
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
+        root.RegisterCallback<NavigationSubmitEvent>((evt) =>
+        {
+            evt.StopPropagation();
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseDownEvent>(evt =>
+        {
+            mouseOnMenu = true;
+            localMousePosition = evt.localMousePosition;
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseUpEvent>(evt => mouseOnMenu = false, TrickleDown.TrickleDown);
 
         Button exitButton = root.Q<Button>("exitbutton");
-        exitButton.clicked += buildingSlot.CloseMenu;
+        exitButton.clicked += () =>
+        {
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+            UIController.RemoveLastFromUIStack();
+        };
 
         buildButton = root.Q<Button>("buildbutton");
         buildButton.clicked += BuildSelected;
@@ -41,9 +61,9 @@ public class BuildingChooserMenu : MonoBehaviour
         VisualElement buildingButtonContainer = root.Q<VisualElement>("buildingbutton_container");
 
         root.Q<VisualElement>("moneyicon").style.unityBackgroundImageTintColor = 
-            new StyleColor(playerInventory.GetMoneyResource().spriteColor);
+            new StyleColor(PlayerInventory.instance.moneyResource.spriteColor);
 
-        selectedProductiomBuilding = possibleProductionBuildings.ElementAt(0);
+        selectedProductionBuilding = possibleProductionBuildings.ElementAt(0);
         UpdateSelectedInfo(root);
 
         foreach (ProductionBuilding productionBuilding in possibleProductionBuildings)
@@ -52,7 +72,9 @@ public class BuildingChooserMenu : MonoBehaviour
             Button optionButton = buildingOption.Q<Button>("optionbutton");
             optionButton.clicked += () => 
             {
-                selectedProductiomBuilding = productionBuilding;
+                SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_SELECT);
+                selectedProductionBuilding = productionBuilding;
+                UpdateBuildButton();
                 UpdateSelectedInfo(root); 
             };
             optionButton.style.backgroundImage = new StyleBackground(productionBuilding.buildingSprite);
@@ -61,27 +83,27 @@ public class BuildingChooserMenu : MonoBehaviour
             buildingOption.style.flexGrow = 1;
             buildingButtonContainer.Add(buildingOption);
         }
+
+        buildingSlot.GetPlanet().UpdateResourceDisplays();
     }
 
     private void UpdateSelectedInfo(VisualElement root)
     {
-        UpdateBuildButton();
-
-        root.Q<Label>("name").text = selectedProductiomBuilding.name;
-        root.Q<Label>("upkeep").text = selectedProductiomBuilding.upkeep + "/Cycle";
+        root.Q<Label>("name").text = selectedProductionBuilding.name;
+        root.Q<Label>("upkeep").text = selectedProductionBuilding.upkeep + "/Cycle";
 
         VisualElement producesImage = root.Q<VisualElement>("outputimage");
-        producesImage.style.backgroundImage = new StyleBackground(selectedProductiomBuilding.outputResource.resource.resourceSprite);
-        producesImage.style.unityBackgroundImageTintColor = new StyleColor(selectedProductiomBuilding.outputResource.resource.spriteColor);
+        producesImage.style.backgroundImage = new StyleBackground(selectedProductionBuilding.outputResource.resource.resourceSprite);
+        producesImage.style.unityBackgroundImageTintColor = new StyleColor(selectedProductionBuilding.outputResource.resource.spriteColor);
         //producesImage.style.flexGrow = 1;
 
-        root.Q<Label>("outputvalue").text = selectedProductiomBuilding.outputResource.amount + "/Cycle";
+        root.Q<Label>("outputvalue").text = selectedProductionBuilding.outputResource.amount + "/Cycle";
 
         //buildingOption.style.flexGrow = 1;
 
         VisualElement costList = root.Q<VisualElement>("costlist");
         costList.Clear();
-        foreach (ResourceAmount buildingCost in selectedProductiomBuilding.cost)
+        foreach (ResourceAmount buildingCost in selectedProductionBuilding.cost)
         {
             VisualElement buildingCostTemplate = resourceNeedTemplate.Instantiate();
             buildingCostTemplate.Q<Label>("need").text = buildingCost.amount.ToString();
@@ -93,7 +115,7 @@ public class BuildingChooserMenu : MonoBehaviour
 
         VisualElement inputList = root.Q<VisualElement>("inputlist");
         inputList.Clear();
-        foreach (ResourceAmount resourceNeed in selectedProductiomBuilding.inputResources)
+        foreach (ResourceAmount resourceNeed in selectedProductionBuilding.inputResources)
         {
             VisualElement buildingNeedTemplate = resourceNeedTemplate.Instantiate();
             buildingNeedTemplate.Q<Label>("need").text = resourceNeed.amount + "/Cycle";
@@ -106,58 +128,35 @@ public class BuildingChooserMenu : MonoBehaviour
 
     private void BuildSelected()
     {
-        if (buildingSlot.CanBuildBuilding(selectedProductiomBuilding))
+        if (buildingSlot.CanBuildBuilding(selectedProductionBuilding))
         {
-            buildingSlot.BuildBuilding(selectedProductiomBuilding);
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+            buildingSlot.BuildBuilding(selectedProductionBuilding);
+            UIController.RemoveLastFromUIStack();
         }
     }
 
-    public void UpdateResourcePanel(Planet planet, UIDocument buildingChooserMenuUI)
+    public void UpdateResourcePanel(List<VisualElement> resourceContainers)
     {
         UpdateBuildButton();
-
-        VisualElement resourcesPanel = buildingChooserMenuUI.rootVisualElement.Q<VisualElement>("resourcespanel");
-        List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
-
-        foreach (ResourceCount resourceCount in resourceCounts)
-        {
-            VisualElement resourceContainer = GetResourceContainer(resourceCount.resource, resourcesPanel);
-            if (resourceContainer == null)
-            {
-                resourceContainer = resourceTemplate.Instantiate();
-                resourceContainer.name = resourceCount.resource.name;
-                VisualElement resourceImage = resourceContainer.Q<VisualElement>("resourceimage");
-                resourceImage.style.backgroundImage =
-                    new StyleBackground(resourceCount.resource.resourceSprite);
-                resourceImage.style.unityBackgroundImageTintColor =
-                    new StyleColor(resourceCount.resource.spriteColor);
-                resourceContainer.style.alignSelf = Align.Center;
-                resourcesPanel.Add(resourceContainer);
-            }
-            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.secondAmount.ToString();
-        }
-    }
-
-    private VisualElement GetResourceContainer(Resource resource, VisualElement resourcesPanel)
-    {
-        foreach (VisualElement resourceContainer in resourcesPanel.Children())
-        {
-            if (resourceContainer.name == resource.name) return resourceContainer;
-        }
-        return null;
+        VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("resourcespanel");
+        resourcesPanel.Clear();
+        foreach (VisualElement resourceContainer in resourceContainers) resourcesPanel.Add(resourceContainer);
     }
 
     private void UpdateBuildButton()
     {
-        if (!buildingSlot.CanBuildBuilding(selectedProductiomBuilding))
-        {
-            //buildButton.style.backgroundColor = new StyleColor(failColor);
-            buildButton.SetEnabled(false);
-        }
-        else
-        {
-            buildButton.SetEnabled(true);
-            //buildButton.style.backgroundColor = new StyleColor(originalColor);
-        }
+        if (buildingSlot.CanBuildBuilding(selectedProductionBuilding)) buildButton.SetEnabled(true);
+        else buildButton.SetEnabled(false);
+    }
+
+    private void MoveWindow(VisualElement root, Vector3 mousePos)
+    {
+        Vector2 pos = new(mousePos.x, Screen.height - mousePos.y);
+        pos = RuntimePanelUtils.ScreenToPanel(root.panel, pos);
+        pos = new(pos.x - localMousePosition.x, pos.y - localMousePosition.y);
+
+        root.style.top = pos.y;
+        root.style.left = pos.x;
     }
 }

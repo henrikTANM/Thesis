@@ -4,12 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ProductionBuilding : ScriptableObject
+public class ProductionBuilding : Building
 {
-    public string name;
-    public Sprite buildingSprite;
-
-    public ResourceAmount[] cost;
     public int upkeep;
 
     public ResourceAmount[] inputResources;

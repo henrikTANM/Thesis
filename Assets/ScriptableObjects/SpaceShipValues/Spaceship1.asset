@@ -9,20 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d5b026279ae0cc439bec164dd84e971, type: 3}
+  m_Script: {fileID: 11500000, guid: 9be4400a9fe653d4f8a2242d7b1f6711, type: 3}
   m_Name: Spaceship1
   m_EditorClassIdentifier: 
   name: S.T.S. Runner
-  fuelCapacity: 50
-  cargoCapacity: 16
-  accelerationRate: 10
+  cargoCapacity: 10
+  isInterstellar: 0
   cost:
   - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
     amount: 1000
   - resource: {fileID: 11400000, guid: 88b457fee76ee6a489d13a8798730017, type: 2}
-    amount: 200
-  - resource: {fileID: 11400000, guid: c84037520c35e834eb4d965ab6494eb1, type: 2}
-    amount: 50
+    amount: 250
   - resource: {fileID: 11400000, guid: 7c5514b69190db747b478e07b1868113, type: 2}
     amount: 50
-  shipScale: 0.025
+  fuelConsumption:
+    resource: {fileID: 11400000, guid: 324e2fec89ef060488ea837de16bf091, type: 2}
+    amount: 5
+  shipScale: 0.01

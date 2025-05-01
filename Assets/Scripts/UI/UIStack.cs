@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ public class UIStack : MonoBehaviour
         if (!IsEmpty() & !disPlayPrevious) SetUIVisible(GetLast().GetUIDocument(), false);
         //SetUIVisible(uiElement, true);
         uiStack.Add(uiElement);
+        Console.WriteLine(uiStack.Count);
     }
 
     public void RemoveLast()

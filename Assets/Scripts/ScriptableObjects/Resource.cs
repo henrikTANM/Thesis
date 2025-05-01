@@ -9,4 +9,12 @@ public class Resource : ScriptableObject
     public Sprite resourceSprite;
     public Color spriteColor;
     public int defaultValue;
+    public Type type;
+
+    public enum Type
+    {
+        RAW,
+        END,
+        MONEY
+    }
 }

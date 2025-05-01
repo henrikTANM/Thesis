@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: RockyHills
   m_EditorClassIdentifier: 
   name: RockyHIlls
-  depositSprite: {fileID: 21300000, guid: ba288bb3eb5799942959f69f2058d806, type: 3}
+  possibleDepositSprites:
+  - {fileID: 21300000, guid: d9ed4aa4d7cff414391f04fa2d925879, type: 3}
+  - {fileID: 21300000, guid: 4b0929f51e7ac3e42a4beca62c81eea2, type: 3}
+  - {fileID: 21300000, guid: 2221cbe6a47fa0c44b2caebbe6fb76da, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 0ea63990ec7b49e4e84486b4bcfef0f2, type: 2}
   buildingCap: 2

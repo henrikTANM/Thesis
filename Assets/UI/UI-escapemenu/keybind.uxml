@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement style="flex-direction: row; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+        <ui:VisualElement style="flex-grow: 1; width: 50%; justify-content: center; height: 100%;">
+            <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="action" class="textElement" style="font-size: 10px; white-space: normal; align-self: flex-start; -unity-text-align: middle-left;" />
+        </ui:VisualElement>
+        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="key" class="button" style="width: 50%; height: auto; font-size: 12px; -unity-font-style: bold;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -3,7 +3,13 @@ guid: d3b092794b793e047b1aa98f839b612b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - starPrefab: {fileID: 5060649343889052955, guid: a5d17cdfeda37af4598342d1c8bd956f, type: 3}
+  - blackHolePrefab: {fileID: 1065424236943504430, guid: a0b7e9071be895b45a0c5e927372d366, type: 3}
+  - planetPrefab: {fileID: 2796624254701338889, guid: 95940f0bd3f8a7b4abf81b65d2362cb7, type: 3}
+  - orbitLinePrefab: {instanceID: 0}
+  - startSettings: {instanceID: 0}
+  - fuelResource: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

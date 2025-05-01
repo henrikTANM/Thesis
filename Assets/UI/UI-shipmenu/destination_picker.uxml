@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement style="height: 10%; flex-direction: row; justify-content: space-between;">
+        <ui:Button text="Cancel" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" name="cancelbutton" class="button" style="height: 100%; width: auto; border-top-width: 0; border-left-width: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-top-left-radius: 0; background-color: rgba(0, 0, 0, 0.47);" />
+    </ui:VisualElement>
+</ui:UXML>

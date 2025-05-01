@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,46 +8,64 @@ using UnityEngine.UIElements;
 
 public class PlanetMenu : MonoBehaviour
 {
-    UIController uiController;
+    private SpecialBuildingMenuMaker specialBuildingMenuMaker;
+    private Planet planet;
+
+    private VisualElement root;
+
+    private bool mouseOnMenu = false;
+    private Vector2 localMousePosition;
 
     public VisualTreeAsset resourceTemplate;
     public VisualTreeAsset depositBuildingButtonTemplate;
 
     public Sprite blockedConstructionSprite;
-
-    [SerializeField] private GameObject tradeMenuPrefab;
-    private GameObject tradeMenu;
+    public Sprite defaultSpecialButtonImage;
 
     [SerializeField] private GameObject specialBuildingChooserMenuPrefab;
     private GameObject specialBuildingChooserMenu;
 
-    [SerializeField] private GameObject bonusBuildingViewerPrefab;
-    private GameObject bonusBuildingViewer;
-
-    [SerializeField] private GameObject shipyardMenuPrefab;
-    private GameObject shipyardMenu;
-
     private Button specialBuildingButton;
-    public Sprite defaultSpecialButtonImage;
+
+    private void Update()
+    {
+        if (Input.GetMouseButton(0) & mouseOnMenu) MoveWindow(root, Input.mousePosition);
+    }
 
     public void MakePlanetMenu(Planet planet)
     {
-        uiController = GameObject.Find("UIController").GetComponent<UIController>();
+        specialBuildingMenuMaker = GetComponent<SpecialBuildingMenuMaker>();
+        this.planet = planet;
 
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
+        root.RegisterCallback<NavigationSubmitEvent>((evt) =>
+        {
+            evt.StopPropagation();
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseDownEvent>(evt =>
+        {
+            mouseOnMenu = true;
+            localMousePosition = evt.localMousePosition;
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseUpEvent>(evt => mouseOnMenu = false, TrickleDown.TrickleDown);
 
-        root.Q<Label>("planetname").text = planet.GetName();
+        root.Q<Label>("planetname").text = planet.name;
 
-        Button exitButton = root.Q<Button>("exitbutton"); ;
-        exitButton.clicked += uiController.RemoveLastFromUIStack;
+        Button exitButton = root.Q<Button>("exitbutton");
+        exitButton.clicked += () =>
+        {
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+            UIController.RemoveLastFromUIStack();
+        };
 
-        Button tradeButton = root.Q<Button>("tradebutton"); ;
-        tradeButton.clicked += () => { MakeTradeMenu(planet); };
+        root.Q<VisualElement>("background").style.backgroundImage = 
+            new StyleBackground(planet.GetSettlementSprite());
 
         specialBuildingButton = root.Q<Button>("specialbutton"); ;
-        specialBuildingButton.clicked += () => { HandleSpecialBuildingButton(planet); };
-        SpecialBuilding specialBuilding = planet.GetSpecialBuilding();
-        specialBuildingButton.style.backgroundImage = new StyleBackground(specialBuilding != null ? specialBuilding.image : defaultSpecialButtonImage);
+        specialBuildingButton.clicked += HandleSpecialBuildingButton;
+        SpecialBuilding specialBuilding = planet.specialBuilding;
+        specialBuildingButton.style.backgroundImage = 
+            new StyleBackground(specialBuilding == null ? defaultSpecialButtonImage : specialBuilding.buildingSprite);
 
         List<VisualElement> depositContainers = root.Query("de").ToList();
         List<DepositHandler> deposits = planet.GetDeposits();
@@ -83,93 +102,51 @@ public class PlanetMenu : MonoBehaviour
             }
         }
 
-        VisualElement settlementContainer = root.Q<VisualElement>("settlement");
-        settlementContainer.style.backgroundImage =
-            new StyleBackground(planet.GetSettlementSprite());
+        root.Q<VisualElement>("reachedblocker").SetEnabled(!planet.reached);
+        root.Q<VisualElement>("reachedblocker").style.visibility = !planet.reached ? Visibility.Visible : Visibility.Hidden;
 
-        UpdateResourcePanel(planet);
+        planet.UpdateResourceDisplays();
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_OPEN);
     }
 
-    public void UpdateResourcePanel(Planet planet)
+    public void UpdateResourcePanel(List<VisualElement> resourceContainers)
     {
-        VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ResourcesList");
-        List<ResourceCount> resourceCounts = planet.GetPlanetResourceHandler().GetResourceCounts();
-
-        foreach (ResourceCount resourceCount in resourceCounts)
-        {
-            VisualElement resourceContainer = GetResourceContainer(resourceCount.resource, resourcesPanel);
-            if (resourceContainer == null)
-            {
-                resourceContainer = resourceTemplate.Instantiate();
-                resourceContainer.name = resourceCount.resource.name;
-                VisualElement resourceImage = resourceContainer.Q<VisualElement>("resourceimage");
-                resourceImage.style.backgroundImage = 
-                    new StyleBackground(resourceCount.resource.resourceSprite);
-                resourceImage.style.unityBackgroundImageTintColor = 
-                    new StyleColor(resourceCount.resource.spriteColor);
-                resourceContainer.style.alignSelf = Align.Center;
-                resourcesPanel.Add(resourceContainer);
-            }
-            resourceContainer.Q<Label>("resourcecount").text = resourceCount.amount.ToString() + "+" + resourceCount.secondAmount.ToString();
-        }
+        VisualElement resourcesPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("resourcespanel");
+        resourcesPanel.Clear();
+        foreach (VisualElement resourceContainer in resourceContainers) resourcesPanel.Add(resourceContainer);
     }
 
-    private VisualElement GetResourceContainer(Resource resource, VisualElement resourcesPanel)
+    public void HandleSpecialBuildingButton()
     {
-        foreach (VisualElement resourceContainer in resourcesPanel.Children())
-        {
-            if (resourceContainer.name == resource.name) return resourceContainer;
-        }
-        return null;
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ENTER);
+        SpecialBuilding specialBuilding = planet.specialBuilding;
+        if (specialBuilding == null) { MakeSpecialBuildingChooserMenu(); }
+        else { specialBuildingMenuMaker.MakeMenu(planet, specialBuilding); }
     }
 
-    private void MakeTradeMenu(Planet planet)
-    {
-        tradeMenu = Instantiate(tradeMenuPrefab);
-        UIDocument tradeMenuUI = tradeMenu.GetComponent<UIDocument>();
-        tradeMenu.GetComponent<TradeMenu>().MakeTradeMenu(planet);
-        planet.SetTradeMenu(tradeMenu);
-        uiController.AddToUIStack(new UIElement(tradeMenu, tradeMenuUI), false);
-    }
-
-    private void HandleSpecialBuildingButton(Planet planet)
-    {
-        SpecialBuilding specialBuilding = planet.GetSpecialBuilding();
-
-        if (specialBuilding == null) { MakeSpecialBuildingChooserMenu(planet); }
-        else 
-        {
-            if (specialBuilding.name == "Shipyard") { MakeShipyardMenu(planet); }
-            else { MakeBonusBuildingViewerMenu(planet, specialBuilding); }
-        }
-    }
-
-    private void MakeSpecialBuildingChooserMenu(Planet planet)
+    private void MakeSpecialBuildingChooserMenu()
     {
         specialBuildingChooserMenu = Instantiate(specialBuildingChooserMenuPrefab);
         UIDocument specialBuildingChooserMenuUI = specialBuildingChooserMenu.GetComponent<UIDocument>();
-        specialBuildingChooserMenu.GetComponent<SpecialBuildingMenu>().MakeSpecialBuildingChooserMenu(this, planet);
         planet.SetSpecialBuildingChooserMenu(specialBuildingChooserMenu);
-        uiController.AddToUIStack(new UIElement(specialBuildingChooserMenu, specialBuildingChooserMenuUI), false);
+        specialBuildingChooserMenu.GetComponent<SpecialBuildingChooserMenu>().MakeSpecialBuildingChooserMenu(planet);
+        UIController.AddToUIStack(new UIElement(specialBuildingChooserMenu, specialBuildingChooserMenuUI), false);
     }
 
-    private void MakeBonusBuildingViewerMenu(Planet planet, SpecialBuilding bonusBuilding)
+    public void ChangeSpecialBuildingButtonImage(Sprite image) 
     {
-        bonusBuildingViewer = Instantiate(bonusBuildingViewerPrefab);
-        UIDocument bonusBuildingViewerUI = bonusBuildingViewer.GetComponent<UIDocument>();
-        bonusBuildingViewer.GetComponent<BonusBuildingViewer>().MakeBonusBuildingViewer(this, planet, bonusBuilding);
-        uiController.AddToUIStack(new UIElement(bonusBuildingViewer, bonusBuildingViewerUI), false);
+        specialBuildingButton.style.backgroundImage = image == null ?
+            new StyleBackground(defaultSpecialButtonImage) :
+            new StyleBackground(image);
     }
 
-    private void MakeShipyardMenu(Planet planet)
+    private void MoveWindow(VisualElement root, Vector3 mousePos)
     {
-        shipyardMenu = Instantiate(shipyardMenuPrefab);
-        UIDocument shipyardMenuUI = shipyardMenu.GetComponent<UIDocument>();
-        shipyardMenu.GetComponent<ShipyardMenu>().MakeShipyardMenu(this, planet);
-        planet.SetShipyardMenu(shipyardMenu);
-        uiController.AddToUIStack(new UIElement(shipyardMenu, shipyardMenuUI), false);
-    }
+        Vector2 pos = new(mousePos.x, Screen.height - mousePos.y);
+        pos = RuntimePanelUtils.ScreenToPanel(root.panel, pos);
+        pos = new(pos.x - localMousePosition.x, pos.y - localMousePosition.y);
 
-    public void ChangeSpecialBuildingButtonImage(Sprite image) { specialBuildingButton.style.backgroundImage = new StyleBackground(image); }
-    public void ChangeSpecialBuildingButtonImage() { specialBuildingButton.style.backgroundImage = new StyleBackground(defaultSpecialButtonImage); }
+        root.style.top = pos.y;
+        root.style.left = pos.x;
+    }
 }

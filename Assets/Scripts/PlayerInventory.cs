@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,72 +6,104 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    private int money = 10000;
+    [NonSerialized] public int moneyAmount = 10000;
+    [NonSerialized] public int moneyChange = 0;
+    [NonSerialized] public List<ResourceFactor> moneyFactors = new();
 
-    private List<SpaceShip> ownedShips = new();
+    [NonSerialized] public List<SpaceShipHandler> spaceShips = new();
 
-    [SerializeField] private Resource moneyResource;
+    public Resource moneyResource;
     [SerializeField] private GameObject spaceShipPrefab;
-    [SerializeField] private SpaceShipValues startShipValues;
+    [SerializeField] private SpaceShip startShipValues;
 
-    private UniverseHandler universe;
+    public static PlayerInventory instance;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+
+        GameEvents.OnAfterCycleChange += UpdateMoney;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnAfterCycleChange -= UpdateMoney;
+    }
 
     public void Start()
     {
-        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
-        AddShip(universe.stars.ElementAt(0).planets.ElementAt(0), startShipValues);
+        AddShip(UniverseHandler.stars.ElementAt(0).planets.ElementAt(0), startShipValues);
     }
 
     public void Update()
     {
-        // development
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G) & UniverseHandler.developmentMode)
         {
-            AddMoney(10000);
+            ChangeMoneyAmount(10000);
         }
-        //
     }
 
-    public void AddMoney(int amount) { 
-        money += amount;
-        GameEvents.MoneyUpdate();
-    }
-
-    public void RemoveMoney(int amount) { 
-        money -= amount; 
-        GameEvents.MoneyUpdate();
-    }
-
-    public int GetMoney() { return money; }
-
-    public Resource GetMoneyResource() { return moneyResource; }
-
-    public void AddShip(Planet planet, SpaceShipValues spaceShipValues) 
+    public static void AddShip(Planet planet, SpaceShip spaceShip) 
     {
-        GameObject spaceShipObject = Instantiate(spaceShipPrefab);
-        SpaceShip spaceShip = spaceShipObject.GetComponent<SpaceShip>();
-        spaceShip.CreateShip(
-            spaceShipValues.name, 
-            spaceShipValues.fuelCapacity, 
-            spaceShipValues.cargoCapacity, 
-            spaceShipValues.accelerationRate, 
-            spaceShipValues.cost,
-            planet,
-            spaceShipValues.shipScale);
-        ownedShips.Add(spaceShip);
+        GameObject spaceShipObject = Instantiate(instance.spaceShipPrefab);
+        SpaceShipHandler spaceShipHandler = spaceShipObject.GetComponent<SpaceShipHandler>();
+        spaceShipHandler.Create(spaceShip, planet);
+        instance.spaceShips.Add(spaceShipHandler);
+        planet.AddShipToOrbit(spaceShipHandler);
     }
 
-    public void RemoveShip(SpaceShip ship) 
+    public static void RemoveShip(SpaceShipHandler spaceShipHandler) 
     {
-        AddMoney(GetShipCost(ship));
-        ownedShips.Remove(ship); 
+        ChangeMoneyAmount(-GetShipCost(spaceShipHandler));
+        instance.spaceShips.Remove(spaceShipHandler);
     }
 
-    public int GetShipCost(SpaceShip ship)
+    public static int GetShipCost(SpaceShipHandler spaceShipHandler)
     {
-        foreach (ResourceAmount resourceAmount in ship.GetCost()) { if (resourceAmount.resource == moneyResource) { return resourceAmount.amount; } }
+        foreach (ResourceAmount resourceAmount in spaceShipHandler.spaceShip.cost) { if (resourceAmount.resource == instance.moneyResource) { return resourceAmount.amount; } }
         return 0;
     }
 
-    public List<SpaceShip> GetOwnedShips() {  return ownedShips; }
+    public static void UpdateMoney()
+    {
+        UpdateMoneyAmount();
+        UpdateMoneyPerCycle();
+        UIController.UpdateMoney();
+    }
+
+    public static void UpdateMoneyAmount()
+    {
+        if (instance.moneyAmount + instance.moneyChange < 0)
+        {
+            foreach (ResourceFactor moneyFactor in FindActiveMoneyFactors())
+            {
+                if (moneyFactor.resourceAmount.amount < 0)
+                {
+                    Debug.Log("Set moneyFactor inactive" + moneyFactor.resourceSource.name);
+                    moneyFactor.resourceSource.SetActive(false, null);
+                }
+            }
+        }
+        else instance.moneyAmount += instance.moneyChange;
+    }
+
+    public static void UpdateMoneyPerCycle()
+    {
+        instance.moneyChange = 0;
+        foreach (ResourceFactor moneyFactor in FindActiveMoneyFactors())
+        {
+            instance.moneyChange += moneyFactor.resourceAmount.amount;
+        }
+    }
+
+    public static void AddMoneyFactor(ResourceFactor moneyFactor) { instance.moneyFactors.Add(moneyFactor); }
+    public static void RemoveMoneyFactor(ResourceFactor moneyFactor) { instance.moneyFactors.Remove(moneyFactor); }
+
+    public static void ChangeMoneyAmount(int amount) { instance.moneyAmount += amount; }
+    public static bool CanChangeMoneyAmount(int amount) { return instance.moneyAmount >= amount; }
+
+    public static List<ResourceFactor> FindActiveMoneyFactors()
+    {
+        return instance.moneyFactors.FindAll((ResourceFactor mf) => mf.resourceSource.active);
+    }
 }

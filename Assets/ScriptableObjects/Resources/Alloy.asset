@@ -16,3 +16,4 @@ MonoBehaviour:
   resourceSprite: {fileID: 21300000, guid: 61613c4f921aedc429f630b9716e40c9, type: 3}
   spriteColor: {r: 0.08139017, g: 0.17849192, b: 0.5566038, a: 1}
   defaultValue: 10
+  type: 1

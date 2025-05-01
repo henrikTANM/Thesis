@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,168 +7,311 @@ using UnityEngine.UIElements;
 
 public class ShipViewer : MonoBehaviour
 {
-    private UIController uiController;
-    private PlayerInventory inventory;
+    private SpaceShipHandler spaceShipHandler;
 
-    public VisualTreeAsset createRouteButtonPrefab;
-    public VisualTreeAsset routeButtonsPrefab;
-    public VisualTreeAsset routeStopNamePrefab;
-    public VisualTreeAsset routeStopInfoPrefab;
+    [SerializeField] private VisualTreeAsset noDestinationTemplate;
+    [SerializeField] private VisualTreeAsset routeStopInfoTemplate;
+    [SerializeField] private VisualTreeAsset pickupPerCycleTemplate;
 
-    [SerializeField] private GameObject routeMakerPrefab;
-    private GameObject routeMaker;
+    [SerializeField] private GameObject destinationPickerPrefab;
+    [SerializeField] private GameObject routeStopManagerPrefab;
 
-    private ScrollView routeStopList;
-    private VisualElement routeStopInfo;
-    private VisualElement routeButtons;
+    [SerializeField] private Sprite editNameSprite;
+    [SerializeField] private Sprite confirmEditSprite;
+    [SerializeField] private Color editCursorColor;
+    private float cursorTimer = 0.0f;
 
-    private Label routeStatus;
-    private Label fuel;
+    private VisualElement root;
 
-    private Button pauseButton;
+    private bool mouseOnMenu;
+    private Vector2 localMousePosition;
 
-    private SpaceShip ship;
+    private Label nameLabel;
+    private Label fuelConsumptionLabel;
 
-    public void MakeShipViewer(SpaceShip ship)
-    {
-        this.ship = ship;
-
-        uiController = GameObject.Find("UIController").GetComponent<UIController>();
-        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
-
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
-
-        root.Q<Label>("name").text = ship.GetName();
-
-        Button exitButton = root.Q<Button>("exitbutton");
-        exitButton.clicked += uiController.RemoveLastFromUIStack;
-
-        root.Q<Label>("acceleration").text = "Acceleration rate: " + ship.GetMaxAcceleration().ToString();
-        root.Q<Label>("cargo").text = "Cargo capacity: " + ship.GetCargoCapacity().ToString();
-        root.Q<Label>("fuel").text = "Fuel capacity: " + ship.GetFuelCapacity().ToString();
-        fuel = root.Q<Label>("currentfuel");
-        UpdateFuel(ship);
-
-        Button sellButton = root.Q<Button>("sellbutton");
-        sellButton.text = "Sell for " + inventory.GetShipCost(ship).ToString();
-        sellButton.clicked += () => Sell(ship);
-
-        routeStatus = root.Q<Label>("status");
-        UpdateRouteStatus(ship);
-
-        routeStopList = root.Q<ScrollView>("routestoplist");
-        routeStopInfo = root.Q<ScrollView>("stopinfo");
-        UpdateRouteInfo(ship);
-
-        routeButtons = root.Q<VisualElement>("buttons");
-        UpdateButtons(ship);
-    }
+    private TextField editTextField;
+    private Button editNameButton;
+    private Button routeStateButton;
+    private Button clearRouteButton;
+    private Button homeButton;
+    private Button destinationButton;
 
     private void Update()
     {
-        UpdateFuel(ship);
-    }
+        if (UniverseHandler.instance.editActive & Input.GetKeyDown(KeyCode.Return)) HandleEditName();
+        if (UniverseHandler.instance.editActive & Input.GetKeyDown(KeyCode.Escape)) CloseEdit();
+        if (Input.GetMouseButton(0) & mouseOnMenu & !UniverseHandler.instance.editActive) MoveWindow(root, Input.mousePosition);
 
-    private void UpdateFuel(SpaceShip ship)
-    {
-        fuel.text = "Fuel capacity: " + ship.GetFuelOnShip().ToString();
-    }
-
-    public void UpdateRouteInfo(SpaceShip ship)
-    {
-        routeStopList.Clear();
-
-        if (ship.HasRoute())
+        if (editTextField != null)
         {
-            foreach (RouteStop routeStop in ship.GetRoute().GetRouteStops())
+            cursorTimer += Time.deltaTime;
+            if (cursorTimer >= 1.0f)
             {
-                VisualElement routeStopName = routeStopNamePrefab.Instantiate();
-                Button routeStopNameButton = routeStopName.Q<Button>("button");
-                routeStopNameButton.text = routeStop.GetPlanet().GetName();
-                routeStopNameButton.clicked += () => UpdateRouteStopInfo(routeStop);
-                routeStopList.Add(routeStopName);
-                if (routeStop.GetIndex() == 0) { UpdateRouteStopInfo(routeStop); }
+                editTextField.textSelection.cursorColor = Color.black;
+                cursorTimer = 0.0f;
+            }
+            else if (cursorTimer >= 0.5f)
+            {
+                editTextField.textSelection.cursorColor = editCursorColor;
             }
         }
     }
 
-    public void UpdateRouteStopInfo(RouteStop routeStop)
-    {
-        routeStopInfo.Clear();
+    private void OnDestroy() { CloseEdit(); }
 
-        RouteStop previous = routeStop.Route().GetPreviousRouteStop(routeStop);
-        foreach (ResourceCount resourceCount in routeStop.GetShipState())
+    public void MakeShipViewer(SpaceShipHandler spaceShipHandler)
+    {
+        this.spaceShipHandler = spaceShipHandler;
+        spaceShipHandler.shipViewer = this;
+
+        root = GetComponent<UIDocument>().rootVisualElement;
+        root.RegisterCallback<NavigationSubmitEvent>((evt) =>
         {
-            ResourceCount previousCount = previous.GetInShipState(resourceCount.resource);
-            VisualElement infoRow = routeStopInfoPrefab.Instantiate();
-            infoRow.Q<VisualElement>("res").style.backgroundImage = new StyleBackground(resourceCount.resource.resourceSprite);
-            infoRow.Q<VisualElement>("res").style.unityBackgroundImageTintColor = new StyleColor(resourceCount.resource.spriteColor);
-            infoRow.Q<Label>("previous").text = (previousCount != null ? previousCount.amount : 0).ToString();
-            infoRow.Q<Label>("new").text = resourceCount.amount.ToString();
-            routeStopInfo.Add(infoRow);
-        }
+            evt.StopPropagation();
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseDownEvent>(evt =>
+        {
+            mouseOnMenu = true;
+            localMousePosition = evt.localMousePosition;
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<MouseUpEvent>(evt => mouseOnMenu = false, TrickleDown.TrickleDown);
+
+        nameLabel = root.Q<Label>("name");
+        UpdateNameLabel();
+
+
+        root.Q<Label>("interstellar").text = "Interstellar drive: " + (spaceShipHandler.spaceShip.isInterstellar ? "YES" : "NO");
+        root.Q<Label>("cargo").text = "Cargo capacity: " + spaceShipHandler.spaceShip.cargoCapacity;
+
+        fuelConsumptionLabel = root.Q<Label>("fuel");
+        UpdateFuelConsumptionLabel();
+
+        Button exitButton = root.Q<Button>("exitbutton");
+        exitButton.clicked += () =>
+        {
+            SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+            UIController.RemoveLastFromUIStack();
+        };
+
+        Button sellButton = root.Q<Button>("sellbutton");
+        sellButton.text = "Sell for " + PlayerInventory.GetShipCost(spaceShipHandler).ToString();
+        sellButton.clicked += HandleSellButtonClicked;
+
+        editTextField = root.Q<TextField>("edittextfield");
+        editTextField.value = spaceShipHandler.name;
+        editTextField.maxLength = 20;
+
+        editNameButton = root.Q<Button>("editname");
+        editNameButton.clicked += HandleEditName;
+
+        routeStateButton = root.Q<Button>("routestatebutton");
+        routeStateButton.clicked += HandleRouteStateButtonClicked;
+
+        clearRouteButton = root.Q<Button>("clearroutebutton");
+        clearRouteButton.clicked += HandleClearRouteButtonClicked;
+
+        homeButton = root.Q<Button>("homebutton");
+        homeButton.clicked += HandleHomeButtonClicked;
+
+        destinationButton = root.Q<Button>("destinationbutton");
+        destinationButton.clicked += HandleDestinationButtonClicked;
+
+        UpdateEditName();
+        UpdateButtons();
+
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_OPEN);
     }
 
-    public void UpdateButtons(SpaceShip ship)
+    private void HandleSellButtonClicked()
     {
-        routeButtons.Clear();
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+        PlayerInventory.RemoveShip(spaceShipHandler);
+        if (spaceShipHandler.HasRoute()) spaceShipHandler.route.RemoveAllResourceFactors();
+        Destroy(spaceShipHandler.gameObject);
+        UIController.UpdateShipsList();
+        UIController.RemoveLastFromUIStack();
+    }
+    private void HandleEditName()
+    {
+        if (UniverseHandler.instance.editActive) 
+        { 
+            if (editTextField.value.Length > 0) spaceShipHandler.name = editTextField.value;
+            UIController.UpdateShipsList();
+            UpdateNameLabel();
+        }
+        UniverseHandler.instance.editActive = !UniverseHandler.instance.editActive;
+        UpdateEditName();
+    }
 
-        if (ship.HasRoute())
+    private void HandleRouteStateButtonClicked()
+    {
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+        spaceShipHandler.route.active = !spaceShipHandler.route.active;
+        spaceShipHandler.route.UpdateResourceDisplays();
+        UpdateButtons();
+        UpdateFuelConsumptionLabel();
+        UIController.UpdateShipsList();
+    }
+
+    private void HandleClearRouteButtonClicked()
+    {
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ACTION);
+        spaceShipHandler.removeRoute = true;
+        spaceShipHandler.route.active = false;
+        spaceShipHandler.route.UpdateResourceDisplays();
+        if (spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.AT_HOME)) spaceShipHandler.RemoveRoute();
+        UpdateButtons();
+        UpdateFuelConsumptionLabel();
+        UIController.UpdateShipsList();
+    }
+
+    private void HandleHomeButtonClicked()
+    {
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ENTER);
+        if (spaceShipHandler.HasRoute()) MakeRouteStopManager(true);
+        if (UniverseHandler.instance.editActive) CloseEdit();
+    }
+
+    private void HandleDestinationButtonClicked()
+    {
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_ENTER);
+        if (spaceShipHandler.HasRoute()) MakeRouteStopManager(false);
+        else MakeDestinationPicker();
+        if (UniverseHandler.instance.editActive) CloseEdit();
+    }
+
+    private void UpdateNameLabel() { nameLabel.text = spaceShipHandler.name; }
+
+    private void UpdateFuelConsumptionLabel()
+    {
+        fuelConsumptionLabel.text = "Fuel consumption: " + (spaceShipHandler.HasRoute() ?
+            (spaceShipHandler.route.active ? spaceShipHandler.spaceShip.fuelConsumption.amount : 0) : 0).ToString() + "/cycle";
+    }
+
+    private void UpdateEditName()
+    {
+        editTextField.SetEnabled(UniverseHandler.instance.editActive);
+        editTextField.style.visibility = UniverseHandler.instance.editActive ? Visibility.Visible : Visibility.Hidden;
+        editNameButton.style.backgroundImage = new StyleBackground(UniverseHandler.instance.editActive ? confirmEditSprite : editNameSprite);
+    }
+
+    public void UpdateButtons()
+    {
+        UpdateHomeButton(spaceShipHandler.HasRoute() & !spaceShipHandler.removeRoute ? spaceShipHandler.route.homeResourceFactors : new());
+        UpdateDestinationButton(spaceShipHandler.HasRoute() & !spaceShipHandler.removeRoute ? spaceShipHandler.route.destinationResourceFactors : new());
+        UpdateRouteStateButton();
+        UpdateClearRouteButton();
+    }
+
+    private void UpdateRouteStateButton()
+    {
+        if (spaceShipHandler.HasRoute())
         {
-            VisualElement routeButtonsContainer = routeButtonsPrefab.Instantiate();
-
-            Button cancelButton = routeButtonsContainer.Q<Button>("cancelbutton");
-            cancelButton.clicked += () => CancelRoute(ship);
-
-            pauseButton = routeButtonsContainer.Q<Button>("pausebutton");
-            pauseButton.text = ship.IsRoutePaused() ? "Unpause route" : "Pause route";
-            pauseButton.clicked += () =>
+            if (spaceShipHandler.route.active)
             {
-                ship.ChangeRoutePaused();
-                pauseButton.text = ship.IsRoutePaused() ? "Unpause route" : "Pause route";
-                UpdateRouteStatus(ship);
-            };
-
-            routeButtons.Add(routeButtonsContainer);
+                routeStateButton.SetEnabled(true);
+                routeStateButton.text = "Pause route";
+            }
+            else if (spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.AT_HOME))
+            {
+                routeStateButton.SetEnabled(true);
+                routeStateButton.text = "Start route";
+            }
+            else
+            {
+                routeStateButton.SetEnabled(false);
+                routeStateButton.text = "Moving to home planet";
+            }
         }
         else
         {
-            VisualElement createButtonContainer = createRouteButtonPrefab.Instantiate();
-
-            Button createButton = createButtonContainer.Q<Button>("createbutton");
-            createButton.clicked += () => { MakeRouteMaker(this, ship); };
-
-            routeButtons.Add(createButtonContainer);
+            routeStateButton.SetEnabled(false);
+            routeStateButton.text = "No route";
         }
     }
 
-    public void CancelRoute(SpaceShip ship)
+    private void UpdateClearRouteButton()
     {
-        ship.RemoveRoute();
-        UpdateRouteInfo(ship);
-        UpdateRouteStatus(ship);
-        routeStopInfo.Clear();
-        UpdateButtons(ship);
+        clearRouteButton.SetEnabled(spaceShipHandler.HasRoute() & !spaceShipHandler.removeRoute);
     }
 
-    private void Sell(SpaceShip ship)
+    private void UpdateHomeButton(List<Tuple<bool, ResourceFactor>> pickupList)
     {
-        CancelRoute(ship);
-        inventory.RemoveShip(ship);
-        ship.Sell();
-        uiController.RemoveLastFromUIStack();
+        homeButton.Clear();
+        VisualElement routeInfo = InstantiateRouteStopInfo(pickupList, spaceShipHandler.home);
+        homeButton.Add(routeInfo);
+
+        if (spaceShipHandler.HasRoute()) homeButton.SetEnabled(spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.AT_HOME) & !spaceShipHandler.route.active);
+        else homeButton.SetEnabled(false);
     }
 
-    public void UpdateRouteStatus(SpaceShip ship)
+    private void UpdateDestinationButton(List<Tuple<bool, ResourceFactor>> pickupList)
     {
-        routeStatus.text = (ship.HasRoute() ? (ship.IsRoutePaused() ? "Route paused" : "Route") : "No route").ToString();
+        destinationButton.Clear();
+        if (spaceShipHandler.HasRoute() & !spaceShipHandler.removeRoute)
+        {
+            VisualElement routeInfo = InstantiateRouteStopInfo(pickupList, spaceShipHandler.route.destination);
+            destinationButton.Add(routeInfo);
+            destinationButton.SetEnabled(spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.AT_HOME) & !spaceShipHandler.route.active);
+        }
+        else
+        {
+            VisualElement noDestination = noDestinationTemplate.Instantiate();
+            destinationButton.Add(noDestination);
+            destinationButton.SetEnabled(true);
+        }
     }
 
-    private void MakeRouteMaker(ShipViewer shipViewer, SpaceShip ship)
+    private void CloseEdit()
     {
-        routeMaker = Instantiate(routeMakerPrefab);
-        UIDocument routeMakerUI = routeMaker.GetComponent<UIDocument>();
-        routeMaker.GetComponent<RouteMaker>().MakeRouteMaker(shipViewer, ship);
-        uiController.AddToUIStack(new UIElement(routeMaker, routeMakerUI), false);
+        UniverseHandler.instance.editActive = false;
+        UpdateEditName();
+    }
+
+    private VisualElement InstantiateRouteStopInfo(List<Tuple<bool, ResourceFactor>> pickupList, Planet planet)
+    {
+        VisualElement routeInfo = routeStopInfoTemplate.Instantiate();
+        routeInfo.Q<Label>("planet").text = planet.name;
+        VisualElement pickUpListElement = routeInfo.Q<VisualElement>("pickuplist");
+        pickUpListElement.Clear();
+        foreach (Tuple<bool, ResourceFactor> pickup in pickupList)
+        {
+            if (pickup.Item1)
+            {
+                VisualElement pickUpPerCycle = pickupPerCycleTemplate.Instantiate();
+                pickUpPerCycle.Q<Label>("percycle").text = Math.Abs(pickup.Item2.resourceAmount.amount).ToString() + "/cycle";
+                VisualElement resourceImage = pickUpPerCycle.Q<VisualElement>("resourceimage");
+                resourceImage.style.backgroundImage = new StyleBackground(pickup.Item2.resourceAmount.resource.resourceSprite);
+                resourceImage.style.unityBackgroundImageTintColor = new StyleColor(pickup.Item2.resourceAmount.resource.spriteColor);
+                pickUpListElement.Add(pickUpPerCycle);
+            }
+        }
+        return routeInfo;
+    }
+
+    private void MakeDestinationPicker()
+    {
+        GameObject destinationPicker = Instantiate(destinationPickerPrefab);
+        UIDocument destinationPickerUI = destinationPicker.GetComponent<UIDocument>();
+        destinationPicker.GetComponent<DestinationPicker>().MakeDestinationPicker(this, spaceShipHandler);
+        UIController.AddToUIStack(new UIElement(destinationPicker, destinationPickerUI), false);
+    }
+
+    private void MakeRouteStopManager(bool isHome)
+    {
+        GameObject routeStopManager = Instantiate(routeStopManagerPrefab);
+        UIDocument routeStopManagerUI = routeStopManager.GetComponent<UIDocument>();
+        routeStopManager.GetComponent<RouteStopManager>().MakeRouteStopManager(this, spaceShipHandler, isHome);
+        UIController.AddToUIStack(new UIElement(routeStopManager, routeStopManagerUI), false);
+    }
+
+    private void MoveWindow(VisualElement root, Vector3 mousePos)
+    {
+        Vector2 pos = new(mousePos.x, Screen.height - mousePos.y);
+        pos = RuntimePanelUtils.ScreenToPanel(root.panel, pos);
+        pos = new(pos.x - localMousePosition.x, pos.y - localMousePosition.y);
+
+        root.style.top = pos.y;
+        root.style.left = pos.x;
     }
 }

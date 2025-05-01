@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Tropical
   m_EditorClassIdentifier: 
   name: Tropical
-  depositSprite: {fileID: 21300000, guid: bd0a3a8bda8bc3646837673fd2ebaf4b, type: 3}
+  possibleDepositSprites:
+  - {fileID: 21300000, guid: d6812681c6cef2144bbc2b82fcbd4cb5, type: 3}
+  - {fileID: 21300000, guid: 3b78f682ff1bd8943bcdbf702d289d88, type: 3}
+  - {fileID: 21300000, guid: 77d233c9b06a3bd45809dab4ac0b5479, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: e8e0e7e41c99b984fb1edbb06a4c0081, type: 2}
   buildingCap: 1

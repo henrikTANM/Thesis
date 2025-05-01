@@ -1,6 +1,6 @@
-.button {
+.escape_button {
     flex-grow: 1;
-    background-color: rgba(11, 13, 15, 0.59);
+    background-color: rgba(0, 0, 0, 0.59);
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -25,7 +25,7 @@
     transition-duration: 0.1s;
 }
 
-.button:hover {
+.escape_button:hover {
     border-left-color: rgb(171, 220, 255);
     border-right-color: rgb(171, 220, 255);
     border-top-color: rgb(171, 220, 255);
@@ -40,7 +40,7 @@
     transition-duration: 0.1s;
 }
 
-.button:active {
+.escape_button:active {
     border-left-color: rgb(226, 226, 226);
     border-right-color: rgb(226, 226, 226);
     border-top-color: rgb(226, 226, 226);

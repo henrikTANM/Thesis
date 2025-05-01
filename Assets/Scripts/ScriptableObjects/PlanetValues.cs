@@ -9,6 +9,7 @@ public class PlanetValues : ScriptableObject
     public List<Texture2D> planetTextures;
     public List<Texture2D> cloudTextures;
 
+    public List<SpecialBuilding> specialBuildings;
     public List<Deposit> possibleDeposits;
     public int depositCap;
 

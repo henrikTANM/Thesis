@@ -7,7 +7,10 @@ using UnityEngine;
 public class StartSettings : ScriptableObject
 {
     public List<PlanetSettings> startSystemPlanets;
-    public SpaceShipValues startSpaceShipValue;
+    public PlanetSettings blackHolePlanet;
+    public SpaceShip startSpaceShipValue;
+
+    public List<ResourceAmount> startPlanetResourceAmounts;
 
     [Serializable]
     public class PlanetSettings

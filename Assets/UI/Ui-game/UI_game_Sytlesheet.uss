@@ -55,7 +55,7 @@
 }
 
 .unity-progress-bar {
-    position: absolute;
+    position: relative;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -64,11 +64,12 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    width: 100%;
-    height: 100%;
     background-color: rgba(0, 0, 0, 0);
     min-height: 110%;
     opacity: 1;
+    -unity-slice-scale: 0;
+    width: 100%;
+    flex-direction: row;
 }
 
 .unity-progress-bar__background {
@@ -85,6 +86,7 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-slice-scale: 0;
 }
 
 .unity-progress-bar__container {
@@ -101,6 +103,7 @@
     padding-bottom: 0;
     padding-left: 0;
     position: absolute;
+    -unity-slice-scale: 0;
 }
 
 .unity-progress-bar__progress {
@@ -113,8 +116,8 @@
     padding-bottom: 0;
     padding-left: 0;
     background-color: rgba(255, 255, 255, 0.57);
-    height: 100%;
     min-height: 100%;
+    -unity-slice-scale: 0;
 }
 
 .unity-progress-bar__title-container {
@@ -126,4 +129,298 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-slice-scale: 0;
+}
+
+.items_open {
+    flex-direction: row;
+    align-items: flex-start;
+    align-self: flex-end;
+    width: 200px;
+    height: 80%;
+    background-color: rgba(0, 0, 0, 0.47);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.items_closed {
+    flex-direction: row;
+    align-items: flex-start;
+    align-self: flex-end;
+    width: 200px;
+    height: 80%;
+    background-color: rgba(0, 0, 0, 0.47);
+    border-left-color: rgb(226, 226, 226);
+    border-right-color: rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
+    border-bottom-color: rgb(226, 226, 226);
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    translate: 90% 0;
+}
+
+.sidemenubutton_open {
+    width: 10%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-image: url('project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&guid=b90ff0a143fe1f24db9073578323115d&type=3#arrow-right@2x');
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+.sidemenubutton_open:hover {
+    background-color: rgba(56, 56, 60, 0.47);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+.sidemenubutton_open:active {
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-color: rgb(226, 226, 226);
+}
+
+.sidemenubutton_closed {
+    width: 10%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-image: url('project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-2236324273849735119&guid=b90ff0a143fe1f24db9073578323115d&type=3#arrow-left@2x');
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+.sidemenubutton_closed:hover {
+    background-color: rgba(56, 56, 60, 0.47);
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+.sidemenubutton_closed:active {
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-color: rgb(226, 226, 226);
+}
+
+.listbutton {
+    font-weight: medium;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: rgb(226, 226, 226);
+    font-size: 12px;
+    -unity-text-align: middle-right;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-right: 5px;
+    width: 100%;
+    height: 25px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
+}
+
+.listbutton:hover {
+    color: rgb(0, 0, 0);
+    background-image: url('project://database/Assets/Textures%20and%20Sprites/gradient5.png?fileID=2800000&guid=b97322fbbb6f29145a4db48bc6efd6c6&type=3#gradient5');
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+}
+
+.listbutton:active {
+    color: rgb(171, 220, 255);
+    background-image: url('project://database/Assets/Textures%20and%20Sprites/gradient5.png?fileID=2800000&guid=b97322fbbb6f29145a4db48bc6efd6c6&type=3#gradient5');
+    -unity-background-image-tint-color: rgba(56, 56, 60, 0.47);
+}
+
+.listbutton .unity-label {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.listbutton:hover .unity-label {
+}
+
+.listbutton:active:active .unity-label {
+}
+
+.gat_button {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    flex-direction: row;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-right: 10px;
+    margin-left: 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.gat_button .unity-label {
+    font-weight: bold;
+    color: rgb(255, 243, 176);
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
+}
+
+.gat_button:hover .unity-label {
+    color: rgb(171, 220, 255);
+}
+
+.gat_button:active .unity-label {
+    color: rgb(226, 226, 226);
+}
+
+.gat_icon_closed {
+    width: 20px;
+    height: 20px;
+    background-image: url('project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&guid=b90ff0a143fe1f24db9073578323115d&type=3#arrow-right@2x');
+    -unity-background-image-tint-color: rgb(255, 243, 176);
+}
+
+.gat_button:hover .gat_icon_closed {
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+.gat_button:active .gat_icon_closed {
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+}
+
+.gat_icon_open {
+    width: 20px;
+    height: 20px;
+    background-image: url('project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&guid=b90ff0a143fe1f24db9073578323115d&type=3#arrow-down@2x');
+    -unity-background-image-tint-color: rgb(255, 243, 176);
+}
+
+.gat_button:hover .gat_icon_open {
+    -unity-background-image-tint-color: rgb(171, 220, 255);
+}
+
+.gat_button:active .gat_icon_open {
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+}
+
+.messageButton {
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+    width: 50%;
+    margin-top: 0;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-image: url('project://database/Assets/Textures%20and%20Sprites/gradient5flipped.png?fileID=2800000&guid=707a25973cdab8240ae5d3c21f3da651&type=3#gradient5flipped');
+    -unity-background-image-tint-color: rgba(0, 0, 0, 0);
+    align-self: flex-start;
+}
+
+.messageButton:hover {
+    -unity-background-image-tint-color: rgb(226, 226, 226);
+}
+
+.messageButton:active {
+    -unity-background-image-tint-color: rgba(56, 56, 60, 0.47);
+}
+
+.textElement {
+    -unity-text-align: middle-center;
+    color: rgb(226, 226, 226);
+    font-size: 12px;
+    white-space: normal;
+    -unity-font-definition: url('project://database/Assets/CustomFOnts/CourierPrime-Regular%20SDF.asset?fileID=11400000&guid=a3064f1950e0154439cc49f0d9693048&type=2#CourierPrime-Regular SDF');
+}
+
+.messageButton:hover .textElement {
+    color: rgb(0, 0, 0);
+}
+
+.messageButton:active .textElement {
+    color: rgb(171, 220, 255);
 }

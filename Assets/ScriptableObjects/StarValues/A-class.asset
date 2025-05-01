@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca9ffe3360f41e4b8cc667e70be7cec, type: 3}
   m_Name: A-class
   m_EditorClassIdentifier: 
-  scale: 3.2
+  scale: 9
   color: {r: 0.16862746, g: 0.27450982, b: 0.27450982, a: 0}
   cellColor: {r: 0.007843138, g: 0.007843138, b: 0.07450981, a: 0}
   cellDensity: 7

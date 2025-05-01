@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
@@ -15,10 +11,8 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject escapeMenuPrefab;
     GameObject escapeMenu;
-    [SerializeField] private GameObject shipsMenuPrefab;
-    GameObject shipsMenu;
-    [SerializeField] private GameObject planetsMenuPrefab;
-    GameObject planetsMenu;
+    [SerializeField] private GameObject shipViewerPrefab;
+    GameObject shipViewer;
 
     private UIStack uiStack = new();
 
@@ -28,16 +22,45 @@ public class UIController : MonoBehaviour
     private Button timeButton;
 
     private UniverseHandler universe;
-    private PlayerInventory inventory;
 
     private ProgressBar timer;
 
+    [SerializeField] private GameObject moneyViewerPrefab;
+    private GameObject moneyViewer;
+
+    private VisualElement sideMenu;
+    private Button sideMenuButton;
+    private bool sideMenuOpen = false;
+    public static bool mouseOnSideMenu = false;
+
+    private VisualElement planetsList;
+    private Button planetsButton;
+    private bool planetsListOpen = false;
+    [SerializeField] private VisualTreeAsset planetsListButtonTemplate;
+
+    private VisualElement shipsList;
+    private Button shipsButton;
+    private bool shipsListOpen = false;
+    [SerializeField] private VisualTreeAsset shipsListButtonTemplate;
+
+    [SerializeField] private VisualTreeAsset messageButtonTemplate;
+    [SerializeField] private Sprite notificationImage;
+    [SerializeField] private Color notificationColor;
+    [SerializeField] private Sprite waringImage;
+    [SerializeField] private Color warningColor;
+    private VisualElement messageButtonsContainer;
+    private List<VisualElement> messageButtonList = new();
+    [SerializeField] private int maxMessagesOnScreen = 10;
+
+    public static UIController instance;
+
     private void Awake()
     {
+        if (instance == null) instance = this;
+
         InputEvents.OnTimeStateChange += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu += MakeEscapeMenu;
-        GameEvents.OnMoneyUpdate += UpdateMoney;
     }
 
     private void OnDestroy()
@@ -45,50 +68,66 @@ public class UIController : MonoBehaviour
         InputEvents.OnTimeStateChange -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= ChangeTimeButtonIcon;
         InputEvents.OnEscapeMenu -= MakeEscapeMenu;
-        GameEvents.OnMoneyUpdate -= UpdateMoney;
     }
 
     private void Start()
     {
-        universe = GameObject.Find("Universe").GetComponent<UniverseHandler>();
-        inventory = GameObject.Find("PlayerInventory").GetComponent<PlayerInventory>();
         UpdateMoney();
         InitiateGameUI();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!UniverseHandler.instance.editActive)
         {
-            if (uiStack.IsEmpty())
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                InputEvents.EscapeMenu();
+                if (uiStack.IsEmpty()) InputEvents.EscapeMenu();
+                else RemoveLastFromUIStack();
             }
-            else
+            if (Input.GetKeyDown(UniverseHandler.GetKeyCode(KeyBind.KeyPressAction.CLEAR_NOTIFICATIONS))
+                & !UniverseHandler.escapeMenuDisplayed)
             {
-                //print(universe.escapeMenuDisplayed + " : " + universe.routeMakerDisplayed);
-                if (universe.escapeMenuDisplayed) universe.HandleEscapeMenu();
-                if (universe.routeMakerDisplayed) universe.HandleRouteMaker();
-                RemoveLastFromUIStack();
+                messageButtonList.Clear();
+                UpdateMessageButtons();
             }
+            if (Input.GetKeyDown(UniverseHandler.GetKeyCode(KeyBind.KeyPressAction.CLEAR_UI))
+                & !UniverseHandler.escapeMenuDisplayed) ClearUIStack();
         }
-        timer.value = universe.timeCycleValue;
+        timer.value = UniverseHandler.timeCycleValue;
     }
-
-    //main UI buttons
 
     private void InitiateGameUI()
     {
         VisualElement root = gameUI.rootVisualElement;
+        root.RegisterCallback<NavigationSubmitEvent>((evt) =>
+        {
+            evt.StopPropagation();
+        }, TrickleDown.TrickleDown);
+
+        sideMenu = root.Q<VisualElement>("sidemenu");
+        sideMenu.RegisterCallback<MouseEnterEvent>((evt) => mouseOnSideMenu = true);
+        sideMenu.RegisterCallback<MouseLeaveEvent>((evt) => mouseOnSideMenu = false);
+
+        sideMenuButton = root.Q<Button>("sidemenubutton");
+        sideMenuButton.clicked += HandleSideMenuTransition;
+
+        ScrollView sideMenuScrollView = root.Q<ScrollView>("list");
+        sideMenuScrollView.verticalScroller.SetEnabled(false);
+
+        planetsList = sideMenu.Q<VisualElement>("planetslist");
+        shipsList = sideMenu.Q<VisualElement>("shipslist");
+
+        planetsButton = root.Q<Button>("planetsbutton");
+        planetsButton.clicked += HandlePlanetListButton;
+
+        shipsButton = root.Q<Button>("shipsbutton");
+        shipsButton.clicked += HandleShipsListButton;
+
+        messageButtonsContainer = root.Q<VisualElement>("messagelist");
 
         Button escapeButton = root.Q<Button>("escapemenubutton");
         escapeButton.clicked += InputEvents.EscapeMenu;
-
-        Button shipsButton = root.Q<Button>("shipsbutton");
-        shipsButton.clicked += MakeShipsMenu;
-
-        Button planetsButton = root.Q<Button>("planetsbutton");
-        planetsButton.clicked += MakePlanetsMenu;
 
         Button clusterViewButton = root.Q<Button>("clusterviewbutton");
         clusterViewButton.clicked += InputEvents.ClusterView;
@@ -99,47 +138,53 @@ public class UIController : MonoBehaviour
         Button systemViewButton = root.Q<Button>("systemviewbutton");
         systemViewButton.clicked += InputEvents.SystemView;
 
+        VisualElement moneyContainer = root.Q<VisualElement>("statscontainer");
+        moneyContainer.RegisterCallback<MouseEnterEvent>(evt => MakeMoneyViewer(evt));
+        moneyContainer.RegisterCallback<MouseLeaveEvent>(evt => RemoveLastFromUIStack());
+
         timer = root.Q<ProgressBar>("time");
         timer.lowValue = 0.0f;
-        timer.highValue = universe.cycleLength;
+        timer.highValue = UniverseHandler.instance.cycleLength;
     }
 
-    public void SetGameUIActive(bool active)
+    public static void SetGameUIActive(bool active)
     {
-        VisualElement root = gameUI.rootVisualElement;
+        VisualElement root = instance.gameUI.rootVisualElement;
         root.Q<VisualElement>("topcontainer").SetEnabled(active);
         root.Q<VisualElement>("topcontainer").style.visibility = active ? Visibility.Visible : Visibility.Hidden;
+        root.Q<VisualElement>("leftcontainer").SetEnabled(active);
+        root.Q<VisualElement>("leftcontainer").style.visibility = active ? Visibility.Visible : Visibility.Hidden;
         root.Q<VisualElement>("rightcontainer").SetEnabled(active);
         root.Q<VisualElement>("rightcontainer").style.visibility = active ? Visibility.Visible : Visibility.Hidden;
     }
 
     // ships menu functions
 
-    public void ChangeTimeButtonIcon()
+    public static void ChangeTimeButtonIcon()
     {
-        timeButton.style.backgroundImage =
-            new StyleBackground(universe.timeRunning ? timeRunningImage : timeStoppedImage);
+        instance.timeButton.style.backgroundImage =
+            new StyleBackground(UniverseHandler.timeRunning ? instance.timeRunningImage : instance.timeStoppedImage);
 
-        timeButton.style.unityBackgroundImageTintColor =
-            universe.timeRunning ? new Color(255f / 255f, 243f / 255f, 176f / 255f) : new Color(158f / 255f, 42f / 255f, 43f / 255f);
+        instance.timeButton.style.unityBackgroundImageTintColor =
+            UniverseHandler.timeRunning ? new Color(255f / 255f, 243f / 255f, 176f / 255f) : new Color(158f / 255f, 42f / 255f, 43f / 255f);
     }
 
-    public void AddToUIStack(UIElement uiElement, bool disPlayPrevious)
+    public static void AddToUIStack(UIElement uiElement, bool disPlayPrevious)
     {   
-        uiStack.Add(uiElement, disPlayPrevious);
+        instance.uiStack.Add(uiElement, disPlayPrevious);
     }
 
-    public void RemoveLastFromUIStack()
+    public static void RemoveLastFromUIStack()
     {
-        uiStack.RemoveLast();
+        instance.uiStack.RemoveLast();
     }
 
-    public void ClearUIStack()
+    public static void ClearUIStack()
     {
-        uiStack.Clear();
+        instance.uiStack.Clear();
     }
 
-    public bool UIDisplayed() { return !uiStack.IsEmpty(); }
+    public static bool UIDisplayed() { return !instance.uiStack.IsEmpty(); }
 
     public void MakeEscapeMenu() 
     {
@@ -147,28 +192,222 @@ public class UIController : MonoBehaviour
         escapeMenu = Instantiate(escapeMenuPrefab);
         UIDocument escapeMenuUI = escapeMenu.GetComponent<UIDocument>();
         escapeMenu.GetComponent<EscapeMenu>().MakeEscapeMenu();
-        AddToUIStack(new UIElement(escapeMenu, escapeMenuUI), false); 
-    }
-    public void MakeShipsMenu() 
-    {
-        if (shipsMenu != null) return;
-        shipsMenu = Instantiate(shipsMenuPrefab);
-        UIDocument shipsMenuUI = shipsMenu.GetComponent<UIDocument>();
-        shipsMenu.GetComponent<ShipsMenu>().MakeShipsMenu();
-        AddToUIStack(new UIElement(shipsMenu, shipsMenuUI), false);
+        AddToUIStack(new UIElement(escapeMenu, escapeMenuUI), false);
     }
 
-    public void MakePlanetsMenu()
+    public static void MakeShipViewer(SpaceShipHandler spaceShipHandler)
     {
-        if (planetsMenu != null) return;
-        planetsMenu = Instantiate(planetsMenuPrefab);
-        UIDocument planetsMenuUI = planetsMenu.GetComponent<UIDocument>();
-        planetsMenu.GetComponent<PlanetsMenu>().MakePlanetsMenu();
-        AddToUIStack(new UIElement(planetsMenu, planetsMenuUI), false);
+        GameObject shipViewer = Instantiate(instance.shipViewerPrefab);
+        UIDocument shipViewerUI = shipViewer.GetComponent<UIDocument>();
+        shipViewer.GetComponent<ShipViewer>().MakeShipViewer(spaceShipHandler);
+        AddToUIStack(new UIElement(shipViewer, shipViewerUI), false);
     }
 
-    private void UpdateMoney()
+    public void MakeMoneyViewer(MouseEnterEvent evt)
     {
-        gameUI.rootVisualElement.Q<Label>("moneyvalue").text = inventory.GetMoney().ToString();
+        Vector2 mousePos = evt.mousePosition;
+        moneyViewer = Instantiate(moneyViewerPrefab);
+        UIDocument moneyViewerUI = moneyViewer.GetComponent<UIDocument>();
+        moneyViewer.GetComponent<MoneyViewer>().MakeMoneyViewer(mousePos);
+        AddToUIStack(new UIElement(moneyViewer, moneyViewerUI), true);
+        moneyViewer.GetComponent<UIDocument>().sortingOrder = 2;
+    }
+
+    public static void UpdateMoney()
+    {
+        instance.gameUI.rootVisualElement.Q<Label>("moneyvalue").text = 
+            PlayerInventory.instance.moneyAmount.ToString() + 
+            (PlayerInventory.instance.moneyChange < 0 ? "" : "+") + 
+            PlayerInventory.instance.moneyChange.ToString();
+    }
+
+    private void HandleSideMenuTransition()
+    {
+        SoundFX.PlayAudioClip(SoundFX.AudioType.SIDE_BUTTON);
+
+        if (sideMenuOpen)
+        {
+            sideMenu.AddToClassList("items_closed");
+            sideMenuButton.AddToClassList("sidemenubutton_closed");
+        }
+        else
+        {
+            sideMenu.RemoveFromClassList("items_closed");
+            sideMenuButton.RemoveFromClassList("sidemenubutton_closed");
+        }
+
+        sideMenuOpen = !sideMenuOpen;
+    }
+
+    private void HandlePlanetListButton()
+    {
+        VisualElement icon = planetsButton.Q<VisualElement>("icon");
+        if (planetsListOpen) icon.RemoveFromClassList("gat_icon_open");
+        else icon.AddToClassList("gat_icon_open");
+
+        planetsListOpen = !planetsListOpen;
+        planetsList.Clear();
+        UpdatePlanetsList();
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_SELECT);
+    }
+
+    public static void UpdatePlanetsList()
+    {
+        if (instance.planetsListOpen)
+        {
+            instance.planetsList.Clear();
+            foreach (Planet planet in UniverseHandler.GetManagedPlanets())
+            {
+                Button planetButton = instance.planetsListButtonTemplate.Instantiate().Q<Button>("button");
+                planetButton.text = planet.name;
+                planetButton.clicked += () => 
+                {
+                    if (UniverseHandler.SelectedPlanetEquals(planet)) planet.ShowPlanetMenu(true);
+                    else UniverseHandler.AddMoveToPlanet(planet);
+                };
+                instance.planetsList.Add(planetButton);
+            }
+        }
+    }
+
+    private void HandleShipsListButton()
+    {
+        VisualElement icon = shipsButton.Q<VisualElement>("icon");
+        if (shipsListOpen) icon.RemoveFromClassList("gat_icon_open");
+        else icon.AddToClassList("gat_icon_open");
+
+        shipsListOpen = !shipsListOpen;
+        shipsList.Clear();
+        UpdateShipsList();
+        SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_SELECT);
+    }
+
+    private static void HandleSpaceShipButton(SpaceShipHandler spaceShipHandler)
+    {
+        ClearUIStack();
+        MakeShipViewer(spaceShipHandler);
+    }
+
+    public static void UpdateShipsList()
+    {
+        if (instance.shipsListOpen)
+        {
+            instance.shipsList.Clear();
+            foreach (SpaceShipHandler spaceShipHandler in PlayerInventory.instance.spaceShips)
+            {
+                Button shipButton = instance.shipsListButtonTemplate.Instantiate().Q<Button>("button");
+                shipButton.Q<Label>("name").text = spaceShipHandler.name;
+                string routeInfo = "No route";
+                if (spaceShipHandler.HasRoute())
+                {
+                    string home = spaceShipHandler.route.home.name;
+                    string destination = spaceShipHandler.route.destination.name;
+                    if (!spaceShipHandler.route.active) 
+                        routeInfo = "Paused, " + home + " <-> " + destination;
+                    else
+                    {
+                        if (spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.AT_HOME) |
+                            spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.MOVING_TO_DESTINATION)) 
+                            routeInfo = "Moving, " + home + " -> " + destination;
+                        if (spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.AT_DESTINATION) |
+                            spaceShipHandler.state.Equals(SpaceShipHandler.SpaceShipState.MOVING_TO_HOME)) 
+                            routeInfo = "Moving, " + destination + " -> " + home;
+                    }
+                }
+                shipButton.Q<Label>("route").text = routeInfo;
+                shipButton.clicked += () => HandleSpaceShipButton(spaceShipHandler);
+                instance.shipsList.Add(shipButton);
+            }
+        }
+    }
+
+    public static void UpdateMessageButtons()
+    {
+        instance.messageButtonsContainer.Clear();
+        for (int i = instance.messageButtonList.Count - 1; i >= instance.messageButtonList.Count - instance.maxMessagesOnScreen; i--)
+        {
+            if (i < 0) break;
+            instance.messageButtonsContainer.Add(instance.messageButtonList.ElementAt(i));
+        }
+    }
+
+    public static void AddMessage(Message message)
+    {
+        Button messageButton = instance.messageButtonTemplate.Instantiate().Q<Button>("messagebutton");
+        messageButton.RegisterCallback<MouseUpEvent>(evt =>
+        {
+            if (evt.button == 0) HandleMessageButton(message);
+            else if (evt.button == 1)
+            {
+                instance.messageButtonList.Remove(messageButton);
+                UpdateMessageButtons();
+                SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+            }
+        });
+        Label messageLabel = messageButton.Q<Label>("message");
+        messageLabel.text = message.message;
+        VisualElement messageImagae = messageButton.Q<VisualElement>("image");
+        bool notification = message.messageType.Equals(Message.MessageType.NOTIFICATION);
+        messageImagae.style.backgroundImage =
+                new StyleBackground(notification ? instance.notificationImage : instance.waringImage);
+        messageImagae.style.unityBackgroundImageTintColor =
+            new StyleColor(notification ? instance.notificationColor : instance.warningColor);
+        instance.messageButtonList.Add(messageButton);
+
+        UpdateMessageButtons();
+        SoundFX.PlayAudioClip(message.messageType.Equals(Message.MessageType.NOTIFICATION) ?
+            SoundFX.AudioType.NOTIFICATION :
+            SoundFX.AudioType.WARNING);
+    }
+
+    private static void HandleMessageButton(Message message)
+    {
+        if (message.senderType.Equals(Message.SenderType.STAR))
+        {
+            MessageSender<Star> messageSender = (MessageSender<Star>)message.sender;
+            Star star = messageSender.sender;
+            UniverseHandler.AddMoveToStar(star);
+        }
+        else if (message.senderType.Equals(Message.SenderType.PLANET))
+        {
+            MessageSender<Planet> messageSender = (MessageSender<Planet>)message.sender;
+            Planet planet = messageSender.sender;
+            if (!UniverseHandler.SelectedPlanetEquals(planet)) UniverseHandler.AddMoveToPlanet(planet);
+        }
+        else if(message.senderType.Equals(Message.SenderType.PRODUCTIONBUILDING))
+        {
+            MessageSender<ProductionBuildingHandler> messageSender = (MessageSender<ProductionBuildingHandler>)message.sender;
+            ProductionBuildingHandler productionBuildingHandler = messageSender.sender;
+            Planet planet = productionBuildingHandler.planet;
+            bool isSelectedPlanet = UniverseHandler.SelectedPlanetEquals(planet);
+            if (!isSelectedPlanet) UniverseHandler.AddMoveToPlanet(planet);
+            else planet.ShowPlanetMenu(true);
+            planet.ShowProductionBuildingViewer(isSelectedPlanet, productionBuildingHandler.buildingSlot);
+        }
+        else if (message.senderType.Equals(Message.SenderType.DISCOVERYHUB))
+        {
+            MessageSender<DiscoveryHubHandler> messageSender = (MessageSender<DiscoveryHubHandler>)message.sender;
+            DiscoveryHubHandler discoveryHubHandler = messageSender.sender;
+            Planet planet = discoveryHubHandler.planet;
+            bool isSelectedPlanet = UniverseHandler.SelectedPlanetEquals(planet);
+            if (!isSelectedPlanet) UniverseHandler.AddMoveToPlanet(planet);
+            else planet.ShowPlanetMenu(true);
+            planet.ShowSpecialBuildingViewer(isSelectedPlanet);
+        }
+        else if (message.senderType.Equals(Message.SenderType.BHCF))
+        {
+            MessageSender<BHCFHandler> messageSender = (MessageSender<BHCFHandler>)message.sender;
+            BHCFHandler bhcfHandler = messageSender.sender;
+            Planet planet = bhcfHandler.planet;
+            bool isSelectedPlanet = UniverseHandler.SelectedPlanetEquals(planet);
+            if (!isSelectedPlanet) UniverseHandler.AddMoveToPlanet(planet);
+            else planet.ShowPlanetMenu(true);
+            planet.ShowSpecialBuildingViewer(isSelectedPlanet);
+        }
+        else if (message.senderType.Equals(Message.SenderType.ROUTE))
+        {
+            MessageSender<Route> messageSender = (MessageSender<Route>)message.sender;
+            MakeShipViewer(messageSender.sender.spaceShipHandler);
+        }
     }
 }

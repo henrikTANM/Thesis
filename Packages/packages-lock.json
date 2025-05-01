@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.harumak.urpgrabpass": {
+      "version": "https://github.com/Haruma-K/URPGrabPass.git?path=/Assets/URPGrabPass",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "10.2.0"
+      },
+      "hash": "e40a9fc0b29b3e2adab2d67e35a53b8fa4ff5c3d"
+    },
     "com.unity.burst": {
       "version": "1.8.9",
       "depth": 1,
@@ -163,9 +172,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"

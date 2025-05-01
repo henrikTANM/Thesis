@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 0; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; width: 600px; height: 400px; flex-shrink: 0; align-self: flex-start; justify-content: flex-start; background-color: rgba(11, 13, 15, 0.78); padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; translate: 100px 100px;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 0; height: 10%; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <ui:VisualElement name="resourcespanel" style="flex-grow: 1; align-self: stretch; margin-right: 10px; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; flex-direction: row; justify-content: space-between;" />
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="exitbutton" class="button" style="width: 20px; height: 20px; background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Game%20sprites/cross.png?fileID=2800000&amp;guid=fdd33b51b234ac545bc4e18bcb0f5e42&amp;type=3#cross&apos;); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: center;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="conatiner" style="flex-grow: 1; flex-direction: column; justify-content: space-between;">
+            <ui:VisualElement style="flex-grow: 1; margin-bottom: 10px; background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/AI%20generated%20images/futuristic%20radar%20dishes%20on%20a%20mountain%20(1).jpeg?fileID=2800000&amp;guid=9205f43e63dfa9144bd57857a8ca82d9&amp;type=3#futuristic radar dishes on a mountain (1)&apos;);">
+                <ui:VisualElement style="flex-grow: 1; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.63);">
+                    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="progress" class="textElement" />
+                    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="progpercycle" class="textElement" />
+                    <ui:VisualElement style="flex-grow: 0; flex-shrink: 0; flex-direction: row;">
+                        <ui:VisualElement style="flex-grow: 1; flex-shrink: 1; background-image: url(&apos;project://database/Assets/Textures%20and%20Sprites/Resource%20Sprites/food.png?fileID=2800000&amp;guid=96e2b28350dfc5e40a9c3809cb56bc5b&amp;type=3#food&apos;); height: 20px; width: 20px; -unity-background-image-tint-color: rgb(117, 255, 114); align-self: center;" />
+                        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="foodpercycle" class="textElement" />
+                    </ui:VisualElement>
+                    <ui:Label tabindex="-1" text="Tip: Press J to toggle progress in cluster view" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" class="textElement" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0; flex-shrink: 0; flex-direction: row; justify-content: space-between;">
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="activatebutton" class="button" style="height: 100%; width: 48%;" />
+                <ui:Button text="Deconstruct" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deconstructbutton" class="button" style="height: 100%; width: 48%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -15,4 +15,5 @@ MonoBehaviour:
   name: Food
   resourceSprite: {fileID: 21300000, guid: 96e2b28350dfc5e40a9c3809cb56bc5b, type: 3}
   spriteColor: {r: 0.36566976, g: 0.7830189, b: 0.2991723, a: 1}
-  defaultValue: 10
+  defaultValue: 7
+  type: 0

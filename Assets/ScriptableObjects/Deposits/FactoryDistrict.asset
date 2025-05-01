@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: FactoryDistrict
   m_EditorClassIdentifier: 
   name: Factory District
-  depositSprite: {fileID: 21300000, guid: 1431fef0778c25a40a9a44379f1d3e09, type: 3}
+  possibleDepositSprites:
+  - {fileID: 21300000, guid: 9031c602c750e064eb7b0a0dd2363f08, type: 3}
+  - {fileID: 21300000, guid: eaf929d79e9ac874b85d143747a5609c, type: 3}
+  - {fileID: 21300000, guid: 9ab260652a9994145a338c710a9fc34c, type: 3}
+  - {fileID: 21300000, guid: 3c117fb1c0decaa4a89fb609b2c1a2e3, type: 3}
+  - {fileID: 21300000, guid: d485bb5d476ed2040a78868b5f5fa3a5, type: 3}
+  - {fileID: 21300000, guid: c14e9eedb63dbea4cb5a3ceff0297560, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 2d57966d2e7ae944e8cc364af7d2b3a9, type: 2}
   - {fileID: 11400000, guid: 8c39e1595a91d03429e74108a69cf9f5, type: 2}
   - {fileID: 11400000, guid: eca6bcc566acaf544b640cde00af70d4, type: 2}
   - {fileID: 11400000, guid: 5ee8447c3022cf64e9e413ecea3f2a0b, type: 2}
-  buildingCap: 2
+  buildingCap: 3

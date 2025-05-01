@@ -1,13 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/UI-escapemenu/UI_escapemenu_Stylesheet.uss?fileID=7433441132597879392&amp;guid=9c38ec67397bd174ca53654badbe8321&amp;type=3#UI_escapemenu_Stylesheet" />
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
     <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; flex-direction: row;">
-        <ui:VisualElement style="flex-grow: 1; flex-shrink: 0; height: 50%; width: 20%; max-height: none; max-width: 20%; justify-content: space-between; align-items: stretch; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-            <ui:Button text="RESUME" name="ResumeButton" parse-escape-sequences="true" display-tooltip-when-elided="true" class="buttonESC button" style="border-top-left-radius: 15px; border-top-right-radius: 15px;" />
-            <ui:Button text="SAVE GAME" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveButton" class="button" />
-            <ui:Button text="LOAD GAME" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LoadButton" class="button" />
-            <ui:Button text="OPTIONS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="OptionsButton" class="button" />
-            <ui:Button text="EXIT TO MENU" name="ExitToMenuButton" parse-escape-sequences="true" display-tooltip-when-elided="true" class="buttonESC button" />
-            <ui:Button text="QUIT GAME" name="QuitGameButton" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" style="border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;" />
+        <ui:VisualElement style="flex-grow: 1; flex-shrink: 0; height: 50%; width: 20%; max-height: none; max-width: 20%; justify-content: space-between; align-items: stretch; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+            <ui:Button text="RESUME" name="resume" parse-escape-sequences="true" display-tooltip-when-elided="true" class="buttonESC escape_button" />
+            <ui:Button text="SAVE GAME" parse-escape-sequences="true" display-tooltip-when-elided="true" name="save" class="escape_button" />
+            <ui:Button text="LOAD GAME" parse-escape-sequences="true" display-tooltip-when-elided="true" name="load" class="escape_button" />
+            <ui:Button text="KEYBINDS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="keybinds" class="escape_button" />
+            <ui:Button text="EXIT TO MENU" name="exit" parse-escape-sequences="true" display-tooltip-when-elided="true" class="buttonESC escape_button" />
+            <ui:Button text="QUIT GAME" name="quit" parse-escape-sequences="true" display-tooltip-when-elided="true" class="escape_button" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

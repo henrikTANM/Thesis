@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92d02be8eb23e24eafc6462cc507c0a, type: 3}
   m_Name: Ice
   m_EditorClassIdentifier: 
-  scale: {x: 0.1, y: 0.2}
+  scale: {x: 1, y: 2}
   planetTextures:
   - {fileID: 2800000, guid: 9c11e5a615c2ad44bb353b43f3bedb06, type: 3}
   cloudTextures:
   - {fileID: 2800000, guid: 7cb20123a417f7d409f948e45658216b, type: 3}
+  specialBuildings:
+  - {fileID: 11400000, guid: 3d9152b149565a24f86edd5f3e7ecd42, type: 2}
+  - {fileID: 11400000, guid: 02d4f3ccb13ce6740b1f9907b7d5adca, type: 2}
+  - {fileID: 11400000, guid: f0f05e124b6996c40b845a54f773dc5d, type: 2}
+  - {fileID: 11400000, guid: 9200f8dfa2b77214fa718182cb27e5fb, type: 2}
+  - {fileID: 11400000, guid: 6fcb5822b7b04f044a55a8e1dfe3abcc, type: 2}
   possibleDeposits:
   - {fileID: 11400000, guid: ee2073cdf631dc249a0df4a48c64554a, type: 2}
   - {fileID: 11400000, guid: 85f802d2b9fd03b49ab301e127c866db, type: 2}

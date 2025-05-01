@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: GasCloud
   m_EditorClassIdentifier: 
   name: Gas Cloud
-  depositSprite: {fileID: 21300000, guid: 748921c9903473249a8f66b34530b0dd, type: 3}
+  possibleDepositSprites:
+  - {fileID: 21300000, guid: dfc05aa01cf70e24ca022ffd7f6c34cc, type: 3}
+  - {fileID: 21300000, guid: 366cf4ef852e55f4bae976e36b99ab22, type: 3}
+  - {fileID: 21300000, guid: c7e55844e09c8834dbfd5f4250523a20, type: 3}
   possibleProductionBuildings:
   - {fileID: 11400000, guid: 2462fcfa9f7606b408e405216c830ccd, type: 2}
   buildingCap: 3

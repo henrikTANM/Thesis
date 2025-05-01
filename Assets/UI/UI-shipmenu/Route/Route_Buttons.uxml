@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-        <ui:Button text="Cancel Route" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cancelbutton" class="button" style="margin-right: 5px; width: 45%; height: auto;" />
-        <ui:Button text="Pause Route" parse-escape-sequences="true" display-tooltip-when-elided="true" name="pausebutton" class="button" style="height: auto; width: 45%; margin-left: 5px;" />
-    </ui:VisualElement>
-</ui:UXML>

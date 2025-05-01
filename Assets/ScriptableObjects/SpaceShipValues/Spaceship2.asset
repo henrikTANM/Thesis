@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d5b026279ae0cc439bec164dd84e971, type: 3}
+  m_Script: {fileID: 11500000, guid: 9be4400a9fe653d4f8a2242d7b1f6711, type: 3}
   m_Name: Spaceship2
   m_EditorClassIdentifier: 
   name: S.T.S. Hauler
-  fuelCapacity: 1200
-  cargoCapacity: 64
-  accelerationRate: 5
+  cargoCapacity: 100
+  isInterstellar: 1
   cost:
   - resource: {fileID: 11400000, guid: 4d9af4b8b4af73b428b3798d52af2b52, type: 2}
     amount: 3000
@@ -27,4 +26,7 @@ MonoBehaviour:
     amount: 100
   - resource: {fileID: 11400000, guid: cdeca4be7d3d1a942a000ad13f9bc40f, type: 2}
     amount: 100
-  shipScale: 0.04
+  fuelConsumption:
+    resource: {fileID: 11400000, guid: 324e2fec89ef060488ea837de16bf091, type: 2}
+    amount: 15
+  shipScale: 0.02

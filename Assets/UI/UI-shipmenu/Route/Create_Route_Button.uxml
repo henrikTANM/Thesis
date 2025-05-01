@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
-    <ui:VisualElement style="flex-grow: 1;">
-        <ui:Button text="CREATE ROUTE" parse-escape-sequences="true" display-tooltip-when-elided="true" name="createbutton" class="button" style="width: 50%; align-self: center; height: 100%;" />
-    </ui:VisualElement>
-</ui:UXML>
