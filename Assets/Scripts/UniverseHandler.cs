@@ -129,6 +129,16 @@ public class UniverseHandler : MonoBehaviour
                 Message.SenderType.SYSTEM
                 ));
         }
+
+        if (Input.GetKey(KeyCode.K) & developmentMode)
+        {
+            foreach (Star star in stars) star.SetDiscovered(true, true);
+        }
+
+        if (Input.GetKey(KeyCode.L) & developmentMode & selectedStar != null)
+        {
+            foreach (Planet planet in selectedStar.planets) planet.reached = true;
+        }
     }
 
     public static void HandleUniverseView()
