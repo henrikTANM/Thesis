@@ -33,6 +33,7 @@ public class CameraMovementHandler : MonoBehaviour
     private void Awake()
     {
         if (instance == null) instance = this;
+        Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, true);
     }
 
     void Start()
