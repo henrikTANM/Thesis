@@ -15,9 +15,9 @@ MonoBehaviour:
   scale: 9
   color: {r: 0.16862746, g: 0.27450982, b: 0.27450982, a: 0}
   cellColor: {r: 0.007843138, g: 0.007843138, b: 0.07450981, a: 0}
-  cellDensity: 7
-  solarFlare: -1.2
-  cellSpeed: 1
+  cellDensity: 15
+  solarFlare: -1.5
+  cellSpeed: 1.5
   starNames:
   - Galaxia
   - Nebulastra

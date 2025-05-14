@@ -17,10 +17,10 @@
                 <ui:VisualElement name="info" style="border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; flex-grow: 1;">
                     <ui:VisualElement name="VisualElement" style="flex-grow: 1; padding-left: 3px; justify-content: flex-start; align-items: flex-start;">
                         <ui:Label tabindex="-1" text="name" parse-escape-sequences="true" display-tooltip-when-elided="true" name="name" class="textElement" style="font-size: 14px; -unity-text-align: middle-left; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 3px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 0;" />
-                        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="acceleration" class="textElement" />
-                        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="fuelcapacity" class="textElement" />
+                        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="interstellar" class="textElement" />
+                        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="fuel" class="textElement" />
                         <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cargocapacity" class="textElement" />
-                        <ui:VisualElement style="flex-direction: column; align-items: flex-start;">
+                        <ui:VisualElement style="flex-direction: row; align-items: center;">
                             <ui:Label tabindex="-1" text="Cost:" parse-escape-sequences="true" display-tooltip-when-elided="true" class="textElement" />
                             <ui:VisualElement name="costlist" style="flex-direction: row; flex-grow: 1;" />
                         </ui:VisualElement>

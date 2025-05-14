@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI_Stylesheet.uss?fileID=7433441132597879392&amp;guid=c08361423ea1c634b966db0af8ec105d&amp;type=3#UI_Stylesheet" />
+    <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; flex-direction: row;">
+        <ui:VisualElement name="VisualElement" style="height: 30%; width: 40%; justify-content: space-between; align-items: stretch; border-left-color: rgb(226, 226, 226); border-right-color: rgb(226, 226, 226); border-top-color: rgb(226, 226, 226); border-bottom-color: rgb(226, 226, 226); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; flex-direction: column; min-width: auto; min-height: auto; background-color: rgba(0, 0, 0, 0.47);">
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="You have completed" parse-escape-sequences="true" display-tooltip-when-elided="true" class="textElement" style="-unity-font-style: bold;" />
+                <ui:Label tabindex="-1" text="Stellar Manager" parse-escape-sequences="true" display-tooltip-when-elided="true" class="textElement" style="font-size: 22px; -unity-font-style: bold;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: row; justify-content: space-around; height: 20%;">
+                <ui:Button text="END GAME" name="endgame" parse-escape-sequences="true" display-tooltip-when-elided="true" class="buttonESC button" style="width: 40%; height: 100%;" />
+                <ui:Button text="KEEP PLAYING!" name="keepplaying" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" style="height: 100%; width: 40%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

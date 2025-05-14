@@ -9,6 +9,8 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private UIDocument gameUI;
 
+    [SerializeField] private GameObject endingMenuPrefab;
+    GameObject endingMenu;
     [SerializeField] private GameObject escapeMenuPrefab;
     GameObject escapeMenu;
     [SerializeField] private GameObject shipViewerPrefab;
@@ -193,6 +195,15 @@ public class UIController : MonoBehaviour
         UIDocument escapeMenuUI = escapeMenu.GetComponent<UIDocument>();
         escapeMenu.GetComponent<EscapeMenu>().MakeEscapeMenu();
         AddToUIStack(new UIElement(escapeMenu, escapeMenuUI), false);
+    }
+
+    public void MakeEndingMenu()
+    {
+        SetGameUIActive(false);
+        endingMenu = Instantiate(endingMenuPrefab);
+        UIDocument endingMenuUI = endingMenu.GetComponent<UIDocument>();
+        endingMenu.GetComponent<EndingMenu>().MakeEndingMenu();
+        AddToUIStack(new UIElement(endingMenu, endingMenuUI), false);
     }
 
     public static void MakeShipViewer(SpaceShipHandler spaceShipHandler)

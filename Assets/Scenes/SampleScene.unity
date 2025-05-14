@@ -249,8 +249,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a74ec4dbf77c5a6408ec06b603add1dc, type: 3}
   startSettings: {fileID: 11400000, guid: 5387e6db13fcece4fb7ac64422d6d626, type: 2}
   fuelResource: {fileID: 11400000, guid: 324e2fec89ef060488ea837de16bf091, type: 2}
-  toggleDiscovered: 0
-  toggleReached: 0
+  toggleDiscovered: 1
+  toggleReached: 1
 --- !u!1 &107508163
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   styleSheet: {fileID: 7433441132597879392, guid: ab91e5ece42aa26409be17b040776517, type: 3}
   gameUI: {fileID: 1671948230}
+  endingMenuPrefab: {fileID: 8180266732837362738, guid: e7b666b22bb8c5b4c9c70232e4d7fb81, type: 3}
   escapeMenuPrefab: {fileID: 4605107462470517844, guid: e55c3308b34d71d4681e237fb64708c8, type: 3}
   shipViewerPrefab: {fileID: 5362047318867954781, guid: dff78f6faae064c44a9b0c720ed4ba46, type: 3}
   timeRunningImage: {fileID: 21300000, guid: 9e9a128c9919df846be1e34c7565fa03, type: 3}

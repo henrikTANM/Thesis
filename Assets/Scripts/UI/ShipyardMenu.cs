@@ -113,6 +113,8 @@ public class ShipyardMenu : MonoBehaviour
         buildButton.SetEnabled(CanBuild());
 
         root.Q<Label>("name").text = selectedSpaceShip.name;
+        root.Q<Label>("interstellar").text = "Interstellar drive: " + (selectedSpaceShip.isInterstellar ? "YES" : "NO");
+        root.Q<Label>("fuel").text = "Fuel consumption: " + selectedSpaceShip.fuelConsumption.amount + "/cycle";
         root.Q<Label>("cargocapacity").text = "Cargo capacity: " + selectedSpaceShip.cargoCapacity + " units";
 
         VisualElement costList = root.Q<VisualElement>("costlist");

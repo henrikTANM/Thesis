@@ -12,7 +12,6 @@ Material:
   m_Parent: {fileID: -6922793697723135513, guid: 23d1492482bbd30468fc342c846ed8a6, type: 3}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _NORMALMAP
   - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 4

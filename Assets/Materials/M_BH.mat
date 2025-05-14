@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_BH
-  m_Shader: {fileID: 4800000, guid: 288aca24eb63e96459df4204a07d5bbf, type: 3}
+  m_Shader: {fileID: 4800000, guid: 49e31ccb7e10c8b4682b41758d2b5b98, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -50,9 +50,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_0bb6c794ceb5476bbe1601bd36eb7262: 2.99
-    - Vector1_486f1fcc37a949ffb726a117eab0987a: 4
-    - Vector1_e1206881e1244ef4a008548fa38caa6a: 1
+    - Vector1_0bb6c794ceb5476bbe1601bd36eb7262: 9.34
+    - Vector1_486f1fcc37a949ffb726a117eab0987a: 2
+    - Vector1_e1206881e1244ef4a008548fa38caa6a: 0.8
     - _DistortionExponent: 2.64
     - _OuterGlowExponent: 1.8
     - _OuterGlowMultiplier: 3
@@ -61,7 +61,7 @@ Material:
     - _Radius: 0.5
     - _SZ_Radius: 0.1
     - _ScreenSpaceScale: 1
-    - _SpherePercentage: 0.23
+    - _SpherePercentage: 0.249
     m_Colors:
     - Color_f649559c5a534a89a4820a4d0c46d676: {r: 1, g: 1, b: 1, a: 0}
     - _OuterGlowColor: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}

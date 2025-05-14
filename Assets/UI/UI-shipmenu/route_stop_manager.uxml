@@ -8,7 +8,7 @@
         <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: column; justify-content: space-around; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; align-items: stretch;">
             <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="usedcargo" class="textElement" />
             <ui:VisualElement name="pickuplist" style="align-items: center;" />
-            <ui:Button text="Set cargo" parse-escape-sequences="true" display-tooltip-when-elided="true" name="setpickupsbutton" class="button" style="width: auto;" />
+            <ui:Button text="Set cargo" parse-escape-sequences="true" display-tooltip-when-elided="true" name="setpickupsbutton" class="button" style="width: auto; margin-top: 5px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -514,6 +514,11 @@ public class Planet : SpaceBody
         if (bhcfHandler != null)
         {
             if (bhcfHandler.active & bhcfHandler.progress < 100) bhcfHandler.progress += bhcfHandler.progressRate;
+            else if (bhcfHandler.active & bhcfHandler.progress >= 100)
+            {
+                bhcfHandler.progress = 100;
+                bhcfHandler.SetActive(false, "Black hole containment is completed and.");
+            }
             if (bhcfMenu != null) bhcfMenu.GetComponent<BHCFMenu>().UpdateBHCFInfo(bhcfHandler.active);
         }
     }

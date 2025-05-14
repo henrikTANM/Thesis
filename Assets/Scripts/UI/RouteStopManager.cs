@@ -110,6 +110,7 @@ public class RouteStopManager : MonoBehaviour
                     if (resourceAmount.amount < 0) resourceAmount.amount = 0;
                     resourceCountLabel.text = resourceAmount.amount.ToString();
                 }
+                UpdateUsedCargoLabel();
             };
 
             Button plusButton = pickupOption.Q<Button>("plusbutton");
@@ -124,6 +125,7 @@ public class RouteStopManager : MonoBehaviour
                     if (GetUsedCargo() > cargoCapacity) resourceAmount.amount -= (GetUsedCargo() - cargoCapacity);
                     resourceCountLabel.text = resourceAmount.amount.ToString();
                 }
+                UpdateUsedCargoLabel();
             }; 
             pickupList.Add(pickupOption);
         }

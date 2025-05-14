@@ -49,4 +49,17 @@ public class BHCFHandler : ResourceSource
             Message.SenderType.BHCF
             ));
     }
+
+    public override void SetActive(bool active, string message)
+    {
+        base.SetActive(active, message);
+        UIController.AddMessage(new Message(
+            message,
+            Message.MessageType.NOTIFICATION,
+            new MessageSender<BHCFHandler>(this),
+            Message.SenderType.BHCF
+            ));
+
+
+    }
 }
