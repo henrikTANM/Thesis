@@ -347,7 +347,16 @@ public class UIController : MonoBehaviour
         Button messageButton = instance.messageButtonTemplate.Instantiate().Q<Button>("messagebutton");
         messageButton.RegisterCallback<MouseUpEvent>(evt =>
         {
-            if (evt.button == 0) HandleMessageButton(message);
+            if (evt.button == 0)
+            {
+                bool validMessage = HandleMessageButton(message);
+                if (!validMessage)
+                {
+                    instance.messageButtonList.Remove(messageButton);
+                    UpdateMessageButtons();
+                    SoundFX.PlayAudioClip(SoundFX.AudioType.MENU_EXIT);
+                }
+            }
             else if (evt.button == 1)
             {
                 instance.messageButtonList.Remove(messageButton);
@@ -371,7 +380,7 @@ public class UIController : MonoBehaviour
             SoundFX.AudioType.WARNING);
     }
 
-    private static void HandleMessageButton(Message message)
+    private static bool HandleMessageButton(Message message)
     {
         if (message.senderType.Equals(Message.SenderType.STAR))
         {
@@ -390,6 +399,7 @@ public class UIController : MonoBehaviour
             MessageSender<ProductionBuildingHandler> messageSender = (MessageSender<ProductionBuildingHandler>)message.sender;
             ProductionBuildingHandler productionBuildingHandler = messageSender.sender;
             Planet planet = productionBuildingHandler.planet;
+            if (!planet.productionBuildingHandlers.Contains(productionBuildingHandler)) return false;
             bool isSelectedPlanet = UniverseHandler.SelectedPlanetEquals(planet);
             if (!isSelectedPlanet) UniverseHandler.AddMoveToPlanet(planet);
             else planet.ShowPlanetMenu(true);
@@ -400,6 +410,7 @@ public class UIController : MonoBehaviour
             MessageSender<DiscoveryHubHandler> messageSender = (MessageSender<DiscoveryHubHandler>)message.sender;
             DiscoveryHubHandler discoveryHubHandler = messageSender.sender;
             Planet planet = discoveryHubHandler.planet;
+            if (planet.discoveryHubHandler == null) return false;
             bool isSelectedPlanet = UniverseHandler.SelectedPlanetEquals(planet);
             if (!isSelectedPlanet) UniverseHandler.AddMoveToPlanet(planet);
             else planet.ShowPlanetMenu(true);
@@ -410,6 +421,7 @@ public class UIController : MonoBehaviour
             MessageSender<BHCFHandler> messageSender = (MessageSender<BHCFHandler>)message.sender;
             BHCFHandler bhcfHandler = messageSender.sender;
             Planet planet = bhcfHandler.planet;
+            if (planet.bhcfHandler == null) return false;
             bool isSelectedPlanet = UniverseHandler.SelectedPlanetEquals(planet);
             if (!isSelectedPlanet) UniverseHandler.AddMoveToPlanet(planet);
             else planet.ShowPlanetMenu(true);
@@ -420,5 +432,6 @@ public class UIController : MonoBehaviour
             MessageSender<Route> messageSender = (MessageSender<Route>)message.sender;
             MakeShipViewer(messageSender.sender.spaceShipHandler);
         }
+        return true;
     }
 }

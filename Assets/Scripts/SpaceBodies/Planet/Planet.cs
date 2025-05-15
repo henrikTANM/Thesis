@@ -39,13 +39,13 @@ public class Planet : SpaceBody
     private BuildingSlot specialBuildingSlot;
 
     private PlanetResourceHandler planetResourceHandler;
-    private List<ProductionBuildingHandler> productionBuildingHandlers = new();
+    [NonSerialized] public List<ProductionBuildingHandler> productionBuildingHandlers = new();
 
     [NonSerialized] public Sprite specialBuildingSlotBackground;
 
     [NonSerialized] public SpecialBuilding specialBuilding;
-    private DiscoveryHubHandler discoveryHubHandler;
-    private BHCFHandler bhcfHandler;
+    [NonSerialized] public DiscoveryHubHandler discoveryHubHandler;
+    [NonSerialized] public BHCFHandler bhcfHandler;
 
     [NonSerialized] public bool reached;
     [NonSerialized] public bool managed;
@@ -537,8 +537,7 @@ public class Planet : SpaceBody
     }
     public IEnumerator ShowProductionBuildingViewerDelay(bool planetSelected, BuildingSlot buildingSlot)
     {
-        if (!planetSelected) yield return new WaitForSeconds(0.5f);
-        UIController.ClearUIStack();
+        yield return new WaitForSeconds(planetSelected ? 0.1f : 0.5f);
         buildingSlot.HandleBuildingSlotClicked();
     }
 
@@ -548,8 +547,7 @@ public class Planet : SpaceBody
     }
     public IEnumerator ShowSpecialBuildingViewerDelay(bool planetSelected)
     {
-        if (!planetSelected) yield return new WaitForSeconds(0.5f);
-        UIController.ClearUIStack();
+        yield return new WaitForSeconds(planetSelected ? 0.1f : 0.5f);
         planetMenu.GetComponent<PlanetMenu>().HandleSpecialBuildingButton();
     }
 

@@ -5,6 +5,15 @@ public class ResourceSource
     public string name;
     public bool active;
     public int cycleInterval;
+    public Type type;
+
+    public enum Type
+    {
+        PRODUCTION,
+        ROUTE,
+        DISCOVERYHUB,
+        BHCF
+    }
 
     public virtual void SetActive(bool active, Planet planet, string message)
     {

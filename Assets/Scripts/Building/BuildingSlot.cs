@@ -69,7 +69,7 @@ public class BuildingSlot : MonoBehaviour
         foreach (ResourceAmount resourceRefund in costAmounts)
         {
             if (resourceRefund.resource.type == Resource.Type.MONEY) PlayerInventory.ChangeMoneyAmount(resourceRefund.amount / 2);
-            else planet.GetPlanetResourceHandler().ChangeResourceAmount(resourceRefund);
+            else planet.GetPlanetResourceHandler().ChangeResourceAmount(new ResourceAmount(resourceRefund.resource, resourceRefund.amount / 2));
         }
 
         button.style.backgroundImage = new StyleBackground(constrictionSprite);

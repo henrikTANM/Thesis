@@ -19,6 +19,7 @@ public class BHCFHandler : ResourceSource
     {
         name = blackHoleContainmentFacility.name;
         active = true;
+        type = Type.BHCF;
         this.planet = planet;
         progress = 0;
         progressRate = 5;

@@ -77,7 +77,8 @@ public class PlanetResourceHandler
         List<ResourceFactor> modifiedFactors = new();
         foreach (ResourceFactor rf in activeFactors)
         {
-            int amount = (int)(rf.resourceAmount.amount * (rf.resourceAmount.resource.type.Equals(Resource.Type.RAW) ? rawMultiplier : endMultiplier));
+            int amount = (int)(rf.resourceAmount.amount * (rf.resourceSource.type.Equals(ResourceSource.Type.PRODUCTION) ? 
+                (rf.resourceAmount.resource.type.Equals(Resource.Type.RAW) ? rawMultiplier : endMultiplier) : 1.0f));
             modifiedFactors.Add(new(new(rf.resourceAmount.resource, amount), rf.resourceSource));
         }
         return modifiedFactors;

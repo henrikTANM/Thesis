@@ -18,6 +18,7 @@ public class Route : ResourceSource
     public Route(SpaceShipHandler spaceShipHandler, Planet destination, float travelTime)
     {
         active = false;
+        type = Type.ROUTE;
         this.spaceShipHandler = spaceShipHandler;
         home = spaceShipHandler.home;
         this.destination = destination;

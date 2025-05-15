@@ -16,6 +16,7 @@ public class DiscoveryHubHandler : ResourceSource
     {
         name = discoveryHub.name;
         active = true;
+        type = Type.DISCOVERYHUB;
         this.planet = planet;
 
         foreach (ResourceAmount cost in discoveryHub.cost) costResources.Add(cost);

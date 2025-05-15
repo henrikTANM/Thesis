@@ -15,6 +15,7 @@ public class ProductionBuildingHandler : ResourceSource
     {
         name = productionBuilding.name;
         active = true;
+        type = Type.PRODUCTION;
         this.planet = planet;
         this.buildingSlot = buildingSlot;
 
